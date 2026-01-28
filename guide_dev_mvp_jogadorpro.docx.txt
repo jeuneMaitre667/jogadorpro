@@ -1,0 +1,1767 @@
+﻿GUIDE DÉVELOPPEMENT MVP
+JogadorPro - De Zéro à Hero
+Setup Complet + Architecture + Code Starter
+
+
+On Code Ensemble - Tu Apprends en Regardant
+
+
+Janvier 2026 - Let's Build!
+________________
+
+
+TABLE DES MATIÈRES
+
+📋 PARTIE 1: SETUP ENVIRONNEMENT
+  1.1 - Installation VS Code
+  1.2 - Installation Node.js
+  1.3 - Installation Git
+  1.4 - Configuration Terminal
+  1.5 - Création compte GitHub
+  1.6 - Checklist setup complète
+
+📋 PARTIE 2: ARCHITECTURE TECHNIQUE
+  2.1 - Stack technologique détaillé
+  2.2 - Structure base de données
+  2.3 - Architecture application
+  2.4 - Flow utilisateur
+  2.5 - Diagrammes techniques
+
+📋 PARTIE 3: STRUCTURE PROJET
+  3.1 - Organisation dossiers/fichiers
+  3.2 - Conventions nommage
+  3.3 - Configuration projet
+  3.4 - Variables environnement
+
+📋 PARTIE 4: PREMIER PROJET
+  4.1 - Créer projet Next.js
+  4.2 - Setup Tailwind CSS
+  4.3 - Setup Supabase
+  4.4 - Premier "Hello World"
+
+📋 PARTIE 5: FEATURES MVP (Roadmap Détaillé)
+  5.1 - Semaine 1-2: Landing + Auth
+  5.2 - Semaine 3-4: Dashboard + Challenge
+  5.3 - Semaine 5-6: Bet Tracking + P&L
+  5.4 - Semaine 7-8: Admin Panel
+  5.5 - Semaine 9-10: Polish + Testing
+  5.6 - Semaine 11-13: Launch Prep
+
+📋 PARTIE 6: CODE TEMPLATES
+  6.1 - Landing page starter
+  6.2 - Auth components
+  6.3 - Dashboard layout
+  6.4 - Database schemas
+  6.5 - API routes examples
+
+📋 PARTIE 7: DEPLOYMENT
+  7.1 - Deploy Vercel
+  7.2 - Setup domaine
+  7.3 - Variables production
+  7.4 - Monitoring
+
+📋 PARTIE 8: TROUBLESHOOTING
+  8.1 - Erreurs communes
+  8.2 - Solutions rapides
+  8.3 - Ressources aide
+
+________________
+
+
+PARTIE 1: SETUP ENVIRONNEMENT
+
+⏱️ TEMPS ESTIMÉ: 45-60 minutes
+🎯 OBJECTIF: Installer tous les outils nécessaires
+
+À la fin de cette partie, tu auras:
+✅ VS Code (éditeur de code)
+✅ Node.js (JavaScript runtime)
+✅ Git (version control)
+✅ Terminal configuré
+✅ Compte GitHub
+✅ Environnement de développement complet
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️ IMPORTANT: Suis les étapes dans l'ORDRE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1.1 - Installation VS Code
+
+🔧 VS CODE (Visual Studio Code)
+
+QU'EST-CE QUE C'EST?
+Éditeur de code gratuit de Microsoft. Le meilleur pour web dev.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INSTALLATION - WINDOWS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÉTAPE 1: Télécharger
+□ Va sur: https://code.visualstudio.com/
+□ Clique "Download for Windows"
+□ Fichier téléchargé: VSCodeSetup.exe
+
+ÉTAPE 2: Installer
+□ Double-clique VSCodeSetup.exe
+□ Accepte les termes
+□ IMPORTANT: Coche TOUTES les cases:
+ ☑ Add "Open with Code" to context menu
+ ☑ Add to PATH
+ ☑ Register Code as editor for supported files
+□ Clique "Install"
+□ Attends 2-3 minutes
+□ Clique "Finish" (lance VS Code)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INSTALLATION - MAC
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÉTAPE 1: Télécharger
+□ Va sur: https://code.visualstudio.com/
+□ Clique "Download for macOS"
+□ Fichier téléchargé: VSCode-darwin.zip
+
+ÉTAPE 2: Installer
+□ Double-clique VSCode-darwin.zip (extraction auto)
+□ Glisse "Visual Studio Code.app" dans Applications
+□ Lance depuis Applications
+
+ÉTAPE 3: Ajouter au PATH (important!)
+□ Ouvre VS Code
+□ Appuie: Cmd + Shift + P
+□ Tape: "shell command"
+□ Sélectionne: "Shell Command: Install 'code' command in PATH"
+□ Redémarre terminal
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INSTALLATION - LINUX (Ubuntu/Debian)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Option A - Via Snap (plus simple):
+□ Ouvre Terminal
+□ Commande: sudo snap install code --classic
+□ Entre ton mot de passe
+□ Attends installation
+
+Option B - Via APT:
+□ Commandes dans terminal:
+ sudo apt update
+ sudo apt install software-properties-common apt-transport-https wget
+ wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
+ sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+ sudo apt update
+ sudo apt install code
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VÉRIFICATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TEST 1: VS Code s'ouvre?
+□ Lance VS Code
+□ Tu vois l'interface? ✅
+
+TEST 2: Commande 'code' fonctionne?
+□ Ouvre Terminal/CMD
+□ Tape: code --version
+□ Tu vois un numéro de version? (ex: 1.85.0) ✅
+
+Si ça ne marche pas:
+→ Redémarre ton ordinateur
+→ Réessaie "code --version"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EXTENSIONS ESSENTIELLES (on installe après)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Plus tard, on installera:
+• ES7+ React/Redux/React-Native snippets
+• Tailwind CSS IntelliSense
+• Prettier - Code formatter
+• GitLens
+• Auto Rename Tag
+• Path Intellisense
+
+(Je te montrerai comment après setup complet)
+
+________________
+
+
+1.2 - Installation Node.js
+
+🟢 NODE.JS + NPM
+
+QU'EST-CE QUE C'EST?
+Node.js = JavaScript runtime (pour exécuter code JS hors navigateur)
+NPM = Node Package Manager (pour installer librairies)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INSTALLATION - WINDOWS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÉTAPE 1: Télécharger
+□ Va sur: https://nodejs.org/
+□ Clique version LTS (ex: 20.11.0 LTS) - PAS Current!
+□ Fichier téléchargé: node-v20.x.x-x64.msi
+
+ÉTAPE 2: Installer
+□ Double-clique .msi
+□ Accepte les termes
+□ Clique "Next" partout (options par défaut OK)
+□ Attend 2-3 minutes
+□ Clique "Finish"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INSTALLATION - MAC
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Option A - Via Installeur (recommandé):
+□ Va sur: https://nodejs.org/
+□ Télécharge LTS pour macOS
+□ Double-clique .pkg
+□ Suis l'installeur
+
+Option B - Via Homebrew (si tu as Homebrew):
+□ Terminal: brew install node@20
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INSTALLATION - LINUX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Via NodeSource (recommandé):
+□ Terminal, commandes:
+ curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+ sudo apt-get install -y nodejs
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VÉRIFICATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OUVRE NOUVEAU TERMINAL (important: pas l'ancien!)
+
+TEST 1: Node installé?
+Commande: node --version
+Résultat attendu: v20.11.0 (ou similaire) ✅
+
+TEST 2: NPM installé?
+Commande: npm --version
+Résultat attendu: 10.2.4 (ou similaire) ✅
+
+Si "command not found":
+→ REDÉMARRE ton ordinateur
+→ Réessaie
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONFIGURATION NPM (Optionnel mais recommandé)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pour installs plus rapides:
+Commande: npm config set registry https://registry.npmjs.org/
+
+________________
+
+
+1.3 - Installation Git
+
+📦 GIT (Version Control)
+
+QU'EST-CE QUE C'EST?
+Système de contrôle de version. Sauvegarde ton code, historique, backup.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INSTALLATION - WINDOWS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÉTAPE 1: Télécharger
+□ Va sur: https://git-scm.com/download/win
+□ Téléchargement auto démarre
+□ Fichier: Git-2.x.x-64-bit.exe
+
+ÉTAPE 2: Installer
+□ Double-clique .exe
+□ OPTIONS IMPORTANTES:
+ 
+ Écran "Select Components":
+ ☑ Git Bash Here
+ ☑ Git GUI Here
+ ☑ Associate .git* files
+ 
+ Écran "Choosing the default editor":
+ → Sélectionne "Use Visual Studio Code as Git's default editor"
+ 
+ Écran "Adjusting PATH":
+ → Sélectionne "Git from the command line and also from 3rd-party software"
+ 
+ Écran "Choosing HTTPS transport":
+ → "Use the OpenSSL library"
+ 
+ Écran "Configuring line endings":
+ → "Checkout Windows-style, commit Unix-style"
+ 
+ Écran "Terminal emulator":
+ → "Use MinTTY"
+ 
+ Reste: Options par défaut OK
+
+□ Clique "Install"
+□ Attends 2-3 min
+□ Finish
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INSTALLATION - MAC
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Option A - Via Xcode Command Line Tools (recommandé):
+□ Terminal: xcode-select --install
+□ Clique "Install" dans popup
+□ Attends 5-10 min
+
+Option B - Via Homebrew:
+□ Terminal: brew install git
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INSTALLATION - LINUX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Ubuntu/Debian:
+□ Terminal: sudo apt update && sudo apt install git
+
+Fedora:
+□ Terminal: sudo dnf install git
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VÉRIFICATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Commande: git --version
+Résultat attendu: git version 2.x.x ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONFIGURATION GIT (IMPORTANT!)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Configure ton identité (nécessaire pour commits):
+
+Commande 1: git config --global user.name "Ton Nom"
+Exemple: git config --global user.name "João Silva"
+
+Commande 2: git config --global user.email "ton@email.com"
+Exemple: git config --global user.email "joao@jogadorpro.com"
+
+Commande 3 (optionnel): git config --global init.defaultBranch main
+
+VÉRIFICATION:
+Commande: git config --list
+Tu dois voir:
+ user.name=Ton Nom
+ user.email=ton@email.com
+
+________________
+
+
+1.4 - Configuration Terminal
+
+💻 TERMINAL / LIGNE DE COMMANDE
+
+QU'EST-CE QUE C'EST?
+Interface texte pour exécuter commandes. Essential pour dev!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WINDOWS - Utiliser Git Bash
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Git Bash = meilleur terminal Windows (installé avec Git)
+
+OUVRIR GIT BASH:
+Méthode 1: Clic droit dans n'importe quel dossier → "Git Bash Here"
+Méthode 2: Recherche Windows → "Git Bash"
+Méthode 3: Dans VS Code → Terminal → New Terminal → Select "Git Bash"
+
+TEST:
+□ Ouvre Git Bash
+□ Tape: pwd (affiche dossier actuel)
+□ Tape: ls (liste fichiers)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MAC - Utiliser Terminal natif (ou iTerm2)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OUVRIR TERMINAL:
+Méthode 1: Cmd + Espace → tape "Terminal"
+Méthode 2: Applications → Utilitaires → Terminal
+Méthode 3: Dans VS Code → Terminal → New Terminal
+
+OPTIONNEL - iTerm2 (meilleur que Terminal natif):
+□ Télécharge: https://iterm2.com/
+□ Installe
+□ Use iTerm2 au lieu de Terminal
+
+TEST:
+□ Ouvre Terminal
+□ Tape: pwd
+□ Tape: ls
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LINUX - Terminal natif
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OUVRIR:
+Ctrl + Alt + T
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMMANDES DE BASE (À CONNAÎTRE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+pwd = Print Working Directory (où suis-je?)
+ls = List (liste fichiers/dossiers)
+cd = Change Directory (changer de dossier)
+ Exemple: cd Documents
+ Retour: cd ..
+mkdir = Make Directory (créer dossier)
+ Exemple: mkdir mon-projet
+clear = Efface l'écran
+code . = Ouvre VS Code dans dossier actuel
+
+TEST RAPIDE:
+1. pwd (voir où tu es)
+2. ls (voir ce qu'il y a)
+3. mkdir test-folder (créer dossier test)
+4. cd test-folder (entrer dedans)
+5. pwd (vérifier que tu es dedans)
+6. cd .. (retour)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VS CODE TERMINAL INTÉGRÉ (Recommandé!)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Meilleure façon: Terminal DANS VS Code!
+
+OUVRIR:
+□ VS Code → Menu "Terminal" → "New Terminal"
+□ Ou: Ctrl + ` (backtick, à gauche du 1)
+
+CONFIGURER DEFAULT:
+Windows:
+□ Ctrl + Shift + P
+□ Tape: "Terminal: Select Default Profile"
+□ Sélectionne "Git Bash"
+
+Mac/Linux: Terminal natif OK par défaut
+
+AVANTAGES:
+✅ Pas besoin switcher fenêtres
+✅ Même dossier que ton code
+✅ Multiple terminaux possibles
+
+________________
+
+
+1.5 - Création Compte GitHub
+
+🐙 GITHUB
+
+QU'EST-CE QUE C'EST?
+Plateforme pour héberger code Git. Backup + collaboration + déploiement.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CRÉATION COMPTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÉTAPE 1: S'inscrire
+□ Va sur: https://github.com/
+□ Clique "Sign up"
+□ Entre:
+ - Username (ex: jogadorpro ou ton nom)
+ - Email
+ - Password (fort!)
+□ Vérifie ton email
+□ Suis onboarding (skip survey si tu veux)
+
+ÉTAPE 2: Plan gratuit
+□ Sélectionne "Free" (suffisant!)
+□ GitHub Free inclut:
+ - Repos illimités (public + privé)
+ - Actions CI/CD
+ - GitHub Pages
+ - Tout ce dont on a besoin! ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONFIGURER SSH (Recommandé pour sécurité)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+(On peut faire après - pas urgent pour commencer)
+
+ÉTAPE 1: Générer clé SSH
+Terminal:
+ssh-keygen -t ed25519 -C "ton@email.com"
+ 
+Appuie "Enter" 3 fois (accepte défauts)
+
+ÉTAPE 2: Copier clé publique
+Windows (Git Bash): cat ~/.ssh/id_ed25519.pub | clip
+Mac: cat ~/.ssh/id_ed25519.pub | pbcopy
+Linux: cat ~/.ssh/id_ed25519.pub
+
+ÉTAPE 3: Ajouter à GitHub
+□ GitHub → Settings (icône profil)
+□ SSH and GPG keys
+□ "New SSH key"
+□ Colle ta clé
+□ "Add SSH key"
+
+TEST:
+Terminal: ssh -T git@github.com
+Résultat: "Hi [username]! You've successfully authenticated"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ALTERNATIVE: HTTPS (Plus simple pour commencer)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Utilise HTTPS pour cloner/push
+→ GitHub te demandera username/password
+→ On peut setup SSH plus tard
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CRÉER TON PREMIER REPO (On fera ensemble plus tard)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pour l'instant, compte créé = suffisant! ✅
+
+________________
+
+
+1.6 - CHECKLIST SETUP COMPLÈTE
+
+✅ CHECKLIST FINALE - VÉRIFIE TOUT!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INSTALLATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+□ VS Code installé
+ Test: Lance VS Code ✅
+ 
+□ Node.js installé
+ Test terminal: node --version
+ Résultat: v20.x.x ✅
+ 
+□ NPM installé
+ Test terminal: npm --version
+ Résultat: 10.x.x ✅
+ 
+□ Git installé
+ Test terminal: git --version
+ Résultat: git version 2.x.x ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONFIGURATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+□ Git configuré (nom + email)
+ Test: git config --list
+ Voir: user.name et user.email ✅
+ 
+□ Terminal fonctionne
+ Test: Ouvre terminal, tape pwd ✅
+ 
+□ VS Code terminal intégré configuré
+ Test: Dans VS Code, ouvre terminal (Ctrl + `) ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+□ Compte GitHub créé
+ Test: Login sur github.com ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST FINAL - TOUT ENSEMBLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DANS TERMINAL:
+
+1. node --version
+  → Doit afficher v20.x.x
+
+2. npm --version
+  → Doit afficher 10.x.x
+
+3. git --version
+  → Doit afficher git version 2.x.x
+
+4. code --version
+  → Doit afficher version VS Code
+
+5. git config user.name
+  → Doit afficher ton nom
+
+Si TOUT ça fonctionne → TU ES PRÊT! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TROUBLESHOOTING RAPIDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROBLÈME: "command not found"
+SOLUTION: 
+1. Redémarre ordinateur
+2. Ouvre NOUVEAU terminal
+3. Réessaie
+
+PROBLÈME: Git config vide
+SOLUTION:
+git config --global user.name "Ton Nom"
+git config --global user.email "ton@email.com"
+
+PROBLÈME: Terminal pas dans VS Code
+SOLUTION:
+VS Code → Terminal menu → New Terminal
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SI TOUT EST ✅ → PASSE À LA PARTIE 2!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+________________
+
+
+PARTIE 2: ARCHITECTURE TECHNIQUE
+
+🏗️ COMPRENDRE CE QU'ON VA CONSTRUIRE
+
+Avant de coder, il faut comprendre l'ARCHITECTURE.
+C'est comme avoir le plan avant de construire une maison.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2.1 - Stack Technologique Détaillé
+
+🛠️ NOTRE STACK (Technologies utilisées)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FRONTEND (Ce que l'utilisateur voit)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚛️ REACT
+Quoi: Librairie JavaScript pour créer interfaces
+Pourquoi: La plus populaire (énorme communauté)
+Analogie: Les briques Lego pour construire ton site
+
+⏭️ NEXT.JS 14
+Quoi: Framework React (React avec super-pouvoirs)
+Pourquoi: 
+ - SEO optimisé (Google indexe bien)
+ - Performance excellente
+ - Déploiement facile
+ - Server + Client en un
+Analogie: React = moteur de voiture, Next.js = voiture complète
+
+🎨 TAILWIND CSS
+Quoi: Framework CSS (styling)
+Pourquoi:
+ - Rapide à écrire
+ - Looks professionnel
+ - Responsive auto
+ - Pas besoin écrire CSS from scratch
+Analogie: Styles pré-faits comme templates Canva
+
+🧩 SHADCN/UI
+Quoi: Composants React beaux et accessibles
+Pourquoi:
+ - Copy-paste ready
+ - Customizable
+ - Looks moderne
+ - Gratuit
+Exemple: Buttons, cards, modals, forms déjà faits
+
+📘 TYPESCRIPT (optionnel pour commencer)
+Quoi: JavaScript avec types (plus safe)
+Pourquoi: Évite bugs, meilleur dev experience
+Note: On peut commencer en JavaScript pur, migrate après
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BACKEND (Logique + Base de données)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔥 SUPABASE
+Quoi: Backend-as-a-Service (tout-en-un)
+Inclut:
+ - PostgreSQL database (puissant, gratuit 500MB)
+ - Authentication (signup/login)
+ - API auto-générée (pas besoin coder!)
+ - Storage (files/images)
+ - Real-time (bonus)
+
+Pourquoi Supabase vs autres:
+✅ Gratuit tier généreux (500MB database, 50K users)
+✅ PostgreSQL (meilleur que MySQL pour finance)
+✅ API auto → développement 5x plus rapide
+✅ Auth built-in → pas besoin coder login from scratch
+✅ Open source → pas vendor lock-in
+
+Alternative considérées:
+- Firebase: Bon mais NoSQL (moins bon pour finance, relationships)
+- Custom backend (Node + PostgreSQL): Plus de contrôle mais 3x plus long
+- Prisma + PlanetScale: Excellent mais plus complexe setup
+
+Verdict: Supabase = Best balance rapidité/puissance/coût
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAIEMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💳 STRIPE
+Quoi: Payment processor (cartes de crédit)
+Pourquoi:
+ - Le meilleur (Uber, Amazon l'utilisent)
+ - Documentation excellente
+ - Webhooks robustes
+ - Test mode gratuit
+Frais: 2.9% + 0.30€ par transaction
+
+🇧🇷 MERCADO PAGO (Phase 2)
+Quoi: Payment Brésil (PIX, Boleto)
+Pourquoi: PIX = méthode #1 au Brésil
+Note: On intègre après Stripe (MVP = Stripe seulement OK)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+HOSTING & DÉPLOIEMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+▲ VERCEL
+Quoi: Plateforme hosting (créateurs de Next.js!)
+Pourquoi:
+ - Deploy en 1 clic
+ - Gratuit (generous free tier)
+ - Performance excellente (CDN global)
+ - Preview deployments (chaque PR = URL preview)
+ - SSL auto (HTTPS)
+
+Alternative: Netlify (similaire), AWS (overkill), Heroku (cher)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OUTILS DÉVELOPPEMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📧 RESEND (Emails)
+Quoi: Service emails transactionnels
+Pourquoi: Gratuit 3K emails/mois, simple API
+Usage: Welcome emails, password reset, notifications
+
+📊 VERCEL ANALYTICS (Gratuit)
+Quoi: Analytics built-in Vercel
+Pourquoi: Pas besoin Google Analytics setup
+
+🐛 SENTRY (Optionnel - monitoring errors)
+Quoi: Error tracking
+Pourquoi: Catch bugs production
+Note: Gratuit tier 5K errors/mois
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RÉSUMÉ COÛTS (MVP)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Supabase: 0€ (free tier 500MB)
+Vercel: 0€ (free tier)
+Stripe: 0€ setup (2.9% transactions seulement)
+Resend: 0€ (3K emails/mois)
+Domaine: ~12€/an (jogadorpro.com)
+
+TOTAL MENSUEL: 0€ jusqu'à premiers users! 🎉
+
+Quand scale (1,000+ users):
+Supabase Pro: 25$/mois (2GB database)
+Vercel Pro: 20$/mois (meilleure performance)
+→ ~50€/mois total
+
+________________
+
+
+2.2 - Structure Base de Données
+
+🗄️ SCHÉMA DATABASE (Tables & Relations)
+
+Notre database PostgreSQL aura ces tables principales:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TABLE: users
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Colonnes:
+- id (UUID, primary key)
+- email (string, unique)
+- full_name (string)
+- created_at (timestamp)
+- role (enum: 'user', 'admin', 'funded')
+- kyc_status (enum: 'pending', 'verified', 'rejected')
+- kyc_documents (jsonb) - stocker metadata documents
+
+Relation: user → challenges (one-to-many)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TABLE: challenges
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Colonnes:
+- id (UUID, primary key)
+- user_id (UUID, foreign key → users)
+- tier (enum: 'starter', 'pro', 'elite')
+- price_paid (decimal)
+- status (enum: 'active', 'passed', 'failed', 'completed')
+- phase (integer: 1 ou 2)
+- start_date (timestamp)
+- end_date (timestamp)
+- initial_balance (decimal) - ex: 10000
+- current_balance (decimal)
+- target_profit (decimal) - ex: 1000 (10%)
+- max_daily_loss (decimal) - ex: 500 (5%)
+- max_total_loss (decimal) - ex: 1000 (10%)
+- created_at (timestamp)
+
+Relation: challenge → bets (one-to-many)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TABLE: bets
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Colonnes:
+- id (UUID, primary key)
+- challenge_id (UUID, foreign key → challenges)
+- user_id (UUID, foreign key → users)
+- bet_type (string) - ex: 'Moneyline', 'Over/Under'
+- sport (string) - ex: 'Football', 'Basketball'
+- event_description (string) - ex: 'Flamengo vs Palmeiras'
+- odds (decimal) - ex: 1.85
+- stake (decimal) - montant parié
+- potential_win (decimal) - gain potentiel
+- result (enum: 'pending', 'won', 'lost', 'void')
+- profit_loss (decimal) - P&L réel
+- placed_at (timestamp)
+- settled_at (timestamp, nullable)
+
+Calculs automatiques:
+potential_win = stake × odds
+profit_loss = (stake × odds - stake) if won, else -stake
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TABLE: funded_accounts
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Colonnes:
+- id (UUID, primary key)
+- user_id (UUID, foreign key → users, unique)
+- challenge_id (UUID, foreign key → challenges) - challenge qui a qualifié
+- capital_allocated (decimal) - ex: 10000
+- current_balance (decimal)
+- total_profit (decimal) - cumulé
+- profit_split (decimal) - % trader (ex: 0.80 = 80%)
+- status (enum: 'active', 'suspended', 'terminated')
+- activated_at (timestamp)
+
+Relation: funded_account → payouts (one-to-many)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TABLE: payouts
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Colonnes:
+- id (UUID, primary key)
+- funded_account_id (UUID, foreign key)
+- user_id (UUID, foreign key)
+- amount (decimal) - montant payout
+- trader_share (decimal) - 80% du profit
+- platform_share (decimal) - 20% du profit
+- status (enum: 'pending', 'processing', 'paid', 'failed')
+- requested_at (timestamp)
+- processed_at (timestamp, nullable)
+- payment_method (string) - ex: 'PIX', 'Bank Transfer'
+- payment_details (jsonb) - bank info, PIX key, etc
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TABLE: transactions
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Colonnes:
+- id (UUID, primary key)
+- user_id (UUID, foreign key)
+- challenge_id (UUID, nullable)
+- type (enum: 'challenge_purchase', 'payout', 'refund')
+- amount (decimal)
+- currency (string) - 'EUR', 'BRL'
+- status (enum: 'pending', 'completed', 'failed', 'refunded')
+- payment_provider (string) - 'stripe', 'mercado_pago'
+- provider_transaction_id (string) - Stripe payment ID
+- metadata (jsonb)
+- created_at (timestamp)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INDEXES (Pour performance)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Index sur:
+- users.email
+- challenges.user_id
+- challenges.status
+- bets.challenge_id
+- bets.user_id
+- funded_accounts.user_id
+- payouts.funded_account_id
+- transactions.user_id
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RELATIONS VISUELLES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+users (1) → challenges (many)
+challenges (1) → bets (many)
+users (1) → funded_accounts (1)
+funded_accounts (1) → payouts (many)
+users (1) → transactions (many)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+On créera ces tables dans Supabase avec SQL migrations.
+Je te fournirai le SQL exact quand on y arrivera!
+
+________________
+
+
+2.3 - Architecture Application (Flow)
+
+🏗️ ARCHITECTURE APPLICATION
+
+Comment tout s'assemble:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COUCHES APPLICATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. FRONTEND (Client-side)
+  React Components → affiche UI
+  Next.js Pages → routing
+  Tailwind → styling
+  
+2. API LAYER (Server-side)
+  Next.js API Routes → endpoints custom
+  Supabase Auto API → CRUD database
+  
+3. DATABASE
+  PostgreSQL (Supabase) → stocke data
+  
+4. SERVICES EXTERNES
+  Stripe → paiements
+  Resend → emails
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FLOW EXEMPLE: USER SIGNUP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. User visite /signup
+2. Next.js rend page signup
+3. User entre email + password
+4. Frontend → Supabase Auth API
+5. Supabase:
+  - Crée auth.users entry
+  - Crée public.users entry
+  - Envoie email vérification
+6. User reçoit email
+7. User clique lien → vérifié
+8. Redirect dashboard
+
+Temps total: <30 secondes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FLOW EXEMPLE: CHALLENGE PURCHASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. User logged in, visite /pricing
+2. User sélectionne tier (ex: Pro 89€)
+3. Clique "Purchase"
+4. Frontend → Next.js API route /api/create-checkout
+5. API route → Stripe: créer checkout session
+6. Stripe retourne URL checkout
+7. Frontend → redirect Stripe checkout page
+8. User entre carte bancaire
+9. Stripe process payment
+10. Si succès → Stripe webhook → notre API /api/webhooks/stripe
+11. Webhook:
+   - Vérifie signature
+   - Crée entry dans challenges table
+   - Crée entry dans transactions table
+   - Update user
+12. API → Resend: envoie email "Challenge Started!"
+13. User redirect → /dashboard/challenges
+14. Voit nouveau challenge actif
+
+Temps: ~2 minutes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FLOW EXEMPLE: PLACE BET
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. User dans challenge dashboard
+2. Clique "Place Bet"
+3. Modal s'ouvre
+4. User entre:
+  - Event: "Flamengo vs Palmeiras"
+  - Bet type: "Moneyline"
+  - Odds: 1.85
+  - Stake: 100€
+5. Frontend calcule potential win: 185€
+6. User confirme
+7. Frontend → Supabase insert bet:
+  {
+    challenge_id: xxx,
+    user_id: yyy,
+    event_description: "Flamengo vs Palmeiras",
+    odds: 1.85,
+    stake: 100,
+    potential_win: 185,
+    result: 'pending'
+  }
+8. Supabase update challenge.current_balance -= 100
+9. Frontend refresh → bet apparaît dans liste
+10. User settle bet plus tard (won/lost)
+11. System update P&L automatiquement
+
+Temps: <1 minute
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SÉCURITÉ (Row Level Security - RLS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Supabase RLS = règles qui empêchent users voir data des autres
+
+Exemple règles:
+- users: Can only read/update OWN profile
+- challenges: Can only see OWN challenges
+- bets: Can only create/read bets for OWN challenges
+- funded_accounts: Can only see OWN account
+- admin: Can see EVERYTHING
+
+SQL Example:
+CREATE POLICY "Users can view own challenges"
+ON challenges FOR SELECT
+USING (auth.uid() = user_id);
+
+→ Sécurité built-in database level! 🔒
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PERFORMANCE OPTIMIZATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Server-side rendering (Next.js): SEO + fast first load
+- Static generation: Landing/pricing pages = HTML static
+- API caching: Cache responses fréquentes
+- Database indexes: Queries rapides
+- Image optimization: Next.js Image component
+- Code splitting: Load only needed code
+- CDN (Vercel): Serve content from nearest location
+
+Result: Page load <1s, interactions <100ms 🚀
+
+________________
+
+
+PARTIE 3: STRUCTURE PROJET
+
+📁 ORGANISATION FICHIERS & DOSSIERS
+
+Comment notre code sera organisé:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STRUCTURE NEXT.JS 14 (App Router)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+jogadorpro/
+├── app/                      # App Router (Next.js 14)
+│   ├── (auth)/              # Auth routes group
+│   │   ├── login/
+│   │   │   └── page.tsx
+│   │   ├── signup/
+│   │   │   └── page.tsx
+│   │   └── layout.tsx
+│   │
+│   ├── (dashboard)/         # Protected routes group
+│   │   ├── dashboard/
+│   │   │   ├── page.tsx    # Main dashboard
+│   │   │   ├── challenges/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx
+│   │   │   ├── bets/
+│   │   │   │   └── page.tsx
+│   │   │   └── settings/
+│   │   │       └── page.tsx
+│   │   └── layout.tsx       # Dashboard layout (sidebar)
+│   │
+│   ├── (marketing)/         # Public routes group
+│   │   ├── page.tsx        # Homepage
+│   │   ├── pricing/
+│   │   │   └── page.tsx
+│   │   ├── about/
+│   │   │   └── page.tsx
+│   │   └── layout.tsx
+│   │
+│   ├── api/                 # API Routes
+│   │   ├── auth/
+│   │   │   └── route.ts
+│   │   ├── challenges/
+│   │   │   ├── route.ts    # GET, POST
+│   │   │   └── [id]/
+│   │   │       └── route.ts # GET, PATCH, DELETE
+│   │   ├── stripe/
+│   │   │   ├── create-checkout/
+│   │   │   │   └── route.ts
+│   │   │   └── webhook/
+│   │   │       └── route.ts
+│   │   └── bets/
+│   │       └── route.ts
+│   │
+│   ├── layout.tsx           # Root layout
+│   ├── globals.css          # Global styles (Tailwind)
+│   └── error.tsx            # Error boundary
+│
+├── components/              # React components
+│   ├── ui/                  # shadcn/ui components
+│   │   ├── button.tsx
+│   │   ├── card.tsx
+│   │   ├── dialog.tsx
+│   │   ├── input.tsx
+│   │   └── ...
+│   │
+│   ├── auth/
+│   │   ├── login-form.tsx
+│   │   ├── signup-form.tsx
+│   │   └── auth-provider.tsx
+│   │
+│   ├── dashboard/
+│   │   ├── sidebar.tsx
+│   │   ├── stats-card.tsx
+│   │   ├── challenge-card.tsx
+│   │   └── bet-form.tsx
+│   │
+│   ├── marketing/
+│   │   ├── hero.tsx
+│   │   ├── pricing-card.tsx
+│   │   ├── features.tsx
+│   │   └── testimonials.tsx
+│   │
+│   └── shared/
+│       ├── header.tsx
+│       ├── footer.tsx
+│       └── loading.tsx
+│
+├── lib/                     # Utilities & configs
+│   ├── supabase/
+│   │   ├── client.ts       # Client-side Supabase
+│   │   ├── server.ts       # Server-side Supabase
+│   │   └── database.types.ts
+│   │
+│   ├── stripe/
+│   │   └── client.ts
+│   │
+│   ├── utils.ts            # Helper functions
+│   └── validations.ts      # Zod schemas
+│
+├── hooks/                   # Custom React hooks
+│   ├── use-user.ts
+│   ├── use-challenges.ts
+│   └── use-bets.ts
+│
+├── types/                   # TypeScript types
+│   ├── database.ts
+│   ├── challenges.ts
+│   └── bets.ts
+│
+├── public/                  # Static assets
+│   ├── images/
+│   ├── icons/
+│   └── favicon.ico
+│
+├── .env.local              # Environment variables (LOCAL)
+├── .env.example            # Template env vars
+├── .gitignore
+├── next.config.js          # Next.js config
+├── tailwind.config.ts      # Tailwind config
+├── tsconfig.json           # TypeScript config
+├── package.json            # Dependencies
+└── README.md
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONVENTIONS NOMMAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FICHIERS:
+- Components: PascalCase (Button.tsx, LoginForm.tsx)
+- Pages: lowercase (page.tsx, layout.tsx)
+- Utils: camelCase (utils.ts, supabaseClient.ts)
+- API routes: lowercase (route.ts)
+
+FOLDERS:
+- Lowercase avec hyphens (login-form/, pricing-card/)
+- Route groups: (parentheses) pour organisation
+
+VARIABLES:
+- camelCase: const userName = "João"
+- CONSTANTS: UPPER_SNAKE_CASE: const API_URL = "..."
+- Types: PascalCase: type User = {...}
+
+FUNCTIONS:
+- camelCase: function getUserChallenges() {...}
+- Handlers: prefix "handle": handleSubmit, handleClick
+- Hooks: prefix "use": useUser, useChallenges
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VARIABLES ENVIRONNEMENT (.env.local)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxx...
+SUPABASE_SERVICE_ROLE_KEY=eyJxxx...
+
+# Stripe
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxx
+STRIPE_SECRET_KEY=sk_test_xxx
+STRIPE_WEBHOOK_SECRET=whsec_xxx
+
+# App
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# Resend (Email)
+RESEND_API_KEY=re_xxx
+
+IMPORTANT:
+- NEXT_PUBLIC_* = accessible client-side
+- Sans NEXT_PUBLIC_ = server-only (secrets)
+- JAMAIS commit .env.local (dans .gitignore)
+- Créer .env.example (template sans valeurs)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONFIGURATION PACKAGE.JSON
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+{
+ "name": "jogadorpro",
+ "version": "0.1.0",
+ "private": true,
+ "scripts": {
+   "dev": "next dev",
+   "build": "next build",
+   "start": "next start",
+   "lint": "next lint"
+ },
+ "dependencies": {
+   "next": "14.1.0",
+   "react": "^18.2.0",
+   "react-dom": "^18.2.0",
+   "@supabase/supabase-js": "^2.39.0",
+   "stripe": "^14.14.0",
+   "tailwindcss": "^3.4.1",
+   "@radix-ui/react-*": "...", // shadcn components
+   "lucide-react": "^0.300.0", // Icons
+   "zod": "^3.22.4", // Validation
+   "react-hook-form": "^7.49.3",
+   "date-fns": "^3.2.0",
+   "recharts": "^2.10.4" // Charts
+ },
+ "devDependencies": {
+   "typescript": "^5.3.3",
+   "@types/node": "^20.11.5",
+   "@types/react": "^18.2.48",
+   "eslint": "^8.56.0",
+   "eslint-config-next": "14.1.0"
+ }
+}
+
+On installera tout ça étape par étape!
+
+________________
+
+
+PARTIE 4: CRÉER TON PREMIER PROJET
+
+🚀 LET'S BUILD!
+
+Maintenant on CRÉE ton premier projet Next.js!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.1 - CRÉER PROJET NEXT.JS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÉTAPE 1: Ouvrir terminal
+□ Ouvre VS Code
+□ Terminal → New Terminal (Ctrl + `)
+
+ÉTAPE 2: Naviguer vers dossier projets
+Commande: cd Desktop (ou où tu veux créer projet)
+
+ÉTAPE 3: Créer projet Next.js
+Commande exacte (COPY-PASTE):
+
+npx create-next-app@latest jogadorpro
+
+QUESTIONS SETUP:
+✅ Would you like to use TypeScript? → YES
+✅ Would you like to use ESLint? → YES
+✅ Would you like to use Tailwind CSS? → YES
+✅ Would you like to use `src/` directory? → NO
+✅ Would you like to use App Router? → YES
+✅ Would you like to customize the default import alias? → NO
+
+ATTENDS 1-2 MINUTES (install packages)
+
+ÉTAPE 4: Entrer dans dossier projet
+Commande: cd jogadorpro
+
+ÉTAPE 5: Ouvrir projet dans VS Code
+Commande: code .
+
+(Nouvelle fenêtre VS Code s'ouvre avec projet)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.2 - LANCER PROJET (PREMIER TEST!)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Dans terminal (dans projet jogadorpro):
+
+Commande: npm run dev
+
+Tu vas voir:
+ ▲ Next.js 14.1.0
+ - Local:    http://localhost:3000
+ - ready started server on 0.0.0.0:3000
+
+OUVRE NAVIGATEUR:
+□ Va sur: http://localhost:3000
+□ Tu vois page Next.js par défaut? 🎉
+
+FÉLICITATIONS! Ton app tourne! ✅
+
+Pour arrêter serveur: Ctrl + C dans terminal
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.3 - PREMIÈRE MODIFICATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Let's change quelque chose!
+
+□ Dans VS Code, ouvre: app/page.tsx
+□ Trouve ligne ~9: <h1>...Get started by editing...</h1>
+□ Remplace par: <h1 className="text-4xl font-bold">Welcome to JogadorPro! 🚀</h1>
+□ Save (Ctrl + S)
+□ Regarde navigateur → change automatiquement! (Hot reload)
+
+MAGIC! 🪄
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.4 - INSTALLER SHADCN/UI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+shadcn = composants beaux ready-to-use
+
+ÉTAPE 1: Init shadcn
+Commande: npx shadcn-ui@latest init
+
+QUESTIONS:
+✅ Which style? → Default
+✅ Which color? → Slate
+✅ Would you like to use CSS variables? → YES
+
+ÉTAPE 2: Ajouter premiers composants
+Commandes (une par une):
+
+npx shadcn-ui@latest add button
+npx shadcn-ui@latest add card
+npx shadcn-ui@latest add input
+
+Ces composants sont maintenant dans components/ui/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.5 - TESTER COMPOSANT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Modifie app/page.tsx:
+
+import { Button } from "@/components/ui/button"
+
+export default function Home() {
+ return (
+   <main className="flex min-h-screen flex-col items-center justify-center p-24">
+     <h1 className="text-4xl font-bold mb-8">Welcome to JogadorPro! 🚀</h1>
+     <Button size="lg">Get Started</Button>
+   </main>
+ )
+}
+
+Save et regarde navigateur → Beautiful button! 🎨
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.6 - SETUP SUPABASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÉTAPE 1: Créer compte Supabase
+□ Va sur: https://supabase.com/
+□ Sign up (GitHub login recommandé)
+□ Create organization
+□ New project:
+ - Name: jogadorpro
+ - Database password: (génère fort, SAUVEGARDE-LE!)
+ - Region: Europe (closest to Brazil = South America)
+ - Plan: Free
+□ Attends 2 minutes (projet setup)
+
+ÉTAPE 2: Copier credentials
+□ Project Settings → API
+□ Copie:
+ - URL
+ - anon/public key
+ - service_role key (secret!)
+
+ÉTAPE 3: Créer .env.local
+Dans root projet, créer fichier .env.local:
+
+NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxx...
+SUPABASE_SERVICE_ROLE_KEY=eyJxxx...
+
+(Colle tes vraies valeurs)
+
+ÉTAPE 4: Installer Supabase client
+Commande: npm install @supabase/supabase-js
+
+ÉTAPE 5: Créer Supabase client
+Créer fichier: lib/supabase/client.ts
+
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.7 - PREMIER TEST SUPABASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Dans app/page.tsx:
+
+import { supabase } from '@/lib/supabase/client'
+import { useEffect, useState } from 'react'
+
+export default function Home() {
+ const [connected, setConnected] = useState(false)
+ 
+ useEffect(() => {
+   const testConnection = async () => {
+     const { error } = await supabase.from('_').select('*')
+     setConnected(!error || error.message.includes('does not exist'))
+   }
+   testConnection()
+ }, [])
+ 
+ return (
+   <main className="p-24">
+     <h1 className="text-4xl font-bold mb-4">JogadorPro</h1>
+     <p>Supabase: {connected ? '✅ Connected!' : '❌ Not connected'}</p>
+   </main>
+ )
+}
+
+Si tu vois "✅ Connected!" → SUCCESS! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ CHECKPOINT - TU AS MAINTENANT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Projet Next.js fonctionnel
+✅ Tailwind CSS configuré
+✅ shadcn/ui composants installés
+✅ Supabase connecté
+✅ App qui tourne sur localhost:3000
+✅ Hot reload fonctionnel
+
+PROCHAINE ÉTAPE: On commence à coder les vraies features! 🚀
+
+________________
+
+
+PARTIE 5: ROADMAP DÉVELOPPEMENT (13 Semaines)
+
+📅 PLAN DÉTAILLÉ - Mai 1 Launch
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SEMAINE 1-2 (27 Jan - 9 Fév): FOUNDATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Features:
+□ Landing page (Hero, Features, CTA)
+□ Pricing page (3 tiers cards)
+□ Footer & Header components
+□ Auth setup (Supabase)
+ - Signup flow
+ - Login flow
+ - Email verification
+□ Protected routes setup
+
+Temps estimé: 20-30h total
+Ton implication: 2-3h/jour
+Status fin semaine: Landing + Auth fonctionnels ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SEMAINE 3-4 (10-23 Fév): DASHBOARD & CHALLENGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Features:
+□ Dashboard layout (sidebar, header)
+□ Dashboard overview (stats cards)
+□ Challenge purchase flow:
+ - Select tier
+ - Stripe checkout integration
+ - Webhook handling
+ - Create challenge in database
+□ Database schema création (tables principales)
+□ Challenges list page
+□ Challenge detail page
+
+Temps estimé: 25-35h
+Status fin semaine: User peut acheter challenge ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SEMAINE 5-6 (24 Fév - 9 Mars): BET TRACKING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Features:
+□ Bet placement form:
+ - Event input
+ - Odds calculator
+ - Stake validation
+□ Bets list (table with filters)
+□ Bet detail/edit
+□ P&L calculation automatique
+□ Challenge progress tracking:
+ - Current balance
+ - Target profit
+ - Daily loss check
+ - Total loss check
+□ Phase 1/2 transition logic
+□ Pass/Fail evaluation automatique
+
+Temps estimé: 30-40h
+Status fin semaine: Core challenge logic complet ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SEMAINE 7-8 (10-23 Mars): ADMIN PANEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Features:
+□ Admin authentication & permissions
+□ Users management:
+ - List all users
+ - View user details
+ - Edit user status
+□ Challenges management:
+ - View all challenges
+ - Manual overrides
+ - Dispute resolution
+□ Funded traders management:
+ - Approve/reject
+ - View performance
+ - Payout tracking (manual)
+□ Transactions log
+□ Basic analytics dashboard
+
+Temps estimé: 25-35h
+Status fin semaine: Admin peut gérer platform ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SEMAINE 9-10 (24 Mars - 6 Avril): POLISH & UX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Features:
+□ Mobile responsive (toutes pages)
+□ Loading states everywhere
+□ Error handling propre
+□ Empty states (no data yet)
+□ Animations & transitions (Framer Motion?)
+□ Email notifications:
+ - Welcome email
+ - Challenge started
+ - Phase passed/failed
+ - Funded account approved
+□ User settings page:
+ - Profile edit
+ - Password change
+ - Notification preferences
+□ FAQ page
+□ Terms & Privacy pages
+
+Temps estimé: 20-30h
+Status fin semaine: UX polished, feels pro ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SEMAINE 11 (7-13 Avril): TESTING & BUGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Tasks:
+□ Beta testing (invite 10-20 friends/family)
+□ Fix bugs reported
+□ Edge cases testing:
+ - Failed payments
+ - Duplicate bets
+ - Concurrent challenges
+□ Performance optimization:
+ - Lighthouse audit
+ - Database queries optimization
+ - Image optimization
+□ Security review:
+ - RLS policies check
+ - API routes authorization
+ - Input validation
+□ Cross-browser testing (Chrome, Safari, Firefox)
+
+Temps estimé: 20h
+Status fin semaine: Stable, tested, ready ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SEMAINE 12 (14-20 Avril): FINAL PREP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Tasks:
+□ Deploy to Vercel production
+□ Setup custom domain (jogadorpro.com)
+□ Production environment variables
+□ Stripe production mode
+□ Setup monitoring:
+ - Error tracking (Sentry?)
+ - Analytics (Vercel Analytics)
+ - Uptime monitoring
+□ Create backup system
+□ Documentation:
+ - User guide
+ - Admin guide
+ - Technical docs
+□ Final walkthrough
+□ Marketing assets ready:
+ - Screenshots
+ - Demo video
+ - Social media content
+
+Temps estimé: 15h
+Status fin semaine: Production ready! ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SEMAINE 13 (21-30 Avril): LAUNCH COUNTDOWN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Tasks:
+□ Influencers content ready (brief final)
+□ Social media scheduled
+□ Email sequences loaded
+□ Support prepared (FAQs, scripts)
+□ Monitor everything
+□ Final smoke tests
+□ Backup plan ready
+
+Mai 1: 🚀 LAUNCH!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TOTAL TEMPS DÉVELOPPEMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Semaines 1-10: 230-310h coding
+Semaines 11-13: 35h testing/prep
+
+TOTAL: ~270h
+
+Si 3h/jour: 90 jours = 12.8 semaines ✅ FAISABLE!
+Si 4h/jour: 67 jours = 9.5 semaines ✅ CONFORTABLE!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FEATURES POST-LAUNCH (Nice to Have)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Q2-Q3 2026:
+□ Mercado Pago integration (PIX)
+□ Advanced analytics (charts, insights)
+□ Referral program automated
+□ Leaderboard public
+□ Social features (follow traders)
+□ Mobile app (React Native)
+□ Live bet tracking (odds API)
+□ Multi-language (Portuguese + English)
+
+Ces features ne bloquent PAS le launch!
+On les ajoute après si MVP marche bien.
+
+________________
+
+
+CONCLUSION - READY TO START!
+
+🎉 TU AS TOUT!
+
+Ce document contient TOUT ce dont tu as besoin pour:
+✅ Setup ton environnement développement
+✅ Comprendre l'architecture technique
+✅ Créer ton premier projet
+✅ Suivre le plan semaine par semaine
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PROCHAINES ÉTAPES IMMÉDIATATES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SESSION 1 (Aujourd'hui - 1-2h):
+□ Installer VS Code
+□ Installer Node.js
+□ Installer Git
+□ Configurer Git
+□ Créer compte GitHub
+□ Tester tout (checklist)
+
+SESSION 2 (Demain - 2-3h):
+□ Créer projet Next.js
+□ Setup Tailwind + shadcn
+□ Créer compte Supabase
+□ Connecter Supabase
+□ Premier "Hello World"
+
+SESSION 3+ (Cette semaine):
+□ Commencer Semaine 1 features
+□ Landing page
+□ Auth setup
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REMEMBER:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💪 Tu n'as PAS besoin d'être expert
+🐛 Erreurs = NORMAL (on debug ensemble)
+⏱️ On va LENTEMENT au début (speed up après)
+📚 Google/Stack Overflow = tes amis
+❓ Questions = ENCOURAGED (pose tout!)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EN 13 SEMAINES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Tu passeras de:
+❌ Jamais codé
+à
+✅ Une app web complète et fonctionnelle
+
+C'est ÉNORME! 🚀
+
+Et tu économises 10-15K€ en ne pas outsourcer tout.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+"The best way to predict the future is to build it."
+
+Let's build JogadorPro together! 💪
+
+Ready? Let's go! 🚀🇧🇷⚽💰
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Envoie-moi ton OS dès que tu es installé et on DÉMARRE!
+
+À tout de suite! 🔥
