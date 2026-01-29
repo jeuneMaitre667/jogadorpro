@@ -28,22 +28,22 @@ const itemVariants = {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
       {/* Navbar */}
       <motion.nav 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className="fixed w-full top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm"
+        className="fixed w-full top-0 z-50 bg-gray-950/95 backdrop-blur border-b border-gray-800 shadow-sm"
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+          <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
             JogadorPro
           </Link>
           <div className="hidden md:flex gap-8">
-            <a href="#features" className="text-gray-700 hover:text-green-600 transition">Features</a>
-            <a href="#pricing" className="text-gray-700 hover:text-green-600 transition">Pricing</a>
-            <a href="#contact" className="text-gray-700 hover:text-green-600 transition">Contact</a>
+            <a href="#features" className="text-gray-300 hover:text-green-400 transition">Features</a>
+            <a href="#pricing" className="text-gray-300 hover:text-green-400 transition">Pricing</a>
+            <a href="#contact" className="text-gray-300 hover:text-green-400 transition">Contact</a>
           </div>
           <Link href="/login">
             <Button className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 shadow-lg hover:shadow-xl">
@@ -59,7 +59,7 @@ export default function Home() {
       </div>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-6 bg-gradient-to-b from-transparent to-blue-50">
+      <section id="features" className="py-20 px-6 bg-gradient-to-b from-transparent to-gray-900/50">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -68,10 +68,10 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+            <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
               Pourquoi JogadorPro?
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               La plateforme complète pour trader avec du capital réel
             </p>
           </motion.div>
