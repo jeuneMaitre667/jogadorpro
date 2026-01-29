@@ -3,12 +3,39 @@
 import { Button } from "@/components/ui/button"
 import { HeroSection } from "@/components/HeroSection"
 import Link from "next/link"
+import { motion } from "framer-motion"
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5
+    }
+  }
+}
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navbar */}
-      <nav className="fixed w-full top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200">
+      <motion.nav 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="fixed w-full top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200"
+      >
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
             JogadorPro
@@ -18,13 +45,13 @@ export default function Home() {
             <a href="#pricing" className="text-gray-700 hover:text-green-600 transition">Pricing</a>
             <a href="#contact" className="text-gray-700 hover:text-green-600 transition">Contact</a>
           </div>
-          <Link href="/_auth/login">
+          <Link href="/login">
             <Button className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
               Login
             </Button>
           </Link>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Hero Section */}
       <div className="pt-16">
@@ -34,88 +61,155 @@ export default function Home() {
       {/* Features Section */}
       <section id="features" className="py-20 px-6 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
             <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
               Pourquoi JogadorPro?
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               La plateforme complète pour trader avec du capital réel
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-3 gap-8"
+          >
             {/* Feature 1 */}
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100">
-              <div className="text-4xl mb-4">💰</div>
+            <motion.div 
+              variants={itemVariants}
+              whileHover={{ scale: 1.05, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-100 cursor-pointer"
+            >
+              <motion.div 
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="text-4xl mb-4"
+              >
+                💰
+              </motion.div>
               <h3 className="text-2xl font-bold mb-3">Capital Réel</h3>
               <p className="text-gray-600">
-                Prouvez vos compétences et obtenez accès à un capital réel jusqu'à €50,000 pour trader
+                Prouvez vos compétences et obtenez accès à un capital réel jusqu&apos;à €50,000 pour trader
               </p>
-            </div>
+            </motion.div>
 
             {/* Feature 2 */}
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100">
+            <motion.div 
+              variants={itemVariants}
+              whileHover={{ scale: 1.05, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-100 cursor-pointer"
+            >
               <div className="text-4xl mb-4">📈</div>
               <h3 className="text-2xl font-bold mb-3">Split Profits 80/20</h3>
               <p className="text-gray-600">
-                Gardez 80% de vos profits. Nous prenons seulement 20% pour les frais d'infrastructure
+                Gardez 80% de vos profits. Nous prenons seulement 20% pour les frais d&apos;infrastructure
               </p>
-            </div>
+            </motion.div>
 
             {/* Feature 3 */}
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100">
+            <motion.div 
+              variants={itemVariants}
+              whileHover={{ scale: 1.05, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-100 cursor-pointer"
+            >
               <div className="text-4xl mb-4">⚡</div>
               <h3 className="text-2xl font-bold mb-3">Paiement Rapide</h3>
               <p className="text-gray-600">
                 Retirez vos profits en 24-48h via virement bancaire sécurisé
               </p>
-            </div>
+            </motion.div>
 
             {/* Feature 4 */}
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100">
+            <motion.div 
+              variants={itemVariants}
+              whileHover={{ scale: 1.05, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-100 cursor-pointer"
+            >
               <div className="text-4xl mb-4">🏆</div>
               <h3 className="text-2xl font-bold mb-3">Challenges à Étapes</h3>
               <p className="text-gray-600">
-                Phase 1: Qualification. Phase 2: Compte Financé. Gagnez de l'argent à chaque niveau
+                Phase 1: Qualification. Phase 2: Compte Financé. Gagnez de l&apos;argent à chaque niveau
               </p>
-            </div>
+            </motion.div>
 
             {/* Feature 5 */}
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100">
+            <motion.div 
+              variants={itemVariants}
+              whileHover={{ scale: 1.05, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-100 cursor-pointer"
+            >
               <div className="text-4xl mb-4">📊</div>
               <h3 className="text-2xl font-bold mb-3">Dashboard Professionnel</h3>
               <p className="text-gray-600">
-                Suivi en temps réel de vos statistiques, P&L, et performance
+                Suivi en temps réel de vos statistiques, P&amp;L, et performance
               </p>
-            </div>
+            </motion.div>
 
             {/* Feature 6 */}
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100">
+            <motion.div 
+              variants={itemVariants}
+              whileHover={{ scale: 1.05, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-100 cursor-pointer"
+            >
               <div className="text-4xl mb-4">🔒</div>
               <h3 className="text-2xl font-bold mb-3">Sécurité Garantie</h3>
               <p className="text-gray-600">
                 Tous vos données sont chiffrées et vos fonds sont protégés
               </p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Pricing Preview */}
       <section id="pricing" className="py-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
             <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
               Nos Challenges
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Choisissez le challenge qui vous convient
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8 relative">
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-3 gap-8 relative"
+          >
             {/* Starter */}
-            <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition">
+            <motion.div 
+              variants={itemVariants}
+              whileHover={{ scale: 1.05, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition cursor-pointer"
+            >
               <h3 className="text-2xl font-bold mb-2">Starter</h3>
               <p className="text-gray-600 mb-6">Pour débuter votre parcours</p>
               <p className="text-5xl font-bold text-green-600 mb-8">€49</p>
@@ -133,18 +227,29 @@ export default function Home() {
                   <span>Support Email</span>
                 </div>
               </div>
-              <Link href="/_dashboard/create-challenge">
+              <Link href="/dashboard/create-challenge">
                 <Button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
                   Commencer
                 </Button>
               </Link>
-            </div>
+            </motion.div>
 
             {/* Pro - Highlighted */}
-            <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-8 shadow-xl border-2 border-green-600 transform md:scale-105 relative">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold">
+            <motion.div 
+              variants={itemVariants}
+              whileHover={{ scale: 1.08, y: -15 }}
+              transition={{ duration: 0.3 }}
+              className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-8 shadow-xl border-2 border-green-600 transform md:scale-105 relative cursor-pointer"
+            >
+              <motion.div 
+                initial={{ scale: 0, rotate: -180 }}
+                whileInView={{ scale: 1, rotate: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+                className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold"
+              >
                 ⭐ Recommandé
-              </div>
+              </motion.div>
               <h3 className="text-2xl font-bold mb-2">Pro</h3>
               <p className="text-gray-600 mb-6">Le plus populaire</p>
               <p className="text-5xl font-bold text-green-600 mb-8">€249</p>
@@ -166,15 +271,20 @@ export default function Home() {
                   <span>Accès API</span>
                 </div>
               </div>
-              <Link href="/_dashboard/create-challenge">
+              <Link href="/dashboard/create-challenge">
                 <Button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white">
                   Commencer
                 </Button>
               </Link>
-            </div>
+            </motion.div>
 
             {/* Elite */}
-            <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition">
+            <motion.div 
+              variants={itemVariants}
+              whileHover={{ scale: 1.05, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition cursor-pointer"
+            >
               <h3 className="text-2xl font-bold mb-2">Elite</h3>
               <p className="text-gray-600 mb-6">Pour les traders sérieux</p>
               <p className="text-5xl font-bold text-green-600 mb-8">€749</p>
@@ -196,31 +306,61 @@ export default function Home() {
                   <span>Compte Financé Garanti</span>
                 </div>
               </div>
-              <Link href="/_dashboard/create-challenge">
+              <Link href="/dashboard/create-challenge">
                 <Button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
                   Commencer
                 </Button>
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="py-20 px-6 bg-gradient-to-r from-green-600 to-blue-600">
-        <div className="max-w-3xl mx-auto text-center text-white">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-3xl mx-auto text-center text-white"
+        >
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-4xl md:text-5xl font-bold mb-6"
+          >
             Prêt à commencer?
-          </h2>
-          <p className="text-xl mb-8 opacity-90">
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="text-xl mb-8 opacity-90"
+          >
             Rejoignez 500+ traders qui gagnent déjà avec JogadorPro
-          </p>
-          <Link href="/_auth/signup">
-            <Button className="bg-white text-green-600 hover:bg-gray-100 text-lg px-8 py-6 font-semibold">
-              Créer un compte maintenant
-            </Button>
-          </Link>
-        </div>
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+          >
+            <Link href="/signup">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button className="bg-white text-green-600 hover:bg-gray-100 text-lg px-8 py-6 font-semibold">
+                  Créer un compte maintenant
+                </Button>
+              </motion.div>
+            </Link>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Footer */}
