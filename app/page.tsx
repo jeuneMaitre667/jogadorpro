@@ -189,160 +189,199 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
-              Nos Challenges
+              Choisissez votre Challenge
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Commencez gratuitement ou choisissez votre challenge
+              Propulsez votre carrière de trader avec un capital réel
             </p>
           </motion.div>
 
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
+          {/* Comparison Table - FTMO Style */}
+          <div className="overflow-x-auto mb-12">
+            <div className="min-w-max inline-block w-full">
+              <div className="grid grid-cols-4 gap-4 mb-6">
+                {/* Header Column */}
+                <div className="bg-transparent p-6">
+                  <div className="h-32"></div>
+                  <div className="space-y-6 text-gray-400">
+                    <div className="flex items-center gap-3 h-12">
+                      <span className="text-2xl">🎯</span>
+                      <span className="font-semibold">Profit Target</span>
+                    </div>
+                    <div className="flex items-center gap-3 h-12">
+                      <span className="text-2xl">📉</span>
+                      <span className="font-semibold">Max. Daily Loss</span>
+                    </div>
+                    <div className="flex items-center gap-3 h-12">
+                      <span className="text-2xl">📊</span>
+                      <span className="font-semibold">Max. Loss</span>
+                    </div>
+                    <div className="flex items-center gap-3 h-12">
+                      <span className="text-2xl">📅</span>
+                      <span className="font-semibold">Min. trading days</span>
+                    </div>
+                    <div className="flex items-center gap-3 h-12">
+                      <span className="text-2xl">⏱️</span>
+                      <span className="font-semibold">Trading Period</span>
+                    </div>
+                    <div className="flex items-center gap-3 h-12">
+                      <span className="text-2xl">💰</span>
+                      <span className="font-semibold">Refund</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Demo Challenge */}
+                <motion.div 
+                  variants={itemVariants}
+                  whileHover={{ y: -5 }}
+                  className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-green-500 transition-all shadow-xl relative"
+                >
+                  <div className="absolute -top-3 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                    GRATUIT
+                  </div>
+                  <div className="text-center mb-8">
+                    <h3 className="text-sm text-gray-400 mb-2">Account</h3>
+                    <p className="text-4xl font-bold text-white mb-4">€100</p>
+                    <span className="text-xs text-gray-500">(Capital Fictif)</span>
+                  </div>
+                  
+                  <div className="space-y-6 text-center mb-8">
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="text-sm text-gray-400">OBJECTIF</p>
+                      <p className="font-bold text-green-400">10%</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-white">15%</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-white">15%</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-white">3 jours</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-white">7 jours</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-green-400">Code -30%</p>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-gray-700 pt-6 mt-auto">
+                    <p className="text-3xl font-bold text-center mb-4 text-green-400">GRATUIT</p>
+                    <Link href="/signup" className="block">
+                      <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white font-semibold py-6">
+                        Essayer maintenant
+                      </Button>
+                    </Link>
+                  </div>
+                </motion.div>
+
+                {/* 1K Challenge - Best Value */}
+                <motion.div 
+                  variants={itemVariants}
+                  whileHover={{ y: -5 }}
+                  className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 border-2 border-green-500 transform scale-105 shadow-2xl relative"
+                >
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg">
+                    <span>🔥</span>
+                    <span>Best value -20%</span>
+                  </div>
+                  <div className="text-center mb-8">
+                    <h3 className="text-sm text-gray-400 mb-2">Account</h3>
+                    <p className="text-4xl font-bold text-white mb-1">€1,000</p>
+                  </div>
+                  
+                  <div className="space-y-6 text-center mb-8">
+                    <div className="h-12 flex flex-col justify-center bg-gray-900/50 rounded">
+                      <p className="text-xs text-gray-400">PHASE 1</p>
+                      <p className="font-bold text-green-400">25%</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-white">5%</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-white">10%</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-white">15 jours</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-white">31 jours</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-green-400">Oui <span className="text-green-500">100%</span></p>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-gray-700 pt-6 mt-auto">
+                    <div className="text-center mb-4">
+                      <span className="text-xl text-gray-500 line-through">€61</span>
+                      <p className="text-3xl font-bold text-green-400">€49</p>
+                    </div>
+                    <Link href="/signup" className="block">
+                      <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white font-semibold py-6 shadow-lg">
+                        Commencer maintenant
+                      </Button>
+                    </Link>
+                  </div>
+                </motion.div>
+
+                {/* 5K Challenge */}
+                <motion.div 
+                  variants={itemVariants}
+                  whileHover={{ y: -5 }}
+                  className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-blue-500 transition-all shadow-xl"
+                >
+                  <div className="text-center mb-8">
+                    <h3 className="text-sm text-gray-400 mb-2">Account</h3>
+                    <p className="text-4xl font-bold text-white mb-1">€5,000</p>
+                  </div>
+                  
+                  <div className="space-y-6 text-center mb-8">
+                    <div className="h-12 flex flex-col justify-center bg-gray-900/50 rounded">
+                      <p className="text-xs text-gray-400">PHASE 1</p>
+                      <p className="font-bold text-blue-400">25%</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-white">5%</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-white">10%</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-white">15 jours</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-white">31 jours</p>
+                    </div>
+                    <div className="h-12 flex flex-col justify-center">
+                      <p className="font-bold text-green-400">Oui <span className="text-green-500">100%</span></p>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-gray-700 pt-6 mt-auto">
+                    <p className="text-3xl font-bold text-center mb-4 text-blue-400">€139</p>
+                    <Link href="/signup" className="block">
+                      <Button className="w-full bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-6">
+                        Commencer maintenant
+                      </Button>
+                    </Link>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Info */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="grid md:grid-cols-3 gap-8 relative"
+            className="text-center text-gray-400 text-sm"
           >
-            {/* Demo Gratuit */}
-            <motion.div 
-              variants={itemVariants}
-              whileHover={{ scale: 1.05, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700 hover:border-green-500 hover:shadow-xl transition cursor-pointer"
-            >
-              <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                GRATUIT
-              </div>
-              <h3 className="text-2xl font-bold mb-2 text-white">Demo Challenge</h3>
-              <p className="text-gray-400 mb-6">Testez sans risque</p>
-              <p className="text-5xl font-bold text-green-400 mb-8">€0</p>
-              <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-green-400">✓</span>
-                  <span>Capital fictif: €100</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-green-400">✓</span>
-                  <span>Objectif: +10% (€10)</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-green-400">✓</span>
-                  <span>Durée: 7 jours</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-green-400">✓</span>
-                  <span>5 picks minimum</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-green-400">✓</span>
-                  <span>DD max: 15%</span>
-                </div>
-                <div className="flex items-center gap-2 text-yellow-400 font-semibold mt-4">
-                  <span>🎁</span>
-                  <span>Code promo -30% si réussi</span>
-                </div>
-              </div>
-              <Link href="/signup">
-                <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500">
-                  Essayer Gratuitement
-                </Button>
-              </Link>
-            </motion.div>
-
-            {/* 1K Challenge - Highlighted */}
-            <motion.div 
-              variants={itemVariants}
-              whileHover={{ scale: 1.08, y: -15 }}
-              transition={{ duration: 0.3 }}
-              className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 shadow-xl border-2 border-green-500 transform md:scale-105 relative cursor-pointer"
-            >
-              <motion.div 
-                initial={{ scale: 0, rotate: -180 }}
-                whileInView={{ scale: 1, rotate: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
-                className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-green-400 to-blue-400 text-white px-6 py-2 rounded-full text-sm font-bold"
-              >
-                ⭐ Recommandé
-              </motion.div>
-              <h3 className="text-2xl font-bold mb-2 text-white">1K Challenge</h3>
-              <p className="text-gray-400 mb-6">Idéal pour commencer</p>
-              <p className="text-5xl font-bold text-green-400 mb-8">€49</p>
-              <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-green-400">✓</span>
-                  <span>Capital: €1,000</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-green-400">✓</span>
-                  <span>Phase 1: +25% (€250)</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-green-400">✓</span>
-                  <span>Phase 2: +30% (€300)</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-green-400">✓</span>
-                  <span>31 jours par phase</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-green-400">✓</span>
-                  <span>20 picks min / phase</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-green-400">✓</span>
-                  <span>Profit share 80/20</span>
-                </div>
-              </div>
-              <Link href="/signup">
-                <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white">
-                  Commencer
-                </Button>
-              </Link>
-            </motion.div>
-
-            {/* 5K Challenge */}
-            <motion.div 
-              variants={itemVariants}
-              whileHover={{ scale: 1.05, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700 hover:border-blue-500 hover:shadow-xl transition cursor-pointer"
-            >
-              <h3 className="text-2xl font-bold mb-2 text-white">5K Challenge</h3>
-              <p className="text-gray-400 mb-6">Pour aller plus loin</p>
-              <p className="text-5xl font-bold text-blue-400 mb-8">€139</p>
-              <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-blue-400">✓</span>
-                  <span>Capital: €5,000</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-blue-400">✓</span>
-                  <span>Phase 1: +25% (€1,250)</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-blue-400">✓</span>
-                  <span>Phase 2: +30% (€1,500)</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-blue-400">✓</span>
-                  <span>31 jours par phase</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-blue-400">✓</span>
-                  <span>20 picks min / phase</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <span className="text-blue-400">✓</span>
-                  <span>Profit share 80/20</span>
-                </div>
-              </div>
-              <Link href="/signup">
-                <Button className="w-full bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500">
-                  Commencer
-                </Button>
-              </Link>
-            </motion.div>
+            <p>Tous les prix sont des paiements uniques. Remboursement à 100% après réussite des phases.</p>
           </motion.div>
         </div>
       </section>
