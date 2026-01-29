@@ -179,7 +179,7 @@ export default function Home() {
       </section>
 
       {/* Pricing Preview */}
-      <section id="pricing" className="py-20 px-6 bg-gradient-to-b from-green-50 to-white">
+      <section id="pricing" className="py-20 px-6 bg-gradient-to-b from-gray-900/50 to-gray-950">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -192,7 +192,7 @@ export default function Home() {
               Nos Challenges
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Choisissez le challenge qui vous convient
+              Commencez gratuitement ou choisissez votre challenge
             </p>
           </motion.div>
 
@@ -203,43 +203,58 @@ export default function Home() {
             viewport={{ once: true }}
             className="grid md:grid-cols-3 gap-8 relative"
           >
-            {/* Starter */}
+            {/* Demo Gratuit */}
             <motion.div 
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700 hover:shadow-xl transition cursor-pointer"
+              className="bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700 hover:border-green-500 hover:shadow-xl transition cursor-pointer"
             >
-              <h3 className="text-2xl font-bold mb-2">Starter</h3>
-              <p className="text-gray-300 mb-6">Pour débuter votre parcours</p>
-              <p className="text-5xl font-bold text-green-600 mb-8">€49</p>
+              <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                GRATUIT
+              </div>
+              <h3 className="text-2xl font-bold mb-2 text-white">Demo Challenge</h3>
+              <p className="text-gray-400 mb-6">Testez sans risque</p>
+              <p className="text-5xl font-bold text-green-400 mb-8">€0</p>
               <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
-                  <span>Capital: €1,000</span>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-green-400">✓</span>
+                  <span>Capital fictif: €100</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
-                  <span>Target Profit: €100</span>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-green-400">✓</span>
+                  <span>Objectif: +10% (€10)</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
-                  <span>Support Email</span>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-green-400">✓</span>
+                  <span>Durée: 7 jours</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-green-400">✓</span>
+                  <span>5 picks minimum</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-green-400">✓</span>
+                  <span>DD max: 15%</span>
+                </div>
+                <div className="flex items-center gap-2 text-yellow-400 font-semibold mt-4">
+                  <span>🎁</span>
+                  <span>Code promo -30% si réussi</span>
                 </div>
               </div>
-              <Link href="/dashboard/create-challenge">
+              <Link href="/signup">
                 <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500">
-                  Commencer
+                  Essayer Gratuitement
                 </Button>
               </Link>
             </motion.div>
 
-            {/* Pro - Highlighted */}
+            {/* 1K Challenge - Highlighted */}
             <motion.div 
               variants={itemVariants}
               whileHover={{ scale: 1.08, y: -15 }}
               transition={{ duration: 0.3 }}
-              className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-8 shadow-xl border-2 border-green-600 transform md:scale-105 relative cursor-pointer"
+              className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 shadow-xl border-2 border-green-500 transform md:scale-105 relative cursor-pointer"
             >
               <motion.div 
                 initial={{ scale: 0, rotate: -180 }}
@@ -250,64 +265,80 @@ export default function Home() {
               >
                 ⭐ Recommandé
               </motion.div>
-              <h3 className="text-2xl font-bold mb-2">Pro</h3>
-              <p className="text-gray-300 mb-6">Le plus populaire</p>
-              <p className="text-5xl font-bold text-green-600 mb-8">€249</p>
+              <h3 className="text-2xl font-bold mb-2 text-white">1K Challenge</h3>
+              <p className="text-gray-400 mb-6">Idéal pour commencer</p>
+              <p className="text-5xl font-bold text-green-400 mb-8">€49</p>
               <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
-                  <span>Capital: €10,000</span>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-green-400">✓</span>
+                  <span>Capital: €1,000</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
-                  <span>Target Profit: €1,000</span>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-green-400">✓</span>
+                  <span>Phase 1: +25% (€250)</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
-                  <span>Support Prioritaire</span>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-green-400">✓</span>
+                  <span>Phase 2: +30% (€300)</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
-                  <span>Accès API</span>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-green-400">✓</span>
+                  <span>31 jours par phase</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-green-400">✓</span>
+                  <span>20 picks min / phase</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-green-400">✓</span>
+                  <span>Profit share 80/20</span>
                 </div>
               </div>
-              <Link href="/dashboard/create-challenge">
+              <Link href="/signup">
                 <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white">
                   Commencer
                 </Button>
               </Link>
             </motion.div>
 
-            {/* Elite */}
+            {/* 5K Challenge */}
             <motion.div 
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700 hover:shadow-xl transition cursor-pointer"
+              className="bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700 hover:border-blue-500 hover:shadow-xl transition cursor-pointer"
             >
-              <h3 className="text-2xl font-bold mb-2">Elite</h3>
-              <p className="text-gray-300 mb-6">Pour les traders sérieux</p>
-              <p className="text-5xl font-bold text-green-600 mb-8">€749</p>
+              <h3 className="text-2xl font-bold mb-2 text-white">5K Challenge</h3>
+              <p className="text-gray-400 mb-6">Pour aller plus loin</p>
+              <p className="text-5xl font-bold text-blue-400 mb-8">€139</p>
               <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
-                  <span>Capital: €50,000</span>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-blue-400">✓</span>
+                  <span>Capital: €5,000</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
-                  <span>Target Profit: €5,000</span>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-blue-400">✓</span>
+                  <span>Phase 1: +25% (€1,250)</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
-                  <span>Mentoring Exclusif</span>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-blue-400">✓</span>
+                  <span>Phase 2: +30% (€1,500)</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
-                  <span>Compte Financé Garanti</span>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-blue-400">✓</span>
+                  <span>31 jours par phase</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-blue-400">✓</span>
+                  <span>20 picks min / phase</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <span className="text-blue-400">✓</span>
+                  <span>Profit share 80/20</span>
                 </div>
               </div>
-              <Link href="/dashboard/create-challenge">
-                <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500">
+              <Link href="/signup">
+                <Button className="w-full bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500">
                   Commencer
                 </Button>
               </Link>
