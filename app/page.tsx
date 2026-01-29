@@ -46,7 +46,7 @@ export default function Home() {
             <a href="#contact" className="text-gray-300 hover:text-green-400 transition">Contact</a>
           </div>
           <Link href="/login">
-            <Button className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 shadow-lg hover:shadow-xl">
+            <Button className="bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 shadow-lg hover:shadow-xl">
               Login
             </Button>
           </Link>
@@ -88,7 +88,7 @@ export default function Home() {
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-100 cursor-pointer"
+              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-700 cursor-pointer"
             >
               <motion.div 
                 initial={{ scale: 0 }}
@@ -100,7 +100,7 @@ export default function Home() {
                 💰
               </motion.div>
               <h3 className="text-2xl font-bold mb-3">Capital Réel</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Prouvez vos compétences et obtenez accès à un capital réel jusqu&apos;à €50,000 pour trader
               </p>
             </motion.div>
@@ -110,11 +110,11 @@ export default function Home() {
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-100 cursor-pointer"
+              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-700 cursor-pointer"
             >
               <div className="text-4xl mb-4">📈</div>
               <h3 className="text-2xl font-bold mb-3">Split Profits 80/20</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Gardez 80% de vos profits. Nous prenons seulement 20% pour les frais d&apos;infrastructure
               </p>
             </motion.div>
@@ -124,11 +124,11 @@ export default function Home() {
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-100 cursor-pointer"
+              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-700 cursor-pointer"
             >
               <div className="text-4xl mb-4">⚡</div>
               <h3 className="text-2xl font-bold mb-3">Paiement Rapide</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Retirez vos profits en 24-48h via virement bancaire sécurisé
               </p>
             </motion.div>
@@ -138,11 +138,11 @@ export default function Home() {
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-100 cursor-pointer"
+              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-700 cursor-pointer"
             >
               <div className="text-4xl mb-4">🏆</div>
               <h3 className="text-2xl font-bold mb-3">Challenges à Étapes</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Phase 1: Qualification. Phase 2: Compte Financé. Gagnez de l&apos;argent à chaque niveau
               </p>
             </motion.div>
@@ -152,11 +152,11 @@ export default function Home() {
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-100 cursor-pointer"
+              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-700 cursor-pointer"
             >
               <div className="text-4xl mb-4">📊</div>
               <h3 className="text-2xl font-bold mb-3">Dashboard Professionnel</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Suivi en temps réel de vos statistiques, P&amp;L, et performance
               </p>
             </motion.div>
@@ -166,11 +166,11 @@ export default function Home() {
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-100 cursor-pointer"
+              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-700 cursor-pointer"
             >
               <div className="text-4xl mb-4">🔒</div>
               <h3 className="text-2xl font-bold mb-3">Sécurité Garantie</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Tous vos données sont chiffrées et vos fonds sont protégés
               </p>
             </motion.div>
@@ -188,10 +188,10 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+            <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
               Nos Challenges
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Choisissez le challenge qui vous convient
             </p>
           </motion.div>
@@ -208,10 +208,10 @@ export default function Home() {
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition cursor-pointer"
+              className="bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700 hover:shadow-xl transition cursor-pointer"
             >
               <h3 className="text-2xl font-bold mb-2">Starter</h3>
-              <p className="text-gray-600 mb-6">Pour débuter votre parcours</p>
+              <p className="text-gray-300 mb-6">Pour débuter votre parcours</p>
               <p className="text-5xl font-bold text-green-600 mb-8">€49</p>
               <div className="space-y-3 mb-8">
                 <div className="flex items-center gap-2">
@@ -228,7 +228,7 @@ export default function Home() {
                 </div>
               </div>
               <Link href="/dashboard/create-challenge">
-                <Button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
+                <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500">
                   Commencer
                 </Button>
               </Link>
@@ -246,12 +246,12 @@ export default function Home() {
                 whileInView={{ scale: 1, rotate: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
-                className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold"
+                className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-green-400 to-blue-400 text-white px-6 py-2 rounded-full text-sm font-bold"
               >
                 ⭐ Recommandé
               </motion.div>
               <h3 className="text-2xl font-bold mb-2">Pro</h3>
-              <p className="text-gray-600 mb-6">Le plus populaire</p>
+              <p className="text-gray-300 mb-6">Le plus populaire</p>
               <p className="text-5xl font-bold text-green-600 mb-8">€249</p>
               <div className="space-y-3 mb-8">
                 <div className="flex items-center gap-2">
@@ -272,7 +272,7 @@ export default function Home() {
                 </div>
               </div>
               <Link href="/dashboard/create-challenge">
-                <Button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white">
+                <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white">
                   Commencer
                 </Button>
               </Link>
@@ -283,10 +283,10 @@ export default function Home() {
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition cursor-pointer"
+              className="bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-700 hover:shadow-xl transition cursor-pointer"
             >
               <h3 className="text-2xl font-bold mb-2">Elite</h3>
-              <p className="text-gray-600 mb-6">Pour les traders sérieux</p>
+              <p className="text-gray-300 mb-6">Pour les traders sérieux</p>
               <p className="text-5xl font-bold text-green-600 mb-8">€749</p>
               <div className="space-y-3 mb-8">
                 <div className="flex items-center gap-2">
@@ -307,7 +307,7 @@ export default function Home() {
                 </div>
               </div>
               <Link href="/dashboard/create-challenge">
-                <Button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
+                <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500">
                   Commencer
                 </Button>
               </Link>
@@ -317,11 +317,11 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-r from-green-600 via-blue-600 to-green-600 relative overflow-hidden">
+      <section className="py-20 px-6 bg-gradient-to-r from-green-400 via-blue-600 to-green-600 relative overflow-hidden">
         {/* Gradient Background Effect */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute top-0 left-0 w-96 h-96 bg-gray-800 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-800 rounded-full blur-3xl"></div>
         </div>
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
@@ -359,7 +359,7 @@ export default function Home() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button className="bg-white text-green-600 hover:bg-gray-100 text-lg px-8 py-6 font-semibold">
+                <Button className="bg-gray-800 text-green-600 hover:bg-gray-100 text-lg px-8 py-6 font-semibold">
                   Créer un compte maintenant
                 </Button>
               </motion.div>

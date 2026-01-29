@@ -112,9 +112,9 @@ export default function CreateChallengePage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-800">
       {/* Navbar */}
-      <nav className="bg-white border-b border-gray-200">
+      <nav className="bg-gray-800 border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
             JogadorPro
@@ -134,7 +134,7 @@ export default function CreateChallengePage() {
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
             Créer un Challenge
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl text-gray-400">
             Choisissez votre tier et commencez à trader
           </p>
         </div>
@@ -154,7 +154,7 @@ export default function CreateChallengePage() {
               className={`rounded-xl p-8 cursor-pointer transition-all duration-300 border-2 ${
                 selectedTier === tier.id
                   ? 'border-green-600 bg-gradient-to-br from-green-50 to-blue-50 shadow-2xl'
-                  : 'border-gray-200 hover:border-gray-300 bg-white'
+                  : 'border-gray-700 hover:border-gray-300 bg-gray-800'
               }`}
             >
               <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
@@ -162,19 +162,19 @@ export default function CreateChallengePage() {
 
               <div className="space-y-4 mb-8">
                 <div>
-                  <p className="text-sm text-gray-600">Capital Initial</p>
+                  <p className="text-sm text-gray-400">Capital Initial</p>
                   <p className="text-2xl font-bold">€{tier.initialBalance.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Target Profit (Phase 1)</p>
+                  <p className="text-sm text-gray-400">Target Profit (Phase 1)</p>
                   <p className="text-2xl font-bold text-green-600">€{tier.targetProfit}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Max Daily Loss</p>
+                  <p className="text-sm text-gray-400">Max Daily Loss</p>
                   <p className="text-2xl font-bold text-red-600">-€{tier.maxDailyLoss}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Max Total Loss</p>
+                  <p className="text-sm text-gray-400">Max Total Loss</p>
                   <p className="text-2xl font-bold text-red-600">-€{tier.maxTotalLoss}</p>
                 </div>
               </div>
@@ -198,7 +198,7 @@ export default function CreateChallengePage() {
               <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                 📊 Phase 1 - Qualification
               </h3>
-              <ul className="space-y-2 text-gray-700">
+              <ul className="space-y-2 text-gray-300">
                 <li>✓ Atteindre le target profit</li>
                 <li>✓ Ne pas dépasser max daily loss</li>
                 <li>✓ Ne pas dépasser max total loss</li>
@@ -209,7 +209,7 @@ export default function CreateChallengePage() {
               <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                 💰 Phase 2 - Compte Financé
               </h3>
-              <ul className="space-y-2 text-gray-700">
+              <ul className="space-y-2 text-gray-300">
                 <li>✓ Maintenir votre profit</li>
                 <li>✓ Accès au compte financé</li>
                 <li>✓ Ratio profit: 80% trader / 20% platform</li>

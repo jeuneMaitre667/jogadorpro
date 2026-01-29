@@ -85,15 +85,15 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900">
       {/* Navbar */}
-      <nav className="bg-white border-b border-gray-200">
+      <nav className="bg-gray-800 border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
             JogadorPro
           </Link>
           <div className="flex items-center gap-4">
-            <span className="text-gray-700">{user?.email}</span>
+            <span className="text-gray-300">{user?.email}</span>
             <Button
               onClick={handleLogout}
               variant="outline"
@@ -110,7 +110,7 @@ export default function DashboardPage() {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl font-bold mb-2">Dashboard 📊</h1>
-            <p className="text-gray-600">Bienvenue, {user?.email}!</p>
+            <p className="text-gray-300">Bienvenue, {user?.email}!</p>
           </div>
           <Button
             onClick={() => router.push('/create-challenge')}
@@ -123,12 +123,12 @@ export default function DashboardPage() {
         {/* Stats Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-8 border border-green-200">
-            <p className="text-gray-600 text-sm font-semibold">Challenges Actifs</p>
+            <p className="text-gray-300 text-sm font-semibold">Challenges Actifs</p>
             <p className="text-4xl font-bold text-green-600 mt-4">{challenges.length}</p>
           </div>
 
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-8 border border-blue-200">
-            <p className="text-gray-600 text-sm font-semibold">Solde Total</p>
+            <p className="text-gray-300 text-sm font-semibold">Solde Total</p>
             <p className="text-4xl font-bold text-blue-600 mt-4">
               €{totalBalance.toLocaleString('fr-FR', { maximumFractionDigits: 2 })}
             </p>
@@ -139,7 +139,7 @@ export default function DashboardPage() {
               ? 'from-purple-50 to-purple-100 border-purple-200'
               : 'from-red-50 to-red-100 border-red-200'
           }`}>
-            <p className="text-gray-600 text-sm font-semibold">Profit/Loss</p>
+            <p className="text-gray-300 text-sm font-semibold">Profit/Loss</p>
             <p className={`text-4xl font-bold mt-4 ${
               totalProfit >= 0 ? 'text-purple-600' : 'text-red-600'
             }`}>
@@ -149,11 +149,11 @@ export default function DashboardPage() {
         </div>
 
         {/* Challenges Section */}
-        <div className="bg-white rounded-lg shadow p-8 mb-8">
+        <div className="bg-gray-800 rounded-lg shadow p-8 mb-8">
           <h2 className="text-2xl font-bold mb-6">Vos Challenges</h2>
           {challenges.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600 mb-6">Vous n'avez pas de challenge actif</p>
+              <p className="text-gray-300 mb-6">Vous n'avez pas de challenge actif</p>
               <Button
                 onClick={() => router.push('/dashboard/create-challenge')}
                 className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
@@ -169,11 +169,11 @@ export default function DashboardPage() {
                 
                 return (
                   <Link key={challenge.id} href={`/dashboard/challenge/${challenge.id}`}>
-                    <div className="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition cursor-pointer">
+                    <div className="border border-gray-700 rounded-lg p-6 hover:shadow-lg transition cursor-pointer">
                       <div className="flex justify-between items-start mb-4">
                         <div>
                           <h3 className="text-xl font-bold capitalize">{challenge.tier} Challenge</h3>
-                          <p className="text-sm text-gray-600">Phase {challenge.phase}</p>
+                          <p className="text-sm text-gray-300">Phase {challenge.phase}</p>
                         </div>
                         <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
                           challenge.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
@@ -184,13 +184,13 @@ export default function DashboardPage() {
 
                       <div className="space-y-4">
                         <div>
-                          <p className="text-sm text-gray-600">Current Balance</p>
+                          <p className="text-sm text-gray-300">Current Balance</p>
                           <p className="text-2xl font-bold">€{challenge.current_balance.toLocaleString('fr-FR', { maximumFractionDigits: 2 })}</p>
                         </div>
 
                         <div>
                           <div className="flex justify-between mb-2">
-                            <p className="text-sm text-gray-600">Progress vers Target</p>
+                            <p className="text-sm text-gray-300">Progress vers Target</p>
                             <p className="text-sm font-semibold">{Math.min(Math.round(progress), 100)}%</p>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
@@ -203,11 +203,11 @@ export default function DashboardPage() {
 
                         <div className="grid grid-cols-2 gap-4 text-sm">
                           <div>
-                            <p className="text-gray-600">Target Profit</p>
+                            <p className="text-gray-300">Target Profit</p>
                             <p className="font-semibold">€{challenge.target_profit}</p>
                           </div>
                           <div>
-                            <p className="text-gray-600">Days Elapsed</p>
+                            <p className="text-gray-300">Days Elapsed</p>
                             <p className="font-semibold">{daysElapsed}/60</p>
                           </div>
                         </div>
@@ -228,23 +228,23 @@ export default function DashboardPage() {
 
         {/* Recent Bets Section */}
         {bets.length > 0 && (
-          <div className="bg-white rounded-lg shadow-lg p-8 border border-gray-100">
+          <div className="bg-gray-800 rounded-lg shadow-lg p-8 border border-gray-700">
             <h2 className="text-2xl font-bold mb-6">Derniers Paris</h2>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200 bg-gray-50">
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Sport</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Événement</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Cote</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Mise</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Statut</th>
-                    <th className="text-right py-4 px-4 text-gray-600 font-semibold">P&L</th>
+                  <tr className="border-b border-gray-700 bg-gray-900">
+                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Sport</th>
+                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Événement</th>
+                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Cote</th>
+                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Mise</th>
+                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Statut</th>
+                    <th className="text-right py-4 px-4 text-gray-300 font-semibold">P&L</th>
                   </tr>
                 </thead>
                 <tbody>
                   {bets.map((bet) => (
-                    <tr key={bet.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr key={bet.id} className="border-b border-gray-700 hover:bg-gray-900">
                       <td className="py-4 px-4 capitalize">{bet.sport}</td>
                       <td className="py-4 px-4 text-sm">{bet.event_description}</td>
                       <td className="py-4 px-4 font-semibold">{bet.odds.toFixed(2)}</td>
@@ -259,7 +259,7 @@ export default function DashboardPage() {
                         </span>
                       </td>
                       <td className={`py-4 px-4 text-right font-bold ${
-                        bet.profit_loss === null ? 'text-gray-600' :
+                        bet.profit_loss === null ? 'text-gray-300' :
                         bet.profit_loss >= 0 ? 'text-green-600' : 'text-red-600'
                       }`}>
                         {bet.profit_loss === null ? '—' : `${bet.profit_loss >= 0 ? '+' : ''}€${bet.profit_loss.toFixed(2)}`}

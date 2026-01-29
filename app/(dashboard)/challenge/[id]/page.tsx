@@ -95,11 +95,11 @@ export default function ChallengeDetailPage() {
     : 0
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900">
       {/* Navbar */}
-      <nav className="bg-white border-b border-gray-200">
+      <nav className="bg-gray-950 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+          <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
             JogadorPro
           </Link>
           <Button
@@ -132,15 +132,15 @@ export default function ChallengeDetailPage() {
 
         {/* Main Stats */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <p className="text-gray-600 text-sm mb-2">Current Balance</p>
+          <div className="bg-gray-800 rounded-lg shadow p-6 border border-gray-700">
+            <p className="text-gray-400 text-sm mb-2">Current Balance</p>
             <p className="text-3xl font-bold text-blue-600">
               €{challenge.current_balance.toLocaleString('fr-FR', { maximumFractionDigits: 2 })}
             </p>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <p className="text-gray-600 text-sm mb-2">Profit/Loss</p>
+          <div className="bg-gray-800 rounded-lg shadow p-6 border border-gray-700">
+            <p className="text-gray-400 text-sm mb-2">Profit/Loss</p>
             <p className={`text-3xl font-bold ${
               challenge.current_balance - challenge.initial_balance >= 0 ? 'text-green-600' : 'text-red-600'
             }`}>
@@ -149,83 +149,83 @@ export default function ChallengeDetailPage() {
             </p>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <p className="text-gray-600 text-sm mb-2">Target Profit</p>
+          <div className="bg-gray-800 rounded-lg shadow p-6 border border-gray-700">
+            <p className="text-gray-400 text-sm mb-2">Target Profit</p>
             <p className="text-3xl font-bold text-purple-600">€{challenge.target_profit}</p>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <p className="text-gray-600 text-sm mb-2">Time Elapsed</p>
+          <div className="bg-gray-800 rounded-lg shadow p-6 border border-gray-700">
+            <p className="text-gray-400 text-sm mb-2">Time Elapsed</p>
             <p className="text-3xl font-bold">{daysElapsed}/60 days</p>
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="bg-white rounded-lg shadow p-8 mb-8">
-          <h2 className="text-xl font-bold mb-4">Progress to Target</h2>
+        <div className="bg-gray-800 rounded-lg shadow p-8 mb-8 border border-gray-700">
+          <h2 className="text-xl font-bold mb-4 text-white">Progress to Target</h2>
           <div className="mb-4">
             <div className="flex justify-between mb-2">
-              <p className="text-gray-600">Profit Progress</p>
+              <p className="text-gray-400">Profit Progress</p>
               <p className="font-semibold">{Math.min(Math.round(progress), 100)}%</p>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-4">
+            <div className="w-full bg-gray-700 rounded-full h-4">
               <div
-                className="bg-gradient-to-r from-green-600 to-blue-600 h-4 rounded-full transition-all"
+                className="bg-gradient-to-r from-green-400 to-blue-400 h-4 rounded-full transition-all"
                 style={{ width: `${Math.min(progress, 100)}%` }}
               />
             </div>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-400">
             {Math.round(challenge.current_balance - challenge.initial_balance)} € of {challenge.target_profit} € target
           </p>
         </div>
 
         {/* Betting Stats */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <p className="text-gray-600 text-sm mb-2">Total Bets</p>
+          <div className="bg-gray-800 rounded-lg shadow p-6 border border-gray-700">
+            <p className="text-gray-400 text-sm mb-2">Total Bets</p>
             <p className="text-3xl font-bold">{bets.length}</p>
           </div>
 
-          <div className="bg-green-50 rounded-lg shadow p-6 border border-green-200">
-            <p className="text-gray-600 text-sm mb-2">Won</p>
+          <div className="bg-gray-800 rounded-lg shadow p-6 border border-green-600">
+            <p className="text-gray-400 text-sm mb-2">Won</p>
             <p className="text-3xl font-bold text-green-600">{wonBets}</p>
           </div>
 
-          <div className="bg-red-50 rounded-lg shadow p-6 border border-red-200">
-            <p className="text-gray-600 text-sm mb-2">Lost</p>
+          <div className="bg-gray-800 rounded-lg shadow p-6 border border-red-600">
+            <p className="text-gray-400 text-sm mb-2">Lost</p>
             <p className="text-3xl font-bold text-red-600">{lostBets}</p>
           </div>
 
-          <div className="bg-yellow-50 rounded-lg shadow p-6 border border-yellow-200">
-            <p className="text-gray-600 text-sm mb-2">Win Rate</p>
+          <div className="bg-gray-800 rounded-lg shadow p-6 border border-yellow-600">
+            <p className="text-gray-400 text-sm mb-2">Win Rate</p>
             <p className="text-3xl font-bold text-yellow-600">{winRate}%</p>
           </div>
         </div>
 
         {/* Recent Bets */}
-        <div className="bg-white rounded-lg shadow p-8">
-          <h2 className="text-2xl font-bold mb-6">Historique des Paris</h2>
+        <div className="bg-gray-800 rounded-lg shadow p-8 border border-gray-700">
+          <h2 className="text-2xl font-bold mb-6 text-white">Historique des Paris</h2>
           {bets.length === 0 ? (
-            <p className="text-gray-600 text-center py-8">Aucun pari placé sur ce challenge</p>
+            <p className="text-gray-400 text-center py-8">Aucun pari placé sur ce challenge</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Sport</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Événement</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Type</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Cote</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Mise</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Gain Potentiel</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Statut</th>
-                    <th className="text-right py-4 px-4 text-gray-600 font-semibold">P&L</th>
+                  <tr className="border-b border-gray-700">
+                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Sport</th>
+                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Événement</th>
+                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Type</th>
+                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Cote</th>
+                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Mise</th>
+                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Gain Potentiel</th>
+                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Statut</th>
+                    <th className="text-right py-4 px-4 text-gray-300 font-semibold">P&L</th>
                   </tr>
                 </thead>
                 <tbody>
                   {bets.map((bet) => (
-                    <tr key={bet.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr key={bet.id} className="border-b border-gray-700 hover:bg-gray-700/50 text-gray-300">
                       <td className="py-4 px-4 capitalize">{bet.sport}</td>
                       <td className="py-4 px-4 text-sm">{bet.event_description}</td>
                       <td className="py-4 px-4 capitalize">{bet.bet_type}</td>
