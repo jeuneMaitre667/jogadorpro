@@ -258,50 +258,179 @@ export default function CreateChallengePage() {
           ))}
         </div>
 
-        {/* Challenge Rules */}
-        <div className="bg-gray-800 border border-gray-700 rounded-xl p-8 mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-white">📋 Règles Complètes du Challenge</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-green-400">
-                📊 Phase 1 - Qualification (31 jours)
-              </h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>✓ Objectif : <strong className="text-green-400">+25% profit</strong></li>
-                <li>✓ Minimum <strong>20 picks</strong> placés</li>
-                <li>✓ Minimum <strong>15 jours actifs</strong> (au moins 1 pick/jour)</li>
-                <li>✓ Stake par pick : <strong>1% min - 5% max</strong> du balance</li>
-                <li>✓ DD journalier max : <strong>5%</strong> du balance début journée</li>
-                <li>✓ DD total max : <strong>10%</strong> du capital initial</li>
-                <li>✓ Plafond gains journaliers : <strong>8% max</strong></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-blue-400">
-                🚀 Phase 2 - Vérification (31 jours)
-              </h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>✓ Objectif : <strong className="text-blue-400">+30% profit</strong></li>
-                <li>✓ Minimum <strong>20 picks</strong> placés</li>
-                <li>✓ Minimum <strong>15 jours actifs</strong></li>
-                <li>✓ Mêmes règles de stake et DD</li>
-                <li>✓ Délai création : <strong>3 jours</strong> après Phase 1</li>
-                <li>✓ Si réussi : <strong>Compte Financé</strong> créé automatiquement</li>
-                <li>✓ Profit share : <strong>80% trader / 20% plateforme</strong></li>
-              </ul>
+        {/* Challenge Rules - Detailed */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          {/* Left Side - Phases */}
+          <div>
+            <h3 className="text-2xl font-bold mb-6 text-white flex items-center gap-3">
+              <span className="text-3xl">📅</span>
+              Structure des Phases
+            </h3>
+            
+            <div className="space-y-4">
+              {/* Phase 1 */}
+              <div className="bg-gray-800 rounded-xl p-6 border-l-4 border-green-400">
+                <h4 className="text-xl font-bold text-green-400 mb-4">Phase 1 - Qualification</h4>
+                <ul className="space-y-3 text-gray-300 text-sm">
+                  <li className="flex items-start gap-3">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <div>
+                      <p className="font-semibold">Objectif Profit</p>
+                      <p className="text-xs text-gray-400">+25% du capital initial</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <div>
+                      <p className="font-semibold">Durée</p>
+                      <p className="text-xs text-gray-400">31 jours calendaires</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <div>
+                      <p className="font-semibold">Picks Minimum</p>
+                      <p className="text-xs text-gray-400">20 trades</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <div>
+                      <p className="font-semibold">Jours Actifs</p>
+                      <p className="text-xs text-gray-400">15 jours min (1 pick/jour)</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Phase 2 */}
+              <div className="bg-gray-800 rounded-xl p-6 border-l-4 border-blue-400">
+                <h4 className="text-xl font-bold text-blue-400 mb-4">Phase 2 - Vérification</h4>
+                <ul className="space-y-3 text-gray-300 text-sm">
+                  <li className="flex items-start gap-3">
+                    <span className="text-blue-400 mt-0.5">✓</span>
+                    <div>
+                      <p className="font-semibold">Objectif Profit</p>
+                      <p className="text-xs text-gray-400">+30% du capital initial</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-blue-400 mt-0.5">✓</span>
+                    <div>
+                      <p className="font-semibold">Durée</p>
+                      <p className="text-xs text-gray-400">31 jours calendaires</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-blue-400 mt-0.5">✓</span>
+                    <div>
+                      <p className="font-semibold">Mêmes Règles</p>
+                      <p className="text-xs text-gray-400">20 picks, 15 jours actifs</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-blue-400 mt-0.5">✓</span>
+                    <div>
+                      <p className="font-semibold">Si Réussi</p>
+                      <p className="text-xs text-gray-400">Compte Financé (80/20)</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-          
-          <div className="mt-8 bg-red-900/20 border border-red-600 rounded-lg p-6">
-            <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-red-400">
-              ⚠️ Auto-Fail Immédiat
+
+          {/* Right Side - Trading Rules */}
+          <div>
+            <h3 className="text-2xl font-bold mb-6 text-white flex items-center gap-3">
+              <span className="text-3xl">⚙️</span>
+              Règles de Trading
             </h3>
-            <ul className="space-y-2 text-gray-300">
-              <li>❌ DD journalier {'>'} 5% → <strong className="text-red-400">Challenge Failed</strong></li>
-              <li>❌ DD total {'>'} 10% → <strong className="text-red-400">Challenge Failed</strong></li>
-              <li>❌ Fin des 31 jours sans atteindre objectif → <strong className="text-red-400">Challenge Failed</strong></li>
-              <li>❌ Pick avec stake {'<'} 1% ou {'>'} 5% → <strong className="text-red-400">Pick refusé</strong></li>
-            </ul>
+            
+            <div className="space-y-4">
+              {/* Stake Rules */}
+              <div className="bg-gray-800 rounded-xl p-6 border-t-2 border-orange-400">
+                <h4 className="text-lg font-bold text-orange-400 mb-3">💰 Stake (Mise)</h4>
+                <div className="space-y-2 text-gray-300 text-xs">
+                  <div className="flex justify-between bg-gray-900/50 p-2 rounded">
+                    <span>Min par pick:</span>
+                    <span className="font-bold text-orange-400">1% balance</span>
+                  </div>
+                  <div className="flex justify-between bg-gray-900/50 p-2 rounded">
+                    <span>Max par pick:</span>
+                    <span className="font-bold text-orange-400">5% balance</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Drawdown Rules */}
+              <div className="bg-gray-800 rounded-xl p-6 border-t-2 border-red-400">
+                <h4 className="text-lg font-bold text-red-400 mb-3">📉 Drawdown (Perte)</h4>
+                <div className="space-y-2 text-gray-300 text-xs">
+                  <div className="flex justify-between bg-gray-900/50 p-2 rounded">
+                    <span>Max DD journalier:</span>
+                    <span className="font-bold text-red-400">5%</span>
+                  </div>
+                  <div className="flex justify-between bg-gray-900/50 p-2 rounded">
+                    <span>Max DD total:</span>
+                    <span className="font-bold text-red-400">10%</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Gains Rules */}
+              <div className="bg-gray-800 rounded-xl p-6 border-t-2 border-green-400">
+                <h4 className="text-lg font-bold text-green-400 mb-3">🎯 Plafond Gains</h4>
+                <div className="space-y-2 text-gray-300 text-xs">
+                  <div className="flex justify-between bg-gray-900/50 p-2 rounded">
+                    <span>Max gains/jour:</span>
+                    <span className="font-bold text-green-400">8% capital</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Auto-Fail Conditions */}
+        <div className="bg-red-900/20 border-2 border-red-600 rounded-xl p-8 mb-12">
+          <h3 className="text-2xl font-bold text-red-400 mb-6 flex items-center gap-3">
+            <span>⛔</span>
+            Conditions d'Échec Immédiat
+          </h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <div className="flex items-start gap-3 text-gray-300 text-sm">
+                <span className="text-red-400 font-bold text-lg">❌</span>
+                <div>
+                  <p className="font-semibold">DD Journalier &gt; 5%</p>
+                  <p className="text-xs text-gray-400">Challenge échoué immédiatement</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 text-gray-300 text-sm">
+                <span className="text-red-400 font-bold text-lg">❌</span>
+                <div>
+                  <p className="font-semibold">DD Total &gt; 10%</p>
+                  <p className="text-xs text-gray-400">Challenge échoué immédiatement</p>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3 text-gray-300 text-sm">
+                <span className="text-red-400 font-bold text-lg">❌</span>
+                <div>
+                  <p className="font-semibold">Fin des 31 jours sans objectif</p>
+                  <p className="text-xs text-gray-400">Challenge échoué automatiquement</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 text-gray-300 text-sm">
+                <span className="text-red-400 font-bold text-lg">❌</span>
+                <div>
+                  <p className="font-semibold">Stake invalide (&lt;1% ou &gt;5%)</p>
+                  <p className="text-xs text-gray-400">Pick refusé par le système</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
