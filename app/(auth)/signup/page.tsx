@@ -60,8 +60,24 @@ export default function SignupPage() {
       if (signupError) throw signupError
 
       if (authData.user) {
-        // Supabase crée automatiquement l'entrée users!
-        // On n'a pas besoin d'insérer manuellement
+        // Créer l'entrée dans la table users
+        const { error: userError } = await supabase
+          .from('users')
+          .insert([
+            {
+              id: authData.user.id,
+              email: authData.user.email,
+              full_name: fullName,
+              role: 'trader',
+              kyc_status: 'pending',
+            },
+          ])
+
+        if (userError) {
+          console.error('Erreur lors de la création du profil utilisateur:', userError)
+          // On continue quand même vers le dashboard
+        }
+
         router.push('/dashboard')
       }
     } catch (err: any) {

@@ -31,12 +31,33 @@ export default function LoginPage() {
     }
 
     try {
-      const { error: loginError } = await supabase.auth.signInWithPassword({
+      const { error: loginError, data } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
       if (loginError) throw loginError
+
+      // Vérifier si l'utilisateur existe dans la table users
+      if (data.user) {
+        const { data: existingUser } = await supabase
+          .from('users')
+          .select('id')
+          .eq('id', data.user.id)
+          .single()
+
+        // Si l'utilisateur n'existe pas dans la table users, le créer
+        if (!existingUser) {
+          await supabase.from('users').insert([
+            {
+              id: data.user.id,
+              email: data.user.email,
+              role: 'trader',
+              kyc_status: 'pending',
+            },
+          ])
+        }
+      }
 
       router.push('/dashboard')
     } catch (err: any) {

@@ -112,7 +112,7 @@ export default function DashboardPage() {
             <p className="text-gray-600">Bienvenue, {user?.email}!</p>
           </div>
           <Button
-            onClick={() => router.push('/create-challenge')}
+            onClick={() => router.push('/dashboard/create-challenge')}
             className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-6 py-6"
           >
             + Créer un Challenge
