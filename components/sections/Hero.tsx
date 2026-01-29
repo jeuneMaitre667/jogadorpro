@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, TrendingUp, Shield, Zap } from 'lucide-react';
@@ -58,13 +58,13 @@ export function Hero() {
             className="flex flex-col sm:flex-row gap-4 mb-12"
           >
             <Button size="lg" asChild className="gap-2">
-              <Link to="/signup">
+              <Link href="/signup">
                 Commencer maintenant
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/pricing">Voir les tarifs</Link>
+              <Link href="/pricing">Voir les tarifs</Link>
             </Button>
           </motion.div>
 

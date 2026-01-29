@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -75,7 +75,7 @@ export function Pricing() {
                     variant={tier.popular ? 'default' : 'outline'}
                     asChild
                   >
-                    <Link to={`/signup?plan=${tier.id}`}>
+                    <Link href={`/signup?plan=${tier.id}`}>
                       Choisir {tier.name}
                     </Link>
                   </Button>

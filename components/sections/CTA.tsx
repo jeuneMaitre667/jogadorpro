@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -38,7 +38,7 @@ export function CTA() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" variant="secondary" asChild className="gap-2">
-                <Link to="/signup">
+                <Link href="/signup">
                   Commencer gratuitement
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -49,7 +49,7 @@ export function CTA() {
                 asChild 
                 className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
               >
-                <Link to="/pricing">Voir les tarifs</Link>
+                <Link href="/pricing">Voir les tarifs</Link>
               </Button>
             </div>
 
