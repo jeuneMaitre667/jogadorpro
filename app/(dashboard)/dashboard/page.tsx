@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@supabase/supabase-js'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { DashboardCharts } from '@/components/DashboardCharts'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -219,14 +220,20 @@ export default function DashboardPage() {
           )}
         </div>
 
+        {/* Charts Section */}
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold mb-8 text-gray-800">Analytics & Performance</h2>
+          <DashboardCharts bets={bets} challenges={challenges} />
+        </section>
+
         {/* Recent Bets Section */}
         {bets.length > 0 && (
-          <div className="bg-white rounded-lg shadow p-8">
+          <div className="bg-white rounded-lg shadow-lg p-8 border border-gray-100">
             <h2 className="text-2xl font-bold mb-6">Derniers Paris</h2>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200">
+                  <tr className="border-b border-gray-200 bg-gray-50">
                     <th className="text-left py-4 px-4 text-gray-600 font-semibold">Sport</th>
                     <th className="text-left py-4 px-4 text-gray-600 font-semibold">Événement</th>
                     <th className="text-left py-4 px-4 text-gray-600 font-semibold">Cote</th>

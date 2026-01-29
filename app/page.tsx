@@ -28,13 +28,13 @@ const itemVariants = {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-green-50">
       {/* Navbar */}
       <motion.nav 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className="fixed w-full top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200"
+        className="fixed w-full top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm"
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
@@ -46,7 +46,7 @@ export default function Home() {
             <a href="#contact" className="text-gray-700 hover:text-green-600 transition">Contact</a>
           </div>
           <Link href="/login">
-            <Button className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
+            <Button className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 shadow-lg hover:shadow-xl">
               Login
             </Button>
           </Link>
@@ -59,7 +59,7 @@ export default function Home() {
       </div>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-6 bg-gray-50">
+      <section id="features" className="py-20 px-6 bg-gradient-to-b from-transparent to-blue-50">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -179,7 +179,7 @@ export default function Home() {
       </section>
 
       {/* Pricing Preview */}
-      <section id="pricing" className="py-20 px-6">
+      <section id="pricing" className="py-20 px-6 bg-gradient-to-b from-green-50 to-white">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -317,13 +317,18 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-r from-green-600 to-blue-600">
+      <section className="py-20 px-6 bg-gradient-to-r from-green-600 via-blue-600 to-green-600 relative overflow-hidden">
+        {/* Gradient Background Effect */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+        </div>
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto text-center text-white"
+          className="max-w-3xl mx-auto text-center text-white relative z-10"
         >
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -364,7 +369,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 py-12 px-6">
+      <footer className="bg-gradient-to-b from-gray-900 to-black text-gray-400 py-12 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
