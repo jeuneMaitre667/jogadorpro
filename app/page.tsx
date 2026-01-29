@@ -5,37 +5,11 @@ import { HeroSection } from "@/components/HeroSection"
 import Link from "next/link"
 import { motion } from "framer-motion"
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5
-    }
-  }
-}
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
       {/* Navbar */}
-      <motion.nav 
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="fixed w-full top-0 z-50 bg-gray-950/95 backdrop-blur border-b border-gray-800 shadow-sm"
-      >
+      <nav className="fixed w-full top-0 z-50 bg-gray-950/95 backdrop-blur border-b border-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
             JogadorPro
@@ -43,6 +17,7 @@ export default function Home() {
           <div className="hidden md:flex gap-8">
             <a href="#features" className="text-gray-300 hover:text-green-400 transition">Features</a>
             <a href="#pricing" className="text-gray-300 hover:text-green-400 transition">Pricing</a>
+            <a href="#faq" className="text-gray-300 hover:text-green-400 transition">FAQ</a>
             <a href="#contact" className="text-gray-300 hover:text-green-400 transition">Contact</a>
           </div>
           <Link href="/login">
@@ -51,327 +26,300 @@ export default function Home() {
             </Button>
           </Link>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Hero Section */}
-      <div className="pt-16">
-        <HeroSection />
-      </div>
+      <HeroSection />
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-6 bg-gradient-to-b from-transparent to-gray-900/50">
+      <section id="features" className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
-              Pourquoi JogadorPro?
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Pourquoi Choisir JogadorPro?
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              La plateforme complète pour trader avec du capital réel
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              La plateforme complète pour les traders sportifs professionnels
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid md:grid-cols-3 gap-8"
-          >
-            {/* Feature 1 */}
-            <motion.div 
-              variants={itemVariants}
-              whileHover={{ scale: 1.05, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-700 cursor-pointer"
-            >
-              <motion.div 
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                className="text-4xl mb-4"
-              >
-                💰
-              </motion.div>
-              <h3 className="text-2xl font-bold mb-3">Capital Réel</h3>
-              <p className="text-gray-300">
-                Prouvez vos compétences et obtenez accès à un capital réel jusqu&apos;à €50,000 pour trader
-              </p>
-            </motion.div>
-
-            {/* Feature 2 */}
-            <motion.div 
-              variants={itemVariants}
-              whileHover={{ scale: 1.05, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-700 cursor-pointer"
-            >
-              <div className="text-4xl mb-4">📈</div>
-              <h3 className="text-2xl font-bold mb-3">Split Profits 80/20</h3>
-              <p className="text-gray-300">
-                Gardez 80% de vos profits. Nous prenons seulement 20% pour les frais d&apos;infrastructure
-              </p>
-            </motion.div>
-
-            {/* Feature 3 */}
-            <motion.div 
-              variants={itemVariants}
-              whileHover={{ scale: 1.05, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-700 cursor-pointer"
-            >
-              <div className="text-4xl mb-4">⚡</div>
-              <h3 className="text-2xl font-bold mb-3">Paiement Rapide</h3>
-              <p className="text-gray-300">
-                Retirez vos profits en 24-48h via virement bancaire sécurisé
-              </p>
-            </motion.div>
-
-            {/* Feature 4 */}
-            <motion.div 
-              variants={itemVariants}
-              whileHover={{ scale: 1.05, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-700 cursor-pointer"
-            >
-              <div className="text-4xl mb-4">🏆</div>
-              <h3 className="text-2xl font-bold mb-3">Challenges à Étapes</h3>
-              <p className="text-gray-300">
-                Phase 1: Qualification. Phase 2: Compte Financé. Gagnez de l&apos;argent à chaque niveau
-              </p>
-            </motion.div>
-
-            {/* Feature 5 */}
-            <motion.div 
-              variants={itemVariants}
-              whileHover={{ scale: 1.05, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-700 cursor-pointer"
-            >
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-gray-900/50 backdrop-blur border border-gray-800 p-8 rounded-xl hover:border-green-400/50 transition">
               <div className="text-4xl mb-4">📊</div>
-              <h3 className="text-2xl font-bold mb-3">Dashboard Professionnel</h3>
-              <p className="text-gray-300">
-                Suivi en temps réel de vos statistiques, P&amp;L, et performance
+              <h3 className="text-xl font-bold text-white mb-3">Suivi en Temps Réel</h3>
+              <p className="text-gray-400">
+                Suivez vos performances avec des statistiques détaillées et des graphiques interactifs
               </p>
-            </motion.div>
+            </div>
 
-            {/* Feature 6 */}
-            <motion.div 
-              variants={itemVariants}
-              whileHover={{ scale: 1.05, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition border border-gray-700 cursor-pointer"
-            >
-              <div className="text-4xl mb-4">🔒</div>
-              <h3 className="text-2xl font-bold mb-3">Sécurité Garantie</h3>
-              <p className="text-gray-300">
-                Tous vos données sont chiffrées et vos fonds sont protégés
+            <div className="bg-gray-900/50 backdrop-blur border border-gray-800 p-8 rounded-xl hover:border-green-400/50 transition">
+              <div className="text-4xl mb-4">🎯</div>
+              <h3 className="text-xl font-bold text-white mb-3">Challenges Personnalisés</h3>
+              <p className="text-gray-400">
+                Créez et participez à des challenges adaptés à votre niveau et stratégie
               </p>
-            </motion.div>
-          </motion.div>
+            </div>
+
+            <div className="bg-gray-900/50 backdrop-blur border border-gray-800 p-8 rounded-xl hover:border-green-400/50 transition">
+              <div className="text-4xl mb-4">💰</div>
+              <h3 className="text-xl font-bold text-white mb-3">Gains Réels</h3>
+              <p className="text-gray-400">
+                Débloquez des récompenses et montez en niveau pour gagner plus
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Pricing Preview */}
-      <section id="pricing" className="py-20 px-6 bg-gradient-to-b from-gray-900/50 to-gray-950">
+      {/* Pricing Section - FTMO Style */}
+      <section id="pricing" className="py-24 px-6 bg-gray-900/30">
         <div className="max-w-7xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
+          <div className="text-center mb-16">
             <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
-              Choisissez votre Challenge
+              Nos Challenges
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Propulsez votre carrière de trader avec un capital réel
+              Choisissez le challenge adapté à vos ambitions
             </p>
-          </motion.div>
+          </div>
 
-          {/* Comparison Table - FTMO Style */}
-          <div className="overflow-x-auto mb-12">
-            <div className="min-w-max inline-block w-full">
-              <div className="grid grid-cols-4 gap-4 mb-6">
-                {/* Header Column */}
-                <div className="bg-transparent p-6">
-                  <div className="h-32"></div>
-                  <div className="space-y-6 text-gray-400">
-                    <div className="flex items-center gap-3 h-12">
-                      <span className="text-2xl">🎯</span>
-                      <span className="font-semibold">Profit Target</span>
-                    </div>
-                    <div className="flex items-center gap-3 h-12">
-                      <span className="text-2xl">📉</span>
-                      <span className="font-semibold">Max. Daily Loss</span>
-                    </div>
-                    <div className="flex items-center gap-3 h-12">
-                      <span className="text-2xl">📊</span>
-                      <span className="font-semibold">Max. Loss</span>
-                    </div>
-                    <div className="flex items-center gap-3 h-12">
-                      <span className="text-2xl">📅</span>
-                      <span className="font-semibold">Min. trading days</span>
-                    </div>
-                    <div className="flex items-center gap-3 h-12">
-                      <span className="text-2xl">⏱️</span>
-                      <span className="font-semibold">Trading Period</span>
-                    </div>
-                    <div className="flex items-center gap-3 h-12">
-                      <span className="text-2xl">💰</span>
-                      <span className="font-semibold">Refund</span>
-                    </div>
+          {/* Pricing Cards Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto mb-16">
+            {/* Demo Challenge */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="bg-gray-800 rounded-2xl p-8 border border-gray-700 hover:border-green-500 transition-all shadow-xl relative flex flex-col h-full"
+            >
+              <div className="absolute -top-3 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                GRATUIT
+              </div>
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-bold text-white mb-3">Demo Challenge</h3>
+                <p className="text-4xl font-bold text-green-400 mb-2">€100</p>
+                <div className="mt-3 inline-block bg-orange-500/20 border border-orange-500 text-orange-400 px-3 py-1 rounded-full text-xs font-bold">
+                  🎁 -30% sur challenge payant
+                </div>
+              </div>
+              
+              <div className="space-y-4 mb-8 flex-grow">
+                <div className="bg-gray-900/50 p-4 rounded-lg">
+                  <p className="text-xs text-gray-400 mb-1">Objectif Profit</p>
+                  <p className="text-lg font-bold text-green-400">10%</p>
+                </div>
+                <div className="bg-gray-900/50 p-4 rounded-lg">
+                  <p className="text-xs text-gray-400 mb-1">Max Daily Loss</p>
+                  <p className="text-lg font-bold text-white">15%</p>
+                </div>
+                <div className="bg-gray-900/50 p-4 rounded-lg">
+                  <p className="text-xs text-gray-400 mb-1">Max Total Loss</p>
+                  <p className="text-lg font-bold text-white">15%</p>
+                </div>
+                <div className="bg-gray-900/50 p-4 rounded-lg">
+                  <p className="text-xs text-gray-400 mb-1">Periode de Trading</p>
+                  <p className="text-lg font-bold text-white">7 jours</p>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-700 pt-6">
+                <p className="text-3xl font-bold text-center mb-4 text-green-400">GRATUIT</p>
+                <Link href="/signup" className="block">
+                  <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white font-semibold py-3">
+                    Essayer maintenant
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* 1K Challenge - Best Value */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border-2 border-green-500 shadow-2xl relative flex flex-col h-full lg:scale-105"
+            >
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg">
+                <span>🔥</span>
+                <span>Best value</span>
+              </div>
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-bold text-white mb-3">Challenge 1K</h3>
+                <p className="text-4xl font-bold text-green-400 mb-2">€49</p>
+                <p className="text-sm text-gray-400 line-through">€61</p>
+                <p className="text-xs text-green-400 font-semibold mt-2">📊 2 Phases</p>
+              </div>
+              
+              <div className="space-y-4 mb-8 flex-grow">
+                {/* Phase 1 */}
+                <div className="bg-gray-900/70 border-l-4 border-green-400 p-4 rounded-lg">
+                  <p className="text-xs text-green-400 font-bold mb-2">PHASE 1 - Qualification</p>
+                  <p className="text-lg font-bold text-white">Objectif: 25%</p>
+                  <p className="text-xs text-gray-400 mt-1">Durée: 31 jours</p>
+                </div>
+                
+                {/* Phase 2 */}
+                <div className="bg-gray-900/70 border-l-4 border-blue-400 p-4 rounded-lg">
+                  <p className="text-xs text-blue-400 font-bold mb-2">PHASE 2 - Vérification</p>
+                  <p className="text-lg font-bold text-white">Objectif: 30%</p>
+                  <p className="text-xs text-gray-400 mt-1">Durée: 31 jours</p>
+                </div>
+
+                {/* Trading Rules */}
+                <div className="bg-gray-900/50 p-4 rounded-lg">
+                  <p className="text-xs text-purple-400 font-bold mb-2">📋 Règles</p>
+                  <div className="space-y-2">
+                    <p className="text-xs text-gray-300">✓ Picks min: 20 par phase</p>
+                    <p className="text-xs text-gray-300">✓ Jours actifs: 15/31 jours</p>
+                    <p className="text-xs text-gray-300">✓ Stake: 1-5% du balance</p>
+                    <p className="text-xs text-gray-300">✓ DD journalier: max 5%</p>
+                    <p className="text-xs text-gray-300">✓ DD total: max 10%</p>
                   </div>
                 </div>
 
-                {/* Demo Challenge */}
-                <motion.div 
-                  variants={itemVariants}
-                  whileHover={{ y: -5 }}
-                  className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-green-500 transition-all shadow-xl relative"
-                >
-                  <div className="absolute -top-3 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                    GRATUIT
+                {/* Phase Completion */}
+                <div className="bg-gray-900/50 p-4 rounded-lg border border-green-400/30">
+                  <p className="text-xs text-green-400 font-bold mb-2">✅ Phase Completion</p>
+                  <div className="space-y-2">
+                    <p className="text-xs text-gray-300">Phase 1 Passed → Phase 2 Auto</p>
+                    <p className="text-xs text-gray-300">Phase 2 Passed → Compte Financé</p>
+                    <p className="text-xs text-gray-300">Profit Share: 80/20</p>
                   </div>
-                  <div className="text-center mb-8">
-                    <h3 className="text-sm text-gray-400 mb-2">Account</h3>
-                    <p className="text-4xl font-bold text-white mb-4">€100</p>
-                    <span className="text-xs text-gray-500">(Capital Fictif)</span>
-                  </div>
-                  
-                  <div className="space-y-6 text-center mb-8">
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="text-sm text-gray-400">OBJECTIF</p>
-                      <p className="font-bold text-green-400">10%</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-white">15%</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-white">15%</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-white">3 jours</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-white">7 jours</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-green-400">Code -30%</p>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-gray-700 pt-6 mt-auto">
-                    <p className="text-3xl font-bold text-center mb-4 text-green-400">GRATUIT</p>
-                    <Link href="/signup" className="block">
-                      <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white font-semibold py-6">
-                        Essayer maintenant
-                      </Button>
-                    </Link>
-                  </div>
-                </motion.div>
-
-                {/* 1K Challenge - Best Value */}
-                <motion.div 
-                  variants={itemVariants}
-                  whileHover={{ y: -5 }}
-                  className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 border-2 border-green-500 transform scale-105 shadow-2xl relative"
-                >
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg">
-                    <span>🔥</span>
-                    <span>Best value -20%</span>
-                  </div>
-                  <div className="text-center mb-8">
-                    <h3 className="text-sm text-gray-400 mb-2">Account</h3>
-                    <p className="text-4xl font-bold text-white mb-1">€1,000</p>
-                  </div>
-                  
-                  <div className="space-y-6 text-center mb-8">
-                    <div className="h-12 flex flex-col justify-center bg-gray-900/50 rounded">
-                      <p className="text-xs text-gray-400">PHASE 1</p>
-                      <p className="font-bold text-green-400">25%</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-white">5%</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-white">10%</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-white">15 jours</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-white">31 jours</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-green-400">Oui <span className="text-green-500">100%</span></p>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-gray-700 pt-6 mt-auto">
-                    <div className="text-center mb-4">
-                      <span className="text-xl text-gray-500 line-through">€61</span>
-                      <p className="text-3xl font-bold text-green-400">€49</p>
-                    </div>
-                    <Link href="/signup" className="block">
-                      <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white font-semibold py-6 shadow-lg">
-                        Commencer maintenant
-                      </Button>
-                    </Link>
-                  </div>
-                </motion.div>
-
-                {/* 5K Challenge */}
-                <motion.div 
-                  variants={itemVariants}
-                  whileHover={{ y: -5 }}
-                  className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-blue-500 transition-all shadow-xl"
-                >
-                  <div className="text-center mb-8">
-                    <h3 className="text-sm text-gray-400 mb-2">Account</h3>
-                    <p className="text-4xl font-bold text-white mb-1">€5,000</p>
-                  </div>
-                  
-                  <div className="space-y-6 text-center mb-8">
-                    <div className="h-12 flex flex-col justify-center bg-gray-900/50 rounded">
-                      <p className="text-xs text-gray-400">PHASE 1</p>
-                      <p className="font-bold text-blue-400">25%</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-white">5%</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-white">10%</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-white">15 jours</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-white">31 jours</p>
-                    </div>
-                    <div className="h-12 flex flex-col justify-center">
-                      <p className="font-bold text-green-400">Oui <span className="text-green-500">100%</span></p>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-gray-700 pt-6 mt-auto">
-                    <p className="text-3xl font-bold text-center mb-4 text-blue-400">€139</p>
-                    <Link href="/signup" className="block">
-                      <Button className="w-full bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-6">
-                        Commencer maintenant
-                      </Button>
-                    </Link>
-                  </div>
-                </motion.div>
+                </div>
               </div>
-            </div>
+
+              <div className="border-t border-gray-700 pt-6">
+                <Link href="/signup" className="block">
+                  <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white font-semibold py-3 shadow-lg">
+                    Commencer maintenant
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* 2.5K Challenge */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="bg-gray-800 rounded-2xl p-8 border border-gray-700 hover:border-purple-500 transition-all shadow-xl flex flex-col h-full"
+            >
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-bold text-white mb-3">Challenge 2.5K</h3>
+                <p className="text-4xl font-bold text-purple-400 mb-2">€89</p>
+                <p className="text-xs text-purple-400 font-semibold mt-2">📊 2 Phases</p>
+              </div>
+              
+              <div className="space-y-4 mb-8 flex-grow">
+                {/* Phase 1 */}
+                <div className="bg-gray-900/70 border-l-4 border-green-400 p-4 rounded-lg">
+                  <p className="text-xs text-green-400 font-bold mb-2">PHASE 1 - Qualification</p>
+                  <p className="text-lg font-bold text-white">Objectif: 25%</p>
+                  <p className="text-xs text-gray-400 mt-1">Durée: 31 jours</p>
+                </div>
+                
+                {/* Phase 2 */}
+                <div className="bg-gray-900/70 border-l-4 border-blue-400 p-4 rounded-lg">
+                  <p className="text-xs text-blue-400 font-bold mb-2">PHASE 2 - Vérification</p>
+                  <p className="text-lg font-bold text-white">Objectif: 30%</p>
+                  <p className="text-xs text-gray-400 mt-1">Durée: 31 jours</p>
+                </div>
+
+                {/* Trading Rules */}
+                <div className="bg-gray-900/50 p-4 rounded-lg">
+                  <p className="text-xs text-purple-400 font-bold mb-2">📋 Règles</p>
+                  <div className="space-y-2">
+                    <p className="text-xs text-gray-300">✓ Picks min: 20 par phase</p>
+                    <p className="text-xs text-gray-300">✓ Jours actifs: 15/31 jours</p>
+                    <p className="text-xs text-gray-300">✓ Stake: 1-5% du balance</p>
+                    <p className="text-xs text-gray-300">✓ DD journalier: max 5%</p>
+                    <p className="text-xs text-gray-300">✓ DD total: max 10%</p>
+                  </div>
+                </div>
+
+                {/* Phase Completion */}
+                <div className="bg-gray-900/50 p-4 rounded-lg border border-green-400/30">
+                  <p className="text-xs text-green-400 font-bold mb-2">✅ Phase Completion</p>
+                  <div className="space-y-2">
+                    <p className="text-xs text-gray-300">Phase 1 Passed → Phase 2 Auto</p>
+                    <p className="text-xs text-gray-300">Phase 2 Passed → Compte Financé</p>
+                    <p className="text-xs text-gray-300">Profit Share: 80/20</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-700 pt-6">
+                <Link href="/signup" className="block">
+                  <Button className="w-full bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-500 hover:to-pink-500 text-white font-semibold py-3">
+                    Commencer maintenant
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* 5K Challenge */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="bg-gray-800 rounded-2xl p-8 border border-gray-700 hover:border-blue-500 transition-all shadow-xl flex flex-col h-full"
+            >
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-bold text-white mb-3">Challenge 5K</h3>
+                <p className="text-4xl font-bold text-blue-400 mb-2">€139</p>
+                <p className="text-xs text-blue-400 font-semibold mt-2">📊 2 Phases</p>
+              </div>
+              
+              <div className="space-y-4 mb-8 flex-grow">
+                {/* Phase 1 */}
+                <div className="bg-gray-900/70 border-l-4 border-green-400 p-4 rounded-lg">
+                  <p className="text-xs text-green-400 font-bold mb-2">PHASE 1 - Qualification</p>
+                  <p className="text-lg font-bold text-white">Objectif: 25%</p>
+                  <p className="text-xs text-gray-400 mt-1">Durée: 31 jours</p>
+                </div>
+                
+                {/* Phase 2 */}
+                <div className="bg-gray-900/70 border-l-4 border-blue-400 p-4 rounded-lg">
+                  <p className="text-xs text-blue-400 font-bold mb-2">PHASE 2 - Vérification</p>
+                  <p className="text-lg font-bold text-white">Objectif: 30%</p>
+                  <p className="text-xs text-gray-400 mt-1">Durée: 31 jours</p>
+                </div>
+
+                {/* Trading Rules */}
+                <div className="bg-gray-900/50 p-4 rounded-lg">
+                  <p className="text-xs text-purple-400 font-bold mb-2">📋 Règles</p>
+                  <div className="space-y-2">
+                    <p className="text-xs text-gray-300">✓ Picks min: 20 par phase</p>
+                    <p className="text-xs text-gray-300">✓ Jours actifs: 15/31 jours</p>
+                    <p className="text-xs text-gray-300">✓ Stake: 1-5% du balance</p>
+                    <p className="text-xs text-gray-300">✓ DD journalier: max 5%</p>
+                    <p className="text-xs text-gray-300">✓ DD total: max 10%</p>
+                  </div>
+                </div>
+
+                {/* Phase Completion */}
+                <div className="bg-gray-900/50 p-4 rounded-lg border border-green-400/30">
+                  <p className="text-xs text-green-400 font-bold mb-2">✅ Phase Completion</p>
+                  <div className="space-y-2">
+                    <p className="text-xs text-gray-300">Phase 1 Passed → Phase 2 Auto</p>
+                    <p className="text-xs text-gray-300">Phase 2 Passed → Compte Financé</p>
+                    <p className="text-xs text-gray-300">Profit Share: 80/20</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-700 pt-6">
+                <Link href="/signup" className="block">
+                  <Button className="w-full bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-3">
+                    Commencer maintenant
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
           </div>
 
           {/* Additional Info */}
@@ -382,6 +330,117 @@ export default function Home() {
             className="text-center text-gray-400 text-sm"
           >
             <p>Tous les prix sont des paiements uniques. Remboursement à 100% après réussite des phases.</p>
+          </motion.div>
+
+          {/* Comparison Section - Old Way vs JogadorPro Way */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mt-24"
+          >
+            <div className="text-center mb-12">
+              <h2 className="text-5xl font-bold mb-4">
+                <span className="text-white">Votre Bankroll</span>
+                {' '}
+                <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">VS</span>
+                {' '}
+                <span className="text-white">JogadorPro</span>
+              </h2>
+              <p className="text-xl text-gray-400">La différence est claire. JogadorPro gagne.</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {/* The Old Way */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="bg-gray-800/50 backdrop-blur rounded-2xl p-8 border border-gray-700"
+              >
+                <h3 className="text-2xl font-bold text-gray-300 mb-8 text-center">L&apos;Ancienne Méthode</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4 text-gray-400">
+                    <div className="mt-1 w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-red-400 text-sm">✕</span>
+                    </div>
+                    <p>Bankroll limitée qui vous freine</p>
+                  </div>
+                  <div className="flex items-start gap-4 text-gray-400">
+                    <div className="mt-1 w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-red-400 text-sm">✕</span>
+                    </div>
+                    <p>Risquer votre propre argent sur chaque pick</p>
+                  </div>
+                  <div className="flex items-start gap-4 text-gray-400">
+                    <div className="mt-1 w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-red-400 text-sm">✕</span>
+                    </div>
+                    <p>Aucune structure, juste des paris hasardeux</p>
+                  </div>
+                  <div className="flex items-start gap-4 text-gray-400">
+                    <div className="mt-1 w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-red-400 text-sm">✕</span>
+                    </div>
+                    <p>Difficile de suivre vos picks et profits</p>
+                  </div>
+                  <div className="flex items-start gap-4 text-gray-400">
+                    <div className="mt-1 w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-red-400 text-sm">✕</span>
+                    </div>
+                    <p>Retraits compliqués et lents</p>
+                  </div>
+                  <div className="flex items-start gap-4 text-gray-400">
+                    <div className="mt-1 w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-red-400 text-sm">✕</span>
+                    </div>
+                    <p>Aucun support ni accompagnement</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* The JogadorPro Way */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="bg-gradient-to-br from-green-400/10 to-blue-400/10 backdrop-blur rounded-2xl p-8 border-2 border-green-400/50 relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-400/20 to-blue-400/20 blur-3xl"></div>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent mb-8 text-center relative">
+                  La Méthode <span className="font-black">JogadorPro</span>
+                </h3>
+                <div className="space-y-4 relative">
+                  <div className="flex items-start gap-4 text-gray-200">
+                    <div className="mt-1 w-6 h-6 rounded-full bg-green-400/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-green-400 text-sm font-bold">✓</span>
+                    </div>
+                    <p>Réussissez le Challenge et scalez vos picks sans limite</p>
+                  </div>
+                  <div className="flex items-start gap-4 text-gray-200">
+                    <div className="mt-1 w-6 h-6 rounded-full bg-green-400/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-green-400 text-sm font-bold">✓</span>
+                    </div>
+                    <p>Aucun capital personnel</p>
+                  </div>
+                  <div className="flex items-start gap-4 text-gray-200">
+                    <div className="mt-1 w-6 h-6 rounded-full bg-green-400/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-green-400 text-sm font-bold">✓</span>
+                    </div>
+                    <p>Suivi simple et clair de vos profits et paiements</p>
+                  </div>
+                  <div className="flex items-start gap-4 text-gray-200">
+                    <div className="mt-1 w-6 h-6 rounded-full bg-green-400/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-green-400 text-sm font-bold">✓</span>
+                    </div>
+                    <p>Paiements rapides</p>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -499,7 +558,7 @@ export default function Home() {
             >
               <h3 className="text-3xl font-bold mb-8 text-white flex items-center gap-3">
                 <span className="text-4xl">⚙️</span>
-                Règles de Trading
+                Règles du Challenge
               </h3>
               
               <div className="space-y-4">
@@ -542,7 +601,23 @@ export default function Home() {
                       <span>Gains max par jour:</span>
                       <span className="font-bold text-green-400">8% du capital initial</span>
                     </div>
-                    <p className="text-xs text-gray-400 mt-3">Limite à atteindre l&apos;objectif trop vite</p>
+                    <p className="text-xs text-gray-400 mt-3">Limite pour ne pas atteindre l&apos;objectif trop vite</p>
+                  </div>
+                </div>
+
+                {/* Trading Requirements */}
+                <div className="bg-gray-800 rounded-xl p-6 border-t-2 border-purple-400">
+                  <h4 className="text-xl font-bold text-purple-400 mb-4">📈 Exigences de Trading</h4>
+                  <div className="space-y-3 text-gray-300 text-sm">
+                    <div className="flex justify-between items-center bg-gray-900/50 p-3 rounded">
+                      <span>Picks minimum:</span>
+                      <span className="font-bold text-purple-400">20 par phase</span>
+                    </div>
+                    <div className="flex justify-between items-center bg-gray-900/50 p-3 rounded">
+                      <span>Jours actifs:</span>
+                      <span className="font-bold text-purple-400">15/31 jours minimum</span>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-3">Minimum 1 pick par jour actif requis</p>
                   </div>
                 </div>
               </div>
@@ -559,21 +634,21 @@ export default function Home() {
           >
             <h3 className="text-2xl font-bold text-red-400 mb-6 flex items-center gap-3">
               <span>⛔</span>
-              Conditions d'Échec Immédiat (Auto-Fail)
+              Conditions d&apos;Échec Immédiat (Auto-Fail)
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-3">
                 <div className="flex items-start gap-3 text-gray-300">
                   <span className="text-red-400 font-bold">❌</span>
                   <div>
-                    <p className="font-semibold">DD Journalier &gt; 5%</p>
+                    <p className="font-semibold">DD Journalier supérieur à 5%</p>
                     <p className="text-sm text-gray-400">Challenge échoué immédiatement</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 text-gray-300">
                   <span className="text-red-400 font-bold">❌</span>
                   <div>
-                    <p className="font-semibold">DD Total &gt; 10%</p>
+                    <p className="font-semibold">DD Total supérieur à 10%</p>
                     <p className="text-sm text-gray-400">Challenge échoué immédiatement</p>
                   </div>
                 </div>
@@ -589,7 +664,7 @@ export default function Home() {
                 <div className="flex items-start gap-3 text-gray-300">
                   <span className="text-red-400 font-bold">❌</span>
                   <div>
-                    <p className="font-semibold">Stake invalide (&lt;1% ou &gt;5%)</p>
+                    <p className="font-semibold">Stake invalide: moins de 1% ou plus de 5%</p>
                     <p className="text-sm text-gray-400">Pick refusé par le système</p>
                   </div>
                 </div>
@@ -598,89 +673,263 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-      <section className="py-20 px-6 bg-gradient-to-r from-green-400 via-blue-600 to-green-600 relative overflow-hidden">
-        {/* Gradient Background Effect */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-gray-800 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-800 rounded-full blur-3xl"></div>
+
+      {/* How It Works Section */}
+      <section className="py-24 px-6 bg-gray-900/50">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+              Comment ça Marche?
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Trois étapes simples pour commencer votre parcours
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {/* Step 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="relative"
+            >
+              <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 h-full hover:border-green-400/50 transition">
+                <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-to-r from-green-400 to-blue-400 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-xl">1</span>
+                </div>
+                <div className="text-center mt-4">
+                  <h3 className="text-2xl font-bold text-white mb-4">S&apos;inscrire</h3>
+                  <p className="text-gray-400">
+                    Créez votre compte gratuit et choisissez le challenge qui vous correspond
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Step 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 h-full hover:border-blue-400/50 transition">
+                <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-to-r from-green-400 to-blue-400 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-xl">2</span>
+                </div>
+                <div className="text-center mt-4">
+                  <h3 className="text-2xl font-bold text-white mb-4">Trader</h3>
+                  <p className="text-gray-400">
+                    Passez vos picks selon les règles du challenge en 31 jours
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Step 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="relative"
+            >
+              <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 h-full hover:border-green-400/50 transition">
+                <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-to-r from-green-400 to-blue-400 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-xl">3</span>
+                </div>
+                <div className="text-center mt-4">
+                  <h3 className="text-2xl font-bold text-white mb-4">Financé</h3>
+                  <p className="text-gray-400">
+                    Réussissez et accédez à votre compte financé avec profit sharing
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto text-center text-white relative z-10"
-        >
-          <motion.h2 
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-24 px-6 bg-gray-950">
+        <div className="max-w-6xl mx-auto">
+          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-4xl md:text-5xl font-bold mb-6"
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
           >
-            Prêt à commencer?
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="text-xl mb-8 opacity-90"
-          >
-            Rejoignez 500+ traders qui gagnent déjà avec JogadorPro
-          </motion.p>
+            <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+              Questions Fréquentes
+            </h2>
+            <p className="text-xl text-gray-300">
+              Trouvez les réponses à vos questions
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* FAQ Item 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-green-400/50 transition"
+            >
+              <h3 className="text-lg font-bold text-green-400 mb-3">⏱️ Combien de temps pour valider?</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Vous avez 31 jours calendaires pour atteindre l&apos;objectif profit requis. Une fois complété, votre compte financé est créé dans les 3 jours ouvrables.
+              </p>
+            </motion.div>
+
+            {/* FAQ Item 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-400/50 transition"
+            >
+              <h3 className="text-lg font-bold text-blue-400 mb-3">🔄 Puis-je retenter si j&apos;échoue?</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Absolument! Vous pouvez retenter le challenge autant de fois que vous le souhaitez. Nous vous donnons une chance illimitée de réussir et d&apos;accéder à votre compte financé.
+              </p>
+            </motion.div>
+
+            {/* FAQ Item 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-green-400/50 transition"
+            >
+              <h3 className="text-lg font-bold text-green-400 mb-3">💰 Comment sont versés les profits?</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Les profits sont versés tous les 30 jours une fois votre compte financé activé. Vous recevez votre part selon le profit sharing de votre tier (80/20 par défaut). Les paiements sont rapides et sécurisés.
+              </p>
+            </motion.div>
+
+            {/* FAQ Item 4 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-400/50 transition"
+            >
+              <h3 className="text-lg font-bold text-purple-400 mb-3">📊 Puis-je trader n&apos;importe quand?</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Oui! Il n&apos;y a pas de restrictions d&apos;horaires. Vous pouvez trader quand vous le souhaitez durant les 31 jours du challenge, tant que vous respectez les règles de stake et drawdown.
+              </p>
+            </motion.div>
+
+            {/* FAQ Item 5 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-pink-400/50 transition"
+            >
+              <h3 className="text-lg font-bold text-pink-400 mb-3">🎯 Qu&apos;est-ce qu&apos;un compte financé?</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Une fois vos phases validées, vous accédez à un compte avec capital réel. Vous tradez sur cet argent et partagez les profits générés selon votre tier (80/20).
+              </p>
+            </motion.div>
+
+            {/* FAQ Item 6 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-orange-400/50 transition"
+            >
+              <h3 className="text-lg font-bold text-orange-400 mb-3">❌ Qu&apos;est-ce qui me fait échouer?</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Dépassement du DD journalier (5%), DD total (10%), fin de la période sans atteindre l&apos;objectif, ou stake invalide. Les règles sont strictes pour votre propre protection.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 px-6">
+        <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.6, duration: 0.5 }}
+            transition={{ duration: 0.6 }}
+            className="bg-gradient-to-r from-green-400/10 to-blue-400/10 backdrop-blur border border-green-400/30 rounded-2xl p-12"
           >
-            <Link href="/signup">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button className="bg-gray-800 text-green-600 hover:bg-gray-100 text-lg px-8 py-6 font-semibold">
-                  Créer un compte maintenant
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Prêt à Commencer?
+            </h2>
+            <p className="text-gray-300 text-lg mb-8">
+              Rejoignez des milliers de traders qui font déjà confiance à JogadorPro
+            </p>
+            <div className="flex gap-4 justify-center">
+              <Link href="/signup">
+                <Button size="lg" className="bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-lg px-8">
+                  Créer un Compte
                 </Button>
-              </motion.div>
-            </Link>
+              </Link>
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-b from-gray-900 to-black text-gray-400 py-12 px-6">
+      <footer id="contact" className="bg-gray-950/95 border-t border-gray-800 py-12 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h4 className="text-white font-bold mb-4">JogadorPro</h4>
-              <p className="text-sm">La plateforme de prop trading pour les paris sportifs</p>
+              <h3 className="text-xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent mb-4">
+                JogadorPro
+              </h3>
+              <p className="text-gray-400 text-sm">
+                La plateforme de trading sportif la plus avancée du marché
+              </p>
             </div>
             <div>
-              <h4 className="text-white font-bold mb-4">Produit</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition">Challenges</a></li>
-                <li><a href="#" className="hover:text-white transition">Pricing</a></li>
-                <li><a href="#" className="hover:text-white transition">Dashboard</a></li>
+              <h4 className="text-white font-semibold mb-4">Produit</h4>
+              <ul className="space-y-2">
+                <li><a href="#features" className="text-gray-400 hover:text-green-400 transition text-sm">Features</a></li>
+                <li><a href="#pricing" className="text-gray-400 hover:text-green-400 transition text-sm">Pricing</a></li>
+                <li><Link href="/affiliate" className="text-gray-400 hover:text-green-400 transition text-sm">Affiliation</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-bold mb-4">Légal</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition">CGU</a></li>
-                <li><a href="#" className="hover:text-white transition">Confidentialité</a></li>
+              <h4 className="text-white font-semibold mb-4">Support</h4>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-gray-400 hover:text-green-400 transition text-sm">Documentation</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-green-400 transition text-sm">Guides</a></li>
+                <li><a href="#contact" className="text-gray-400 hover:text-green-400 transition text-sm">Contact</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-bold mb-4">Contact</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="mailto:support@jogadorpro.com" className="hover:text-white transition">support@jogadorpro.com</a></li>
+              <h4 className="text-white font-semibold mb-4">Légal</h4>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-gray-400 hover:text-green-400 transition text-sm">CGU</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-green-400 transition text-sm">Confidentialité</a></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-sm">
-            <p>&copy; 2026 JogadorPro. Tous les droits réservés.</p>
+          <div className="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
+            <p>© 2026 JogadorPro. Tous les droits réservés.</p>
           </div>
         </div>
       </footer>
