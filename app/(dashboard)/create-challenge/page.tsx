@@ -344,7 +344,7 @@ export default function CreateChallengePage() {
           <div>
             <h3 className="text-2xl font-bold mb-6 text-white flex items-center gap-3">
               <span className="text-3xl">⚙️</span>
-              Règles de Trading
+              Règles du Challenge
             </h3>
             
             <div className="space-y-4">
