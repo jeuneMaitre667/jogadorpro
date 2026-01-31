@@ -125,13 +125,14 @@ export default function CreateChallengePage() {
         body: JSON.stringify({ priceId }),
       })
 
-      const data = await res.json()
+      const data = await res.json().catch(() => ({}))
       if (data?.url) {
         window.location.href = data.url
         return
       }
 
-      setError(data?.error || 'Erreur lors du paiement')
+      const details = data?.details ? ` (${data.details})` : ''
+      setError(data?.error ? `${data.error}${details}` : 'Erreur lors du paiement')
     } catch (err) {
       console.error('Error creating checkout:', err)
       setError(err instanceof Error ? err.message : 'Erreur lors du paiement')

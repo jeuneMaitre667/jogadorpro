@@ -9,6 +9,7 @@ import { motion } from "framer-motion"
 
 export default function PricingPage() {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   const PRICE_IDS = {
     '1k': process.env.NEXT_PUBLIC_STRIPE_PRICE_1K,
@@ -19,7 +20,9 @@ export default function PricingPage() {
   const handleCheckout = async (plan: '1k' | '2_5k' | '5k') => {
     const priceId = PRICE_IDS[plan]
     if (!priceId) {
-      console.error(`Stripe priceId manquant pour le plan ${plan}`)
+      const msg = `Stripe priceId manquant pour le plan ${plan}`
+      console.error(msg)
+      setError(msg)
       return
     }
 
@@ -31,11 +34,14 @@ export default function PricingPage() {
         body: JSON.stringify({ priceId }),
       })
 
-      const data = await res.json()
+      const data = await res.json().catch(() => ({}))
       if (data?.url) {
         window.location.href = data.url
       } else {
-        console.error(data?.error || 'Erreur checkout')
+        const details = data?.details ? ` (${data.details})` : ''
+        const msg = data?.error ? `${data.error}${details}` : 'Erreur checkout'
+        console.error(msg)
+        setError(msg)
       }
     } finally {
       setLoadingPlan(null)
@@ -67,6 +73,11 @@ export default function PricingPage() {
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-7xl mx-auto text-center">
+          {error && (
+            <div className="mb-6 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
