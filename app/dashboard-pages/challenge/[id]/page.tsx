@@ -25,7 +25,7 @@ export default function ChallengeDetailPage() {
         // Check authentication
         const user = await authService.getUser()
         if (!user) {
-          router.push('/login')
+          router.push('/auth/login')
           return
         }
 

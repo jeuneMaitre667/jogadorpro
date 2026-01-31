@@ -70,13 +70,13 @@ export default function CreateChallengePage() {
       try {
         const user = await authService.getUser()
         if (!user) {
-          router.push('/login')
+          router.push('/auth/login')
           return
         }
         setUserId(user.id)
       } catch (err) {
         console.error('Auth check failed:', err)
-        router.push('/login')
+        router.push('/auth/login')
       }
     }
     checkAuth()

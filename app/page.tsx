@@ -20,7 +20,7 @@ export default function Home() {
             <a href="#faq" className="text-gray-300 hover:text-green-400 transition">FAQ</a>
             <a href="#contact" className="text-gray-300 hover:text-green-400 transition">Contact</a>
           </div>
-          <Link href="/login">
+          <Link href="/auth/login">
             <Button className="bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 shadow-lg hover:shadow-xl">
               Login
             </Button>

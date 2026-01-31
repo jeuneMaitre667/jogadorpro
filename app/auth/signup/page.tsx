@@ -149,7 +149,7 @@ export default function SignupPage() {
           {/* Footer */}
           <p className="text-center text-gray-600 mt-6">
             Vous avez déjà un compte?{' '}
-            <Link href="/login" className="text-green-600 hover:text-green-700 font-medium">
+            <Link href="/auth/login" className="text-green-600 hover:text-green-700 font-medium">
               Se connecter
             </Link>
           </p>
