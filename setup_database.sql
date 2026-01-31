@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 CREATE TABLE IF NOT EXISTS public.challenges (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  tier TEXT NOT NULL CHECK (tier IN ('demo', '1k', '5k')),
+  tier TEXT NOT NULL CHECK (tier IN ('demo', '1k', '2.5k', '5k')),
   price_paid DECIMAL(10, 2) NOT NULL,
   status TEXT DEFAULT 'active' CHECK (status IN ('active', 'completed', 'failed')),
   phase INTEGER DEFAULT 1 CHECK (phase IN (1, 2)),

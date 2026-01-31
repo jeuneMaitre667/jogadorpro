@@ -41,6 +41,21 @@ const tiers = [
     isDemo: false,
   },
   {
+    id: '2.5k',
+    name: '2.5K Challenge',
+    price: 89,
+    initialBalance: 2500,
+    targetProfitPhase1: 625, // 25% de 2500€
+    targetProfitPhase2: 750, // 30% de 2500€
+    maxDailyLoss: 125, // 5% du capital
+    maxTotalLoss: 250, // 10% du capital
+    maxDailyGain: 200, // 8% plafond gains journaliers
+    minPicks: 20,
+    minActiveDays: 15,
+    phaseDuration: 31,
+    isDemo: false,
+  },
+  {
     id: '5k',
     name: '5K Challenge',
     price: 139,
@@ -84,6 +99,7 @@ export default function CreateChallengePage() {
   const PRICE_IDS: Record<ChallengeTier, string | undefined> = {
     demo: process.env.NEXT_PUBLIC_STRIPE_PRICE_DEMO,
     '1k': process.env.NEXT_PUBLIC_STRIPE_PRICE_1K,
+    '2.5k': process.env.NEXT_PUBLIC_STRIPE_PRICE_2_5K,
     '5k': process.env.NEXT_PUBLIC_STRIPE_PRICE_5K,
   }
 

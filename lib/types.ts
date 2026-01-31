@@ -15,7 +15,7 @@ export interface User {
 }
 
 // Challenge
-export type ChallengeTier = 'demo' | '1k' | '5k'
+export type ChallengeTier = 'demo' | '1k' | '2.5k' | '5k'
 export type ChallengeStatus = 'active' | 'completed' | 'failed'
 export type ChallengePhase = 1 | 2
 

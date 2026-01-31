@@ -12,11 +12,11 @@ export default function PricingPage() {
 
   const PRICE_IDS = {
     '1k': process.env.NEXT_PUBLIC_STRIPE_PRICE_1K,
-    '2k': process.env.NEXT_PUBLIC_STRIPE_PRICE_2K,
+    '2_5k': process.env.NEXT_PUBLIC_STRIPE_PRICE_2_5K,
     '5k': process.env.NEXT_PUBLIC_STRIPE_PRICE_5K,
   }
 
-  const handleCheckout = async (plan: '1k' | '2k' | '5k') => {
+  const handleCheckout = async (plan: '1k' | '2_5k' | '5k') => {
     const priceId = PRICE_IDS[plan]
     if (!priceId) {
       console.error(`Stripe priceId manquant pour le plan ${plan}`)
@@ -194,7 +194,7 @@ export default function PricingPage() {
               </div>
             </motion.div>
 
-            {/* 2K Challenge */}
+            {/* 2.5K Challenge */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -203,7 +203,7 @@ export default function PricingPage() {
               className="bg-gray-800 rounded-2xl p-8 border border-gray-700 hover:border-purple-500 transition-all shadow-xl flex flex-col h-full"
             >
               <div className="text-center mb-8">
-                <h3 className="text-xl font-bold text-white mb-3">Challenge 2K</h3>
+                <h3 className="text-xl font-bold text-white mb-3">Challenge 2.5K</h3>
                 <p className="text-4xl font-bold text-purple-400 mb-2">€89</p>
               </div>
               
@@ -228,11 +228,11 @@ export default function PricingPage() {
 
               <div className="border-t border-gray-700 pt-6">
                 <Button
-                  onClick={() => handleCheckout('2k')}
-                  disabled={loadingPlan === '2k'}
+                  onClick={() => handleCheckout('2_5k')}
+                  disabled={loadingPlan === '2_5k'}
                   className="w-full bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-500 hover:to-pink-500 text-white font-semibold py-3"
                 >
-                  {loadingPlan === '2k' ? 'Redirection...' : 'Acheter maintenant'}
+                  {loadingPlan === '2_5k' ? 'Redirection...' : 'Acheter maintenant'}
                 </Button>
               </div>
             </motion.div>
@@ -294,7 +294,7 @@ export default function PricingPage() {
                       <th className="text-left py-4 px-4 text-gray-400 font-semibold">Caractéristiques</th>
                       <th className="text-center py-4 px-4 text-green-400 font-bold">Demo</th>
                       <th className="text-center py-4 px-4 text-green-400 font-bold">1K</th>
-                      <th className="text-center py-4 px-4 text-purple-400 font-bold">2K</th>
+                      <th className="text-center py-4 px-4 text-purple-400 font-bold">2.5K</th>
                       <th className="text-center py-4 px-4 text-blue-400 font-bold">5K</th>
                     </tr>
                   </thead>
@@ -303,7 +303,7 @@ export default function PricingPage() {
                       <td className="py-4 px-4 text-gray-300">Capital de départ</td>
                       <td className="text-center py-4 px-4 text-white font-semibold">€100</td>
                       <td className="text-center py-4 px-4 text-white font-semibold">€1,000</td>
-                      <td className="text-center py-4 px-4 text-white font-semibold">€2,000</td>
+                      <td className="text-center py-4 px-4 text-white font-semibold">€2,500</td>
                       <td className="text-center py-4 px-4 text-white font-semibold">€5,000</td>
                     </tr>
                     <tr className="border-b border-gray-700/50">
