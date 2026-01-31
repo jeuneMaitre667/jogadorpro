@@ -125,7 +125,7 @@ export default function Home() {
 
               <div className="border-t border-gray-700 pt-6">
                 <p className="text-3xl font-bold text-center mb-4 text-green-400">GRATUIT</p>
-                <Link href="/signup" className="block">
+                <Link href="/auth/signup" className="block">
                   <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white font-semibold py-3">
                     Essayer maintenant
                   </Button>
@@ -191,7 +191,7 @@ export default function Home() {
               </div>
 
               <div className="border-t border-gray-700 pt-6">
-                <Link href="/signup" className="block">
+                <Link href="/auth/signup" className="block">
                   <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white font-semibold py-3 shadow-lg">
                     Commencer maintenant
                   </Button>
@@ -252,7 +252,7 @@ export default function Home() {
               </div>
 
               <div className="border-t border-gray-700 pt-6">
-                <Link href="/signup" className="block">
+                <Link href="/auth/signup" className="block">
                   <Button className="w-full bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-500 hover:to-pink-500 text-white font-semibold py-3">
                     Commencer maintenant
                   </Button>
@@ -313,7 +313,7 @@ export default function Home() {
               </div>
 
               <div className="border-t border-gray-700 pt-6">
-                <Link href="/signup" className="block">
+                <Link href="/auth/signup" className="block">
                   <Button className="w-full bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-3">
                     Commencer maintenant
                   </Button>
@@ -882,7 +882,7 @@ export default function Home() {
               Rejoignez des milliers de traders qui font déjà confiance à JogadorPro
             </p>
             <div className="flex gap-4 justify-center">
-              <Link href="/signup">
+              <Link href="/auth/signup">
                 <Button size="lg" className="bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-lg px-8">
                   Créer un Compte
                 </Button>
