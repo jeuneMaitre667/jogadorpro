@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { HeroSection } from "@/components/HeroSection"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { ArrowRight } from "lucide-react"
 
 export default function Home() {
   return (
@@ -16,7 +17,7 @@ export default function Home() {
           </Link>
           <div className="hidden md:flex gap-8">
             <a href="#features" className="text-gray-300 hover:text-green-400 transition">Features</a>
-            <a href="#pricing" className="text-gray-300 hover:text-green-400 transition">Pricing</a>
+            <Link href="/pricing" className="text-gray-300 hover:text-green-400 transition">Pricing</Link>
             <a href="#faq" className="text-gray-300 hover:text-green-400 transition">FAQ</a>
             <a href="#contact" className="text-gray-300 hover:text-green-400 transition">Contact</a>
           </div>
@@ -322,12 +323,27 @@ export default function Home() {
             </motion.div>
           </div>
 
+          {/* View All Plans Button */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mt-12"
+          >
+            <Link href="/pricing">
+              <Button size="lg" variant="outline" className="text-lg px-8 border-green-500 text-green-400 hover:bg-green-500/10">
+                Voir tous les détails
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </motion.div>
+
           {/* Additional Info */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center text-gray-400 text-sm"
+            className="text-center text-gray-400 text-sm mt-8"
           >
             <p>Tous les prix sont des paiements uniques. Remboursement à 100% après réussite des phases.</p>
           </motion.div>
