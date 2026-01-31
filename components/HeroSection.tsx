@@ -56,17 +56,17 @@ export function HeroSection() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4 mb-12"
           >
-            <Link href="/_auth/signup">
+            <Link href="/auth/signup">
               <Button size="lg" className="gap-2 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white">
                 Commencer maintenant
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/_pricing">
+            <a href="#pricing">
               <Button size="lg" variant="outline">
                 Voir les tarifs
               </Button>
-            </Link>
+            </a>
           </motion.div>
 
           {/* Stats */}
