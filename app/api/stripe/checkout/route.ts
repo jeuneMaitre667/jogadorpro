@@ -41,13 +41,19 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url: session.url })
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error)
+    const stripeError = error as Stripe.StripeError
+    const errorMessage =
+      stripeError?.raw?.message ||
+      stripeError?.message ||
+      (error instanceof Error ? error.message : String(error))
+
     console.error('Stripe checkout error:', errorMessage)
     console.error('Full error:', error)
+
     return NextResponse.json(
-      { 
+      {
         error: 'Erreur création checkout',
-        details: errorMessage
+        details: errorMessage,
       },
       { status: 500 }
     )
