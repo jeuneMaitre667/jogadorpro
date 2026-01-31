@@ -61,37 +61,36 @@ export const challengeService = {
   /**
    * Crée un nouveau challenge
    */
-  async createChallenge(params: CreateChallengeParams): Promise<Challenge | null> {
-    try {
-      const { data, error } = await supabase
-        .from('challenges')
-        .insert([
-          {
-            user_id: params.userId,
-            tier: params.tier,
-            price_paid: params.pricePaid,
-            status: 'active',
-            phase: 1,
-            initial_balance: params.initialBalance,
-            current_balance: params.initialBalance,
-            target_profit: params.targetProfit,
-            max_daily_loss: params.maxDailyLoss,
-            max_total_loss: params.maxTotalLoss,
-          },
-        ])
-        .select()
-        .single()
+  async createChallenge(params: CreateChallengeParams): Promise<Challenge> {
+    const { data, error } = await supabase
+      .from('challenges')
+      .insert([
+        {
+          user_id: params.userId,
+          tier: params.tier,
+          price_paid: params.pricePaid,
+          status: 'active',
+          phase: 1,
+          initial_balance: params.initialBalance,
+          current_balance: params.initialBalance,
+          target_profit: params.targetProfit,
+          max_daily_loss: params.maxDailyLoss,
+          max_total_loss: params.maxTotalLoss,
+        },
+      ])
+      .select()
+      .single()
 
-      if (error) {
-        console.error('Error creating challenge:', error.message)
-        return null
-      }
-
-      return data
-    } catch (err: any) {
-      console.error('Error creating challenge:', err.message)
-      return null
+    if (error) {
+      console.error('Error creating challenge:', error.message)
+      throw new Error(error.message)
     }
+
+    if (!data) {
+      throw new Error('Aucune donnée retournée par Supabase')
+    }
+
+    return data
   },
 
   /**

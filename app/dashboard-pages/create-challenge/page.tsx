@@ -105,13 +105,8 @@ export default function CreateChallengePage() {
         maxTotalLoss: tier.maxTotalLoss,
       })
 
-      if (!newChallenge) {
-        setError('Erreur lors de la création du challenge')
-        return
-      }
-
       // Redirect to challenge details
-      router.push(`/dashboard/challenge/${newChallenge.id}`)
+      router.push(`/dashboard-pages/challenge/${newChallenge.id}`)
     } catch (err) {
       console.error('Error creating challenge:', err)
       setError(err instanceof Error ? err.message : 'Erreur lors de la création')
