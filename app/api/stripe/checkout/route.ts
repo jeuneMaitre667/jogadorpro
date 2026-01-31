@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url: session.url })
   } catch (error) {
-    const stripeError = error as Stripe.StripeError
+    const stripeError = error as { raw?: { message?: string }; message?: string }
     const errorMessage =
       stripeError?.raw?.message ||
       stripeError?.message ||
