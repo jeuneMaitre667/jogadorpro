@@ -61,6 +61,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
+                className="bg-white text-black placeholder-gray-400"
               />
             </div>
 
@@ -75,6 +76,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
+                className="bg-white text-black placeholder-gray-400"
               />
             </div>
 

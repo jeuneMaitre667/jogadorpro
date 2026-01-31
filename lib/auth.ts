@@ -47,16 +47,16 @@ export const authService = {
       }
 
       if (data.user) {
-        // Vérifier si l'utilisateur existe dans la table users
+        // Vérifier si l'utilisateur existe dans la table profiles
         const { data: existingUser, error: userError } = await supabase
-          .from('users')
+          .from('profiles')
           .select('id')
           .eq('id', data.user.id)
           .single()
 
         if (userError && userError.code === 'PGRST116') {
           // Utilisateur n'existe pas, le créer
-          await supabase.from('users').insert([
+          await supabase.from('profiles').insert([
             {
               id: data.user.id,
               email: data.user.email,
@@ -97,8 +97,8 @@ export const authService = {
       }
 
       if (authData.user) {
-        // Créer l'entrée dans la table users
-        const { error: userError } = await supabase.from('users').insert([
+        // Créer l'entrée dans la table profiles
+        const { error: userError } = await supabase.from('profiles').insert([
           {
             id: authData.user.id,
             email: authData.user.email,

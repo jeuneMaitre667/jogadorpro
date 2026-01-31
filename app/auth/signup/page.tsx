@@ -80,6 +80,7 @@ export default function SignupPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 disabled={loading}
+                className="bg-white text-black placeholder-gray-400"
               />
             </div>
 
@@ -94,6 +95,7 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
+                className="bg-white text-black placeholder-gray-400"
               />
             </div>
 
@@ -108,6 +110,7 @@ export default function SignupPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
+                className="bg-white text-black placeholder-gray-400"
               />
             </div>
 
@@ -122,6 +125,7 @@ export default function SignupPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={loading}
+                className="bg-white text-black placeholder-gray-400"
               />
             </div>
 
