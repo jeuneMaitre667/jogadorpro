@@ -2,15 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { authService } from '@/lib/auth'
 import Link from 'next/link'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -30,41 +25,15 @@ export default function LoginPage() {
       return
     }
 
-    try {
-      const { error: loginError, data } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
+    const { error: authError, success } = await authService.signIn(email, password)
 
-      if (loginError) throw loginError
-
-      // Vérifier si l'utilisateur existe dans la table users
-      if (data.user) {
-        const { data: existingUser } = await supabase
-          .from('users')
-          .select('id')
-          .eq('id', data.user.id)
-          .single()
-
-        // Si l'utilisateur n'existe pas dans la table users, le créer
-        if (!existingUser) {
-          await supabase.from('users').insert([
-            {
-              id: data.user.id,
-              email: data.user.email,
-              role: 'trader',
-              kyc_status: 'pending',
-            },
-          ])
-        }
-      }
-
-      router.push('/dashboard')
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de la connexion')
-    } finally {
+    if (!success) {
+      setError(authError || 'Erreur lors de la connexion')
       setLoading(false)
+      return
     }
+
+    router.push('/dashboard')
   }
 
   return (

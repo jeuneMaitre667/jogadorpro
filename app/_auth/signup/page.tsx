@@ -2,15 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { authService } from '@/lib/auth'
 import Link from 'next/link'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 export default function SignupPage() {
   const [email, setEmail] = useState('')
@@ -45,46 +40,19 @@ export default function SignupPage() {
       return
     }
 
-    try {
-      // Signup
-      const { data: authData, error: signupError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: fullName,
-          },
-        },
-      })
+    const { error: signupError, success } = await authService.signUp(
+      email,
+      password,
+      fullName
+    )
 
-      if (signupError) throw signupError
-
-      if (authData.user) {
-        // Créer l'entrée dans la table users
-        const { error: userError } = await supabase
-          .from('users')
-          .insert([
-            {
-              id: authData.user.id,
-              email: authData.user.email,
-              full_name: fullName,
-              role: 'trader',
-              kyc_status: 'pending',
-            },
-          ])
-
-        if (userError) {
-          console.error('Erreur lors de la création du profil utilisateur:', userError)
-          // On continue quand même vers le dashboard
-        }
-
-        router.push('/dashboard')
-      }
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de l\'inscription')
-    } finally {
+    if (!success) {
+      setError(signupError || "Erreur lors de l'inscription")
       setLoading(false)
+      return
     }
+
+    router.push('/dashboard')
   }
 
   return (
