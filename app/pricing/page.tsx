@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Check, X, ArrowRight, TrendingUp, Shield, Zap, Star } from "lucide-react"
@@ -7,6 +8,40 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 
 export default function PricingPage() {
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
+
+  const PRICE_IDS = {
+    '1k': process.env.NEXT_PUBLIC_STRIPE_PRICE_1K,
+    '2k': process.env.NEXT_PUBLIC_STRIPE_PRICE_2K,
+    '5k': process.env.NEXT_PUBLIC_STRIPE_PRICE_5K,
+  }
+
+  const handleCheckout = async (plan: '1k' | '2k' | '5k') => {
+    const priceId = PRICE_IDS[plan]
+    if (!priceId) {
+      console.error(`Stripe priceId manquant pour le plan ${plan}`)
+      return
+    }
+
+    try {
+      setLoadingPlan(plan)
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId }),
+      })
+
+      const data = await res.json()
+      if (data?.url) {
+        window.location.href = data.url
+      } else {
+        console.error(data?.error || 'Erreur checkout')
+      }
+    } finally {
+      setLoadingPlan(null)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
       {/* Navbar */}
@@ -149,11 +184,13 @@ export default function PricingPage() {
               </div>
 
               <div className="border-t border-gray-700 pt-6">
-                <Link href="/auth/signup" className="block">
-                  <Button className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white font-semibold py-3 shadow-lg">
-                    Acheter maintenant
-                  </Button>
-                </Link>
+                <Button
+                  onClick={() => handleCheckout('1k')}
+                  disabled={loadingPlan === '1k'}
+                  className="w-full bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white font-semibold py-3 shadow-lg"
+                >
+                  {loadingPlan === '1k' ? 'Redirection...' : 'Acheter maintenant'}
+                </Button>
               </div>
             </motion.div>
 
@@ -190,11 +227,13 @@ export default function PricingPage() {
               </div>
 
               <div className="border-t border-gray-700 pt-6">
-                <Link href="/auth/signup" className="block">
-                  <Button className="w-full bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-500 hover:to-pink-500 text-white font-semibold py-3">
-                    Acheter maintenant
-                  </Button>
-                </Link>
+                <Button
+                  onClick={() => handleCheckout('2k')}
+                  disabled={loadingPlan === '2k'}
+                  className="w-full bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-500 hover:to-pink-500 text-white font-semibold py-3"
+                >
+                  {loadingPlan === '2k' ? 'Redirection...' : 'Acheter maintenant'}
+                </Button>
               </div>
             </motion.div>
 
@@ -231,11 +270,13 @@ export default function PricingPage() {
               </div>
 
               <div className="border-t border-gray-700 pt-6">
-                <Link href="/auth/signup" className="block">
-                  <Button className="w-full bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-3">
-                    Acheter maintenant
-                  </Button>
-                </Link>
+                <Button
+                  onClick={() => handleCheckout('5k')}
+                  disabled={loadingPlan === '5k'}
+                  className="w-full bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-3"
+                >
+                  {loadingPlan === '5k' ? 'Redirection...' : 'Acheter maintenant'}
+                </Button>
               </div>
             </motion.div>
           </div>

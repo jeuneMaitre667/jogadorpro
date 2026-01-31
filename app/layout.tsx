@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://jogadorpro.vercel.app"),
   title: "JogadorPro - Prop Trading pour Paris Sportifs | Compte Financé jusqu'à €50K",
   description: "Plateforme de prop trading leader pour paris sportifs. Passez nos challenges, tradez avec notre capital (€100 à €50K) et gardez 80% des profits. Demo gratuit disponible.",
   keywords: ["prop trading", "paris sportifs", "compte financé", "trading sportif", "challenges trading", "FTMO sports betting", "profit share", "prop firm"],
