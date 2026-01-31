@@ -2,268 +2,278 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
+import { motion } from 'framer-motion'
+import { LineChart, Line, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { authService } from '@/lib/auth'
+import { supabase } from '@/lib/supabase'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+// Sample data for charts
+const chartData = [
+  { name: 'Jan', value: 4200 },
+  { name: 'Fév', value: 3800 },
+  { name: 'Mar', value: 2000 },
+  { name: 'Avr', value: 2780 },
+  { name: 'Mai', value: 1890 },
+  { name: 'Jun', value: 2390 },
+  { name: 'Jul', value: 3490 },
+]
+
+const pieData = [
+  { name: 'Demo', value: 30 },
+  { name: '1k', value: 40 },
+  { name: '5k', value: 20 },
+  { name: 'Elite', value: 10 },
+]
+
+const COLORS = ['#8B5CF6', '#10B981', '#3B82F6', '#F59E0B']
 
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null)
   const [challenges, setChallenges] = useState<any[]>([])
-  const [bets, setBets] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [totalBalance, setTotalBalance] = useState(0)
   const [totalProfit, setTotalProfit] = useState(0)
+  const [winsRate, setWinsRate] = useState(0)
+  const [activeFilter, setActiveFilter] = useState<'Actifs' | 'Complétés' | 'Échoués'>('Actifs')
   const router = useRouter()
 
   useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-      if (!user) {
-        router.push('/login')
-        return
-      }
-      setUser(user)
-
-      // Get active challenges
-      const { data: challengesData } = await supabase
-        .from('challenges')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('status', 'active')
-        .order('created_at', { ascending: false })
-
-      if (challengesData) {
-        setChallenges(challengesData)
-        
-        // Calculate totals
-        const balance = challengesData.reduce((sum, ch) => sum + ch.current_balance, 0)
-        const profit = challengesData.reduce((sum, ch) => sum + (ch.current_balance - ch.initial_balance), 0)
-        setTotalBalance(balance)
-        setTotalProfit(profit)
-      }
-
-      // Get recent bets
-      if (challengesData && challengesData.length > 0) {
-        const challengeIds = challengesData.map(ch => ch.id)
-        const { data: betsData } = await supabase
-          .from('bets')
-          .select('*')
-          .in('challenge_id', challengeIds)
-          .order('placed_at', { ascending: false })
-          .limit(10)
-
-        if (betsData) {
-          setBets(betsData)
+    const initDashboard = async () => {
+      try {
+        // Check authentication
+        const user = await authService.getUser()
+        if (!user) {
+          router.push('/auth/login')
+          return
         }
-      }
 
-      setLoading(false)
+        setUser(user)
+
+        // Get active challenges
+        const { data: challengesData } = await supabase
+          .from('challenges')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+
+        if (challengesData) {
+          setChallenges(challengesData)
+
+          // Calculate totals
+          const activeChallenges = challengesData.filter(ch => ch.status === 'active')
+          const balance = activeChallenges.reduce((sum, ch) => sum + (ch.current_balance || 0), 0)
+          const profit = activeChallenges.reduce((sum, ch) => sum + ((ch.current_balance || 0) - (ch.initial_balance || 0)), 0)
+          
+          setTotalBalance(balance)
+          setTotalProfit(profit)
+          setWinsRate(Math.floor(Math.random() * 100)) // Placeholder: 0-100%
+        }
+
+        setLoading(false)
+      } catch (err) {
+        console.error('Error loading dashboard:', err)
+        setLoading(false)
+      }
     }
 
-    getUser()
+    initDashboard()
   }, [router])
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
+    await authService.signOut()
     router.push('/')
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Chargement...</p>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-950 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center"
+        >
+          <div className="animate-spin w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full mx-auto mb-4" />
+          <p className="text-gray-300">Chargement du dashboard...</p>
+        </motion.div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-950">
       {/* Navbar */}
-      <nav className="bg-white border-b border-gray-200">
+      <nav className="border-b border-gray-800 bg-gray-900/50 backdrop-blur">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">
             JogadorPro
-          </Link>
+          </h1>
+          <div className="text-center flex-1 mx-4">
+            <p className="text-gray-300">Solde: <span className="font-bold text-emerald-400">€{totalBalance.toLocaleString()}</span></p>
+          </div>
           <div className="flex items-center gap-4">
-            <span className="text-gray-700">{user?.email}</span>
-            <Button
+            <span className="text-gray-400">{user?.email}</span>
+            <button
               onClick={handleLogout}
-              variant="outline"
+              className="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 transition"
             >
-              Se déconnecter
-            </Button>
+              Déconnecter
+            </button>
           </div>
         </div>
       </nav>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-12">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-4xl font-bold mb-2">Dashboard 📊</h1>
-            <p className="text-gray-600">Bienvenue, {user?.email}!</p>
-          </div>
-          <Button
-            onClick={() => router.push('/dashboard/create-challenge')}
-            className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-6 py-6"
+        <h2 className="text-4xl font-bold text-gray-100 mb-2">Bienvenue {user?.email?.split('@')[0]} ! 👋</h2>
+        <p className="text-gray-500 mb-12">Voici vos statistiques et vos challenges</p>
+
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {[
+            { label: '💰 Portefeuille', value: `€${totalBalance.toLocaleString()}`, desc: `${challenges.filter(c => c.status === 'active').length} actifs` },
+            { label: '📊 P&L Total', value: `${totalProfit >= 0 ? '+' : ''}€${totalProfit.toLocaleString()}`, desc: `${totalProfit >= 0 ? '+' : ''}${totalBalance > 0 ? Math.floor(totalProfit / totalBalance * 100) : 0}% /mois` },
+            { label: '⚡ Wins Rate', value: `${winsRate}%`, desc: `${Math.floor(winsRate * 0.3)}/29 trades` },
+          ].map((kpi, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 hover:border-emerald-500/50 hover:bg-gray-800/70 transition"
+            >
+              <p className="text-gray-400 text-sm mb-3">{kpi.label}</p>
+              <p className="text-3xl font-bold text-gray-100 mb-1">{kpi.value}</p>
+              <p className="text-gray-500 text-sm">{kpi.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Charts Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+          {/* Line Chart */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="bg-gray-800/50 border border-gray-700 rounded-xl p-6"
           >
-            + Créer un Challenge
-          </Button>
-        </div>
-
-        {/* Stats Cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-8 border border-green-200">
-            <p className="text-gray-600 text-sm font-semibold">Challenges Actifs</p>
-            <p className="text-4xl font-bold text-green-600 mt-4">{challenges.length}</p>
-          </div>
-
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-8 border border-blue-200">
-            <p className="text-gray-600 text-sm font-semibold">Solde Total</p>
-            <p className="text-4xl font-bold text-blue-600 mt-4">
-              €{totalBalance.toLocaleString('fr-FR', { maximumFractionDigits: 2 })}
-            </p>
-          </div>
-
-          <div className={`bg-gradient-to-br rounded-lg p-8 border ${
-            totalProfit >= 0
-              ? 'from-purple-50 to-purple-100 border-purple-200'
-              : 'from-red-50 to-red-100 border-red-200'
-          }`}>
-            <p className="text-gray-600 text-sm font-semibold">Profit/Loss</p>
-            <p className={`text-4xl font-bold mt-4 ${
-              totalProfit >= 0 ? 'text-purple-600' : 'text-red-600'
-            }`}>
-              {totalProfit >= 0 ? '+' : ''}€{totalProfit.toLocaleString('fr-FR', { maximumFractionDigits: 2 })}
-            </p>
-          </div>
-        </div>
-
-        {/* Challenges Section */}
-        <div className="bg-white rounded-lg shadow p-8 mb-8">
-          <h2 className="text-2xl font-bold mb-6">Vos Challenges</h2>
-          {challenges.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600 mb-6">Vous n'avez pas de challenge actif</p>
-              <Button
-                onClick={() => router.push('/dashboard/create-challenge')}
-                className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
-              >
-                Créer votre premier challenge
-              </Button>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-gray-100">📈 Courbe de Performance</h3>
+              <div className="flex gap-2">
+                {['Daily', 'Weekly', 'All'].map((period) => (
+                  <button
+                    key={period}
+                    className="px-3 py-1 text-sm rounded-lg bg-gray-700/50 hover:bg-emerald-500/20 text-gray-300 hover:text-emerald-400 transition"
+                  >
+                    {period}
+                  </button>
+                ))}
+              </div>
             </div>
-          ) : (
-            <div className="grid md:grid-cols-2 gap-6">
-              {challenges.map((challenge) => {
-                const progress = ((challenge.current_balance - challenge.initial_balance) / challenge.target_profit) * 100
-                const daysElapsed = Math.floor((Date.now() - new Date(challenge.start_date).getTime()) / (1000 * 60 * 60 * 24))
-                
-                return (
-                  <Link key={challenge.id} href={`/dashboard/challenge/${challenge.id}`}>
-                    <div className="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition cursor-pointer">
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <h3 className="text-xl font-bold capitalize">{challenge.tier} Challenge</h3>
-                          <p className="text-sm text-gray-600">Phase {challenge.phase}</p>
-                        </div>
-                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                          challenge.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                        }`}>
-                          {challenge.status.charAt(0).toUpperCase() + challenge.status.slice(1)}
-                        </span>
-                      </div>
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis stroke="#6B7280" />
+                <YAxis stroke="#6B7280" />
+                <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: 'none', borderRadius: '8px' }} />
+                <Line type="monotone" dataKey="value" stroke="#10B981" strokeWidth={2} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </motion.div>
 
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-sm text-gray-600">Current Balance</p>
-                          <p className="text-2xl font-bold">€{challenge.current_balance.toLocaleString('fr-FR', { maximumFractionDigits: 2 })}</p>
-                        </div>
-
-                        <div>
-                          <div className="flex justify-between mb-2">
-                            <p className="text-sm text-gray-600">Progress vers Target</p>
-                            <p className="text-sm font-semibold">{Math.min(Math.round(progress), 100)}%</p>
-                          </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div
-                              className="bg-gradient-to-r from-green-600 to-blue-600 h-2 rounded-full transition-all"
-                              style={{ width: `${Math.min(progress, 100)}%` }}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div>
-                            <p className="text-gray-600">Target Profit</p>
-                            <p className="font-semibold">€{challenge.target_profit}</p>
-                          </div>
-                          <div>
-                            <p className="text-gray-600">Days Elapsed</p>
-                            <p className="font-semibold">{daysElapsed}/60</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Recent Bets Section */}
-        {bets.length > 0 && (
-          <div className="bg-white rounded-lg shadow p-8">
-            <h2 className="text-2xl font-bold mb-6">Derniers Paris</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Sport</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Événement</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Cote</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Mise</th>
-                    <th className="text-left py-4 px-4 text-gray-600 font-semibold">Statut</th>
-                    <th className="text-right py-4 px-4 text-gray-600 font-semibold">P&L</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bets.map((bet) => (
-                    <tr key={bet.id} className="border-b border-gray-100 hover:bg-gray-50">
-                      <td className="py-4 px-4 capitalize">{bet.sport}</td>
-                      <td className="py-4 px-4 text-sm">{bet.event_description}</td>
-                      <td className="py-4 px-4 font-semibold">{bet.odds.toFixed(2)}</td>
-                      <td className="py-4 px-4">€{bet.stake.toFixed(2)}</td>
-                      <td className="py-4 px-4">
-                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                          bet.result === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                          bet.result === 'won' ? 'bg-green-100 text-green-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
-                          {bet.result.charAt(0).toUpperCase() + bet.result.slice(1)}
-                        </span>
-                      </td>
-                      <td className={`py-4 px-4 text-right font-bold ${
-                        bet.profit_loss === null ? 'text-gray-600' :
-                        bet.profit_loss >= 0 ? 'text-green-600' : 'text-red-600'
-                      }`}>
-                        {bet.profit_loss === null ? '—' : `${bet.profit_loss >= 0 ? '+' : ''}€${bet.profit_loss.toFixed(2)}`}
-                      </td>
-                    </tr>
+          {/* Pie Chart */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="bg-gray-800/50 border border-gray-700 rounded-xl p-6"
+          >
+            <h3 className="text-xl font-bold text-gray-100 mb-6">🎯 Allocation par Tier</h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie data={pieData} cx="50%" cy="50%" labelLine={false} label={({ name, value }) => `${name}: ${value}%`} outerRadius={80} fill="#8884d8" dataKey="value">
+                  {pieData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
-                </tbody>
-              </table>
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+          </motion.div>
+        </div>
+
+        {/* Challenges Table */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className="bg-gray-800/50 border border-gray-700 rounded-xl p-6"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-bold text-gray-100">🚀 CHALLENGES</h3>
+            <div className="flex gap-2">
+              {(['Actifs', 'Complétés', 'Échoués'] as const).map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`px-3 py-1 text-sm rounded-lg transition ${
+                    activeFilter === filter
+                      ? 'bg-emerald-500/30 text-emerald-400 border border-emerald-500/50'
+                      : 'bg-gray-700/50 hover:bg-emerald-500/20 text-gray-400 hover:text-emerald-400'
+                  }`}
+                >
+                  {filter}
+                </button>
+              ))}
             </div>
           </div>
-        )}
+          <div className="space-y-3">
+            {challenges.length > 0 ? (
+              challenges.map((challenge, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="flex items-center justify-between p-4 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 transition cursor-pointer"
+                  onClick={() => router.push(`/dashboard-pages/challenge/${challenge.id}`)}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">
+                      {challenge.tier === '1k' ? '🎯' : challenge.tier === '5k' ? '📈' : '💎'}
+                    </span>
+                    <span className="text-gray-200 font-semibold">
+                      {challenge.tier} Challenge
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-12">
+                    <span className="text-gray-400">
+                      Compte: €{(challenge.current_balance || 0).toLocaleString()}
+                    </span>
+                    <span className={
+                      (challenge.current_balance || 0) >= (challenge.initial_balance || 0)
+                        ? 'text-emerald-400 font-semibold'
+                        : 'text-red-400 font-semibold'
+                    }>
+                      Rendement: {((challenge.current_balance || 0) - (challenge.initial_balance || 0)) >= 0 ? '+' : ''}
+                      {totalBalance > 0 ? Math.floor(((challenge.current_balance || 0) - (challenge.initial_balance || 0)) / (challenge.initial_balance || 1) * 100) : 0}%
+                    </span>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-400 mb-4">Aucun challenge pour le moment</p>
+                <Link href="/dashboard-pages/create-challenge" className="text-emerald-400 hover:text-emerald-300">
+                  Créer un challenge →
+                </Link>
+              </div>
+            )}
+          </div>
+          <Link href="/dashboard-pages/create-challenge">
+            <button className="mt-6 px-6 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white font-semibold transition">
+              + CRÉER UN CHALLENGE
+            </button>
+          </Link>
+        </motion.div>
       </main>
     </div>
   )
