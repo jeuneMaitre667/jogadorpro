@@ -2,14 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+import { LoadingSpinner } from '@/components/LoadingSpinner'
+import { authService } from '@/lib/auth'
+import { challengeService } from '@/lib/challenges'
+import type { ChallengeTier } from '@/lib/types'
 
 const tiers = [
   {
@@ -61,7 +59,7 @@ const tiers = [
 ]
 
 export default function CreateChallengePage() {
-  const [selectedTier, setSelectedTier] = useState<string | null>(null)
+  const [selectedTier, setSelectedTier] = useState<ChallengeTier | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [userId, setUserId] = useState<string | null>(null)
@@ -69,14 +67,17 @@ export default function CreateChallengePage() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-      if (!user) {
+      try {
+        const user = await authService.getUser()
+        if (!user) {
+          router.push('/login')
+          return
+        }
+        setUserId(user.id)
+      } catch (err) {
+        console.error('Auth check failed:', err)
         router.push('/login')
-        return
       }
-      setUserId(user.id)
     }
     checkAuth()
   }, [router])
@@ -94,36 +95,25 @@ export default function CreateChallengePage() {
     setError(null)
 
     try {
-      const { data, error: insertError } = await supabase
-        .from('challenges')
-        .insert([
-          {
-            user_id: userId,
-            tier: selectedTier,
-            price_paid: tier.price,
-            status: 'active',
-            phase: 1,
-            initial_balance: tier.initialBalance,
-            current_balance: tier.initialBalance,
-            target_profit: tier.targetProfitPhase1,
-            max_daily_loss: tier.maxDailyLoss,
-            max_total_loss: tier.maxTotalLoss,
-          },
-        ])
-        .select()
+      const newChallenge = await challengeService.createChallenge({
+        userId: userId,
+        tier: selectedTier,
+        pricePaid: tier.price,
+        initialBalance: tier.initialBalance,
+        targetProfit: tier.targetProfitPhase1,
+        maxDailyLoss: tier.maxDailyLoss,
+        maxTotalLoss: tier.maxTotalLoss,
+      })
 
-      if (insertError) {
-        setError(insertError.message)
+      if (!newChallenge) {
+        setError('Erreur lors de la création du challenge')
         return
       }
 
       // Redirect to challenge details
-      if (data && data[0]) {
-        router.push(`/dashboard/challenge/${data[0].id}`)
-      } else {
-        router.push('/dashboard')
-      }
+      router.push(`/dashboard/challenge/${newChallenge.id}`)
     } catch (err) {
+      console.error('Error creating challenge:', err)
       setError(err instanceof Error ? err.message : 'Erreur lors de la création')
     } finally {
       setLoading(false)
@@ -132,6 +122,8 @@ export default function CreateChallengePage() {
 
   return (
     <div className="min-h-screen bg-gray-800">
+      {loading && <LoadingSpinner message="Création du challenge..." />}
+
       {/* Navbar */}
       <nav className="bg-gray-800 border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -169,7 +161,7 @@ export default function CreateChallengePage() {
           {tiers.map((tier) => (
             <div
               key={tier.id}
-              onClick={() => setSelectedTier(tier.id)}
+              onClick={() => setSelectedTier(tier.id as ChallengeTier)}
               className={`rounded-xl p-8 cursor-pointer transition-all duration-300 border-2 ${
                 selectedTier === tier.id
                   ? 'border-green-600 bg-gradient-to-br from-green-900/30 to-blue-900/30 shadow-2xl'

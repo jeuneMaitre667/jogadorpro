@@ -9,8 +9,11 @@ import { Challenge, ChallengeTier, ApiResponse, ApiListResponse } from './types'
 interface CreateChallengeParams {
   userId: string
   tier: ChallengeTier
+  pricePaid: number
   initialBalance: number
   targetProfit: number
+  maxDailyLoss: number
+  maxTotalLoss: number
 }
 
 export const challengeService = {
@@ -66,13 +69,14 @@ export const challengeService = {
           {
             user_id: params.userId,
             tier: params.tier,
+            price_paid: params.pricePaid,
             status: 'active',
             phase: 1,
             initial_balance: params.initialBalance,
             current_balance: params.initialBalance,
             target_profit: params.targetProfit,
-            max_daily_loss: Math.floor(params.initialBalance * 0.05),
-            max_total_loss: Math.floor(params.initialBalance * 0.1),
+            max_daily_loss: params.maxDailyLoss,
+            max_total_loss: params.maxTotalLoss,
           },
         ])
         .select()

@@ -2,76 +2,57 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+import { LoadingSpinner } from '@/components/LoadingSpinner'
+import { authService } from '@/lib/auth'
+import { challengeService } from '@/lib/challenges'
+import { betsService } from '@/lib/bets'
+import type { Challenge, Bet } from '@/lib/types'
 
 export default function ChallengeDetailPage() {
   const params = useParams()
   const challengeId = params.id as string
-  const [challenge, setChallenge] = useState<any>(null)
-  const [bets, setBets] = useState<any[]>([])
+  const [challenge, setChallenge] = useState<Challenge | null>(null)
+  const [bets, setBets] = useState<Bet[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
   useEffect(() => {
-    const loadChallenge = async () => {
+    const initChallenge = async () => {
       try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser()
+        // Check authentication
+        const user = await authService.getUser()
         if (!user) {
           router.push('/login')
           return
         }
 
-        // Get challenge
-        const { data: challengeData, error: challengeError } = await supabase
-          .from('challenges')
-          .select('*')
-          .eq('id', challengeId)
-          .eq('user_id', user.id)
-          .single()
-
-        if (challengeError || !challengeData) {
+        // Load challenge data
+        const challengeData = await challengeService.getChallengeById(challengeId, user.id)
+        if (!challengeData) {
           setError('Challenge non trouvé')
           return
         }
-
         setChallenge(challengeData)
 
-        // Get bets for this challenge
-        const { data: betsData } = await supabase
-          .from('bets')
-          .select('*')
-          .eq('challenge_id', challengeId)
-          .order('placed_at', { ascending: false })
-
-        if (betsData) {
-          setBets(betsData)
-        }
+        // Load bets for this challenge
+        const betsData = await betsService.getBetsByChallenge(challengeId)
+        setBets(betsData || [])
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Erreur')
+        console.error('Error loading challenge:', err)
+        setError(err instanceof Error ? err.message : 'Erreur lors du chargement')
       } finally {
         setLoading(false)
       }
     }
 
-    loadChallenge()
+    initChallenge()
   }, [challengeId, router])
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Chargement...</p>
-      </div>
-    )
+    return <LoadingSpinner message="Chargement du challenge..." />
   }
 
   if (error || !challenge) {
@@ -86,7 +67,9 @@ export default function ChallengeDetailPage() {
   }
 
   const progress = ((challenge.current_balance - challenge.initial_balance) / challenge.target_profit) * 100
-  const daysElapsed = Math.floor((Date.now() - new Date(challenge.start_date).getTime()) / (1000 * 60 * 60 * 24))
+  const daysElapsed = challenge.start_date 
+    ? Math.floor((Date.now() - new Date(challenge.start_date).getTime()) / (1000 * 60 * 60 * 24))
+    : 0
   const wonBets = bets.filter(b => b.result === 'won').length
   const lostBets = bets.filter(b => b.result === 'lost').length
   const pendingBets = bets.filter(b => b.result === 'pending').length
@@ -243,10 +226,10 @@ export default function ChallengeDetailPage() {
                         </span>
                       </td>
                       <td className={`py-4 px-4 text-right font-bold ${
-                        bet.profit_loss === null ? 'text-gray-600' :
+                        bet.profit_loss === null || bet.profit_loss === undefined ? 'text-gray-600' :
                         bet.profit_loss >= 0 ? 'text-green-600' : 'text-red-600'
                       }`}>
-                        {bet.profit_loss === null ? '—' : `${bet.profit_loss >= 0 ? '+' : ''}€${bet.profit_loss.toFixed(2)}`}
+                        {bet.profit_loss === null || bet.profit_loss === undefined ? '—' : `${bet.profit_loss >= 0 ? '+' : ''}€${bet.profit_loss.toFixed(2)}`}
                       </td>
                     </tr>
                   ))}
