@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { authService } from '@/lib/auth'
-import { challengeService } from '@/lib/challenges'
 import type { ChallengeTier } from '@/lib/types'
 
 const tiers = [
@@ -82,34 +81,44 @@ export default function CreateChallengePage() {
     checkAuth()
   }, [router])
 
-  const handleCreateChallenge = async () => {
+  const PRICE_IDS: Record<ChallengeTier, string | undefined> = {
+    demo: process.env.NEXT_PUBLIC_STRIPE_PRICE_DEMO,
+    '1k': process.env.NEXT_PUBLIC_STRIPE_PRICE_1K,
+    '5k': process.env.NEXT_PUBLIC_STRIPE_PRICE_5K,
+  }
+
+  const handleCheckout = async () => {
     if (!selectedTier || !userId) {
       setError('Veuillez sélectionner un tier')
       return
     }
 
-    const tier = tiers.find((t) => t.id === selectedTier)
-    if (!tier) return
+    const priceId = PRICE_IDS[selectedTier]
+    if (!priceId) {
+      setError('Paiement indisponible pour ce plan (priceId manquant)')
+      return
+    }
 
     setLoading(true)
     setError(null)
 
     try {
-      const newChallenge = await challengeService.createChallenge({
-        userId: userId,
-        tier: selectedTier,
-        pricePaid: tier.price,
-        initialBalance: tier.initialBalance,
-        targetProfit: tier.targetProfitPhase1,
-        maxDailyLoss: tier.maxDailyLoss,
-        maxTotalLoss: tier.maxTotalLoss,
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId }),
       })
 
-      // Redirect to challenge details
-      router.push(`/dashboard-pages/challenge/${newChallenge.id}`)
+      const data = await res.json()
+      if (data?.url) {
+        window.location.href = data.url
+        return
+      }
+
+      setError(data?.error || 'Erreur lors du paiement')
     } catch (err) {
-      console.error('Error creating challenge:', err)
-      setError(err instanceof Error ? err.message : 'Erreur lors de la création')
+      console.error('Error creating checkout:', err)
+      setError(err instanceof Error ? err.message : 'Erreur lors du paiement')
     } finally {
       setLoading(false)
     }
@@ -424,11 +433,11 @@ export default function CreateChallengePage() {
         {/* CTA */}
         <div className="flex gap-4">
           <Button
-            onClick={handleCreateChallenge}
+            onClick={handleCheckout}
             disabled={!selectedTier || loading}
             className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-6 text-lg font-semibold"
           >
-            {loading ? 'Création en cours...' : 'Confirmer et Créer le Challenge'}
+            {loading ? 'Redirection...' : 'Acheter un Challenge'}
           </Button>
           <Button
             onClick={() => router.push('/dashboard')}
