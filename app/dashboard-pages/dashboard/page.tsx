@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Home, TrendingUp, Trophy, Target, DollarSign, Settings, LogOut, Bell } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { createClient } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 
 interface Challenge {
   id: string
@@ -32,7 +32,6 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const supabase = createClient()
       const { data: { user: authUser } } = await supabase.auth.getUser()
       
       if (!authUser) {
