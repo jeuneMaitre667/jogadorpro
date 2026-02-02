@@ -58,7 +58,7 @@ export default function SignupPage() {
       console.log('✅ User stored in localStorage:', user)
     }
 
-    router.push('/dashboard')
+    router.push('/dashboard-pages/dashboard')
   }
 
   return (

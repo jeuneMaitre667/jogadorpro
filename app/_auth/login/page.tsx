@@ -39,7 +39,7 @@ export default function LoginPage() {
       console.log('✅ User stored in localStorage:', user)
     }
 
-    router.push('/dashboard')
+    router.push('/dashboard-pages/dashboard')
   }
 
   return (
