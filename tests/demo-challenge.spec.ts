@@ -28,7 +28,7 @@ test.describe('Demo Challenge Creation Flow', () => {
     console.log('✓ Selected DEMO tier')
 
     // Find and click the "Acheter un Challenge" button
-    const buyButton = page.locator('button:has-text("Acheter un Challenge")')
+    const buyButton = page.locator('button', { hasText: 'Acheter un Challenge' }).first()
     await expect(buyButton).toBeEnabled({ timeout: 5000 })
     await buyButton.click()
     console.log('✓ Clicked "Acheter un Challenge" button')
