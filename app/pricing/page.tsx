@@ -429,7 +429,7 @@ export default function PricingPage() {
 
             <details className="bg-gray-800/50 backdrop-blur rounded-lg border border-gray-700 p-6">
               <summary className="text-lg font-semibold text-white cursor-pointer">
-                Puis-je trader sur tous les sports ?
+                Puis-je jouer sur tous les sports ?
               </summary>
               <p className="mt-4 text-gray-400">
                 Oui ! Football, Basketball, Tennis, MMA, eSports... Tous les sports sont autorisés tant que vous respectez les règles de gestion du risque.
@@ -473,7 +473,7 @@ export default function PricingPage() {
             Prêt à Commencer Votre Challenge ?
           </h2>
           <p className="text-gray-300 text-lg mb-8">
-            Rejoignez des milliers de traders qui font déjà confiance à JogadorPro
+            Rejoignez des milliers de joueurs qui font déjà confiance à JogadorPro
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link href="/auth/signup">

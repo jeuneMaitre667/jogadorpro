@@ -28,13 +28,13 @@ export async function GET(req: NextRequest) {
     const matches = await fetchMatchesMultipleSports()
     console.log('[DEBUG] Fetched matches count:', matches.length)
 
-    // Filter matches: only next 48 hours
-    const now48h = new Date(Date.now() + 48 * 60 * 60 * 1000)
+    // Filter matches: only next 7 days (168 hours)
+    const now7days = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     const filteredMatches = matches.filter(match => {
-      return match.commenceTime <= now48h
+      return match.commenceTime <= now7days
     })
 
-    console.log('[DEBUG] Filtered to 48h:', filteredMatches.length)
+    console.log('[DEBUG] Filtered to 7 days:', filteredMatches.length)
 
     // Sort by commence time (soonest first)
     filteredMatches.sort((a, b) => 

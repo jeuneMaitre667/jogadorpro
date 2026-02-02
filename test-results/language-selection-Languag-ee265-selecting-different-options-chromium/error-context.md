@@ -1,0 +1,48 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - button [ref=e5]:
+        - img [ref=e6]
+      - heading "Settings" [level=1] [ref=e8]
+      - paragraph [ref=e9]: Manage your account and check your challenges
+    - generic [ref=e10]:
+      - generic [ref=e12]:
+        - button "Challenge Info" [ref=e13]:
+          - img [ref=e14]
+          - generic [ref=e17]: Challenge Info
+        - button "Personal Information" [ref=e18]:
+          - img [ref=e19]
+          - generic [ref=e22]: Personal Information
+        - button "Social Networks" [ref=e23]:
+          - img [ref=e24]
+          - generic [ref=e27]: Social Networks
+        - button "Language" [ref=e28]:
+          - img [ref=e29]
+          - generic [ref=e32]: Language
+        - button "Odds Format" [ref=e33]:
+          - img [ref=e34]
+          - generic [ref=e37]: Odds Format
+        - button "Documents" [ref=e38]:
+          - img [ref=e39]
+          - generic [ref=e42]: Documents
+      - generic [ref=e44]:
+        - heading "Challenge Info" [level=2] [ref=e45]
+        - generic [ref=e48]:
+          - paragraph [ref=e49]: 📊 General Statistics
+          - generic [ref=e50]:
+            - generic [ref=e51]:
+              - paragraph [ref=e52]: Total
+              - paragraph [ref=e53]: "1"
+            - generic [ref=e54]:
+              - paragraph [ref=e55]: Active
+              - paragraph [ref=e56]: "0"
+            - generic [ref=e57]:
+              - paragraph [ref=e58]: Failed
+              - paragraph [ref=e59]: "1"
+  - button "Open Next.js Dev Tools" [ref=e65] [cursor=pointer]:
+    - img [ref=e66]
+  - alert [ref=e69]
+```

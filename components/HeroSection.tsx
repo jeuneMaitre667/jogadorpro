@@ -35,7 +35,7 @@ export function HeroSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent"
           >
-            Tradez avec du capital réel<br />Gardez 80% des profits
+            Jouez avec du capital réel<br />Gardez 80% des profits
           </motion.h1>
 
           {/* Description */}
@@ -46,7 +46,7 @@ export function HeroSection() {
             className="text-lg md:text-xl text-gray-600 max-w-2xl mb-8"
           >
             JogadorPro est la plateforme de prop trading leader pour les paris sportifs. 
-            Passez nos challenges, prouvez vos compétences et tradez avec jusqu'à €50,000.
+            Passez nos challenges, prouvez vos compétences et jouez avec jusqu'à €50,000.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -82,7 +82,7 @@ export function HeroSection() {
             </div>
             <div className="text-center">
               <div className="text-2xl md:text-3xl font-bold text-blue-600">5,000+</div>
-              <div className="text-sm text-gray-600">Traders actifs</div>
+              <div className="text-sm text-gray-600">Joueurs actifs</div>
             </div>
             <div className="text-center">
               <div className="text-2xl md:text-3xl font-bold text-purple-600">80%</div>

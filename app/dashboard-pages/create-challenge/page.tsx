@@ -167,8 +167,8 @@ export default function CreateChallengePage() {
           return
         }
 
-        // Challenge created successfully, redirect to matches/odds
-        router.push('/dashboard-pages/place-pick')
+        // Challenge created successfully, redirect to dashboard
+        router.push('/dashboard-pages/dashboard')
         return
       }
 
@@ -212,7 +212,7 @@ export default function CreateChallengePage() {
             JogadorPro
           </Link>
           <Button
-            onClick={() => router.push('/dashboard')}
+            onClick={() => router.push('/dashboard-pages/dashboard')}
             variant="outline"
           >
             ← Retour au Dashboard
@@ -249,11 +249,6 @@ export default function CreateChallengePage() {
                   : 'border-gray-700 hover:border-gray-300 bg-gray-800'
               }`}
             >
-              {tier.price === 0 && (
-                <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                  GRATUIT
-                </div>
-              )}
               <h3 className="text-3xl font-bold mb-2 text-white">{tier.name}</h3>
               <p className="text-5xl font-bold text-green-400 mb-8">
                 {tier.price === 0 ? 'GRATUIT' : `€${tier.price}`}
@@ -517,7 +512,7 @@ export default function CreateChallengePage() {
             {loading ? 'Redirection...' : (selectedTier === 'demo' && hasDemoChallenge) ? 'Challenge démo déjà créé' : 'Acheter un Challenge'}
           </Button>
           <Button
-            onClick={() => router.push('/dashboard')}
+            onClick={() => router.push('/dashboard-pages/dashboard')}
             variant="outline"
           >
             Annuler

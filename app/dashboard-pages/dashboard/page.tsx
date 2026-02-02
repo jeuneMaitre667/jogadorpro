@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Home, TrendingUp, Trophy, Target, DollarSign, Settings, LogOut, Bell } from 'lucide-react'
+import { Home, TrendingUp, Trophy, Target, DollarSign, Settings, LogOut, Bell, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { supabase } from '@/lib/supabase'
+import { useMatches } from '@/hooks/useMatches'
+import { getSportName, getSportIcon, DEFAULT_DASHBOARD_SPORTS } from '@/lib/sportsConfig'
 
 interface Challenge {
   id: string
@@ -19,16 +21,24 @@ interface Challenge {
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null)
   const [challenges, setChallenges] = useState<Challenge[]>([])
-  const [selectedMatch, setSelectedMatch] = useState<number | null>(null)
+  const [selectedMatch, setSelectedMatch] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
-  // Mock matches data
-  const mockMatches = [
-    { id: 1, league: 'Ligue 1', home: 'PSG', away: 'Marseille', time: '20:45', live: true, odds: { home: 1.95, draw: 3.40, away: 3.80 } },
-    { id: 2, league: 'La Liga', home: 'Barcelona', away: 'Real Madrid', time: '21:00', live: true, odds: { home: 2.10, draw: 3.20, away: 3.50 } },
-    { id: 3, league: 'Premier League', home: 'Liverpool', away: 'Man City', time: '21:00', live: false, odds: { home: 2.20, draw: 3.60, away: 2.62 } },
-  ]
+  // Load real matches from Odds API
+  const {
+    matches: realMatches,
+    loading: matchesLoading,
+    error: matchesError,
+    refetch: refetchMatches,
+  } = useMatches({
+    autoFetch: true,
+    refreshInterval: 60000, // 1 minute
+    sports: DEFAULT_DASHBOARD_SPORTS,
+  })
+
+  console.log('🎨 DASHBOARD PAGE LOADED - Design 4 Hybrid Ultimate')
+  console.log('📊 Real matches loaded:', realMatches.length)
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -39,7 +49,7 @@ export default function DashboardPage() {
         if (storedUser) {
           setUser(JSON.parse(storedUser))
         } else {
-          router.push('/login')
+          router.push('/auth/login')
           return
         }
       } else {
@@ -67,7 +77,7 @@ export default function DashboardPage() {
 
   const handleLogout = async () => {
     localStorage.removeItem('user')
-    router.push('/login')
+    router.push('/auth/login')
   }
 
   if (loading) {
@@ -103,15 +113,16 @@ export default function DashboardPage() {
 
         <nav className="flex-1 flex flex-col gap-4">
           {[
-            { icon: Home, label: 'Dashboard', active: true },
-            { icon: Trophy, label: 'Paris', active: false },
-            { icon: TrendingUp, label: 'Stats', active: false },
-            { icon: Bell, label: 'Notifications', active: false },
-            { icon: Settings, label: 'Paramètres', active: false },
+            { icon: Home, label: 'Dashboard', active: true, action: null },
+            { icon: Trophy, label: 'Paris', active: false, action: null },
+            { icon: TrendingUp, label: 'Stats', active: false, action: null },
+            { icon: Bell, label: 'Notifications', active: false, action: null },
+            { icon: Settings, label: 'Paramètres', active: false, action: () => router.push('/dashboard-pages/settings') },
           ].map((item) => (
             <button
               key={item.label}
               title={item.label}
+              onClick={item.action}
               className={`w-12 h-12 rounded-xl flex items-center justify-center transition ${
                 item.active
                   ? 'bg-emerald-500/20 text-emerald-400'
@@ -180,92 +191,109 @@ export default function DashboardPage() {
           <div className="flex-1 overflow-y-auto p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white">⚽ Matchs en Direct</h2>
-              <div className="flex gap-2">
-                {['Tous', 'Live', 'À venir'].map((filter) => (
-                  <button
-                    key={filter}
-                    className="px-3 py-1 rounded-lg text-sm bg-gray-800 text-gray-400 hover:bg-emerald-500/20 hover:text-emerald-400 transition"
+              <Button
+                onClick={() => refetchMatches()}
+                disabled={matchesLoading}
+                size="sm"
+                variant="outline"
+                className="gap-2"
+              >
+                <RefreshCw className={`w-4 h-4 ${matchesLoading ? 'animate-spin' : ''}`} />
+                {matchesLoading ? 'Chargement...' : 'Actualiser'}
+              </Button>
+            </div>
+
+            {matchesError && (
+              <div className="bg-red-500/20 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg mb-6">
+                Erreur: {matchesError}
+              </div>
+            )}
+
+            {matchesLoading && realMatches.length === 0 ? (
+              <div className="flex items-center justify-center h-96">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500 mx-auto mb-4"></div>
+                  <p className="text-gray-400">Chargement des matchs...</p>
+                </div>
+              </div>
+            ) : realMatches.length === 0 ? (
+              <div className="text-center py-12 text-gray-400">
+                <p>Aucun match disponible pour le moment</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {realMatches.map((match) => (
+                  <motion.div
+                    key={match.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={{ scale: 1.01 }}
+                    onClick={() => setSelectedMatch(match.id)}
+                    className={`bg-gray-800/50 border rounded-xl p-5 cursor-pointer transition ${
+                      selectedMatch === match.id
+                        ? 'border-emerald-500 shadow-lg shadow-emerald-500/20'
+                        : 'border-gray-700 hover:border-gray-600'
+                    }`}
                   >
-                    {filter}
-                  </button>
+                    {/* Match Header */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <span className="text-gray-400 text-sm">
+                          {getSportIcon(match.sport)} {getSportName(match.sport)}
+                        </span>
+                        <span className="text-gray-600">•</span>
+                        <span className="text-orange-400 text-sm font-bold">
+                          {new Date(match.commenceTime).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                      <button className="text-gray-400 hover:text-emerald-400 transition">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {/* Teams */}
+                    <div className="grid grid-cols-2 gap-6 mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                          <span className="text-white font-bold text-sm">{match.homeTeam[0]}</span>
+                        </div>
+                        <div>
+                          <p className="text-white font-bold text-sm">{match.homeTeam}</p>
+                          <p className="text-gray-500 text-xs">Domicile</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 justify-end">
+                        <div className="text-right">
+                          <p className="text-white font-bold text-sm">{match.awayTeam}</p>
+                          <p className="text-gray-500 text-xs">Extérieur</p>
+                        </div>
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
+                          <span className="text-white font-bold text-sm">{match.awayTeam[0]}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Odds Buttons (1X2) */}
+                    <div className="grid grid-cols-3 gap-3">
+                      <button className="group bg-gray-900/50 hover:bg-emerald-500/20 border border-gray-700 hover:border-emerald-500 rounded-lg py-4 transition-all">
+                        <p className="text-gray-400 text-xs group-hover:text-emerald-400">1</p>
+                        <p className="text-white font-bold text-lg">{match.odds.home?.toFixed(2) || '-'}</p>
+                      </button>
+                      <button className="group bg-gray-900/50 hover:bg-emerald-500/20 border border-gray-700 hover:border-emerald-500 rounded-lg py-4 transition-all">
+                        <p className="text-gray-400 text-xs group-hover:text-emerald-400">X</p>
+                        <p className="text-white font-bold text-lg">{match.odds.draw?.toFixed(2) || '-'}</p>
+                      </button>
+                      <button className="group bg-gray-900/50 hover:bg-emerald-500/20 border border-gray-700 hover:border-emerald-500 rounded-lg py-4 transition-all">
+                        <p className="text-gray-400 text-xs group-hover:text-emerald-400">2</p>
+                        <p className="text-white font-bold text-lg">{match.odds.away?.toFixed(2) || '-'}</p>
+                      </button>
+                    </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
-
-            <div className="space-y-4">
-              {mockMatches.map((match) => (
-                <motion.div
-                  key={match.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.01 }}
-                  onClick={() => setSelectedMatch(match.id)}
-                  className={`bg-gray-800/50 border rounded-xl p-5 cursor-pointer transition ${
-                    selectedMatch === match.id
-                      ? 'border-emerald-500 shadow-lg shadow-emerald-500/20'
-                      : 'border-gray-700 hover:border-gray-600'
-                  }`}
-                >
-                  {/* Match Header */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      {match.live && (
-                        <span className="px-2 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold flex items-center gap-1">
-                          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                          LIVE
-                        </span>
-                      )}
-                      <span className="text-gray-400 text-sm">{match.league}</span>
-                      <span className="text-gray-600">•</span>
-                      <span className="text-orange-400 text-sm font-bold">{match.time}</span>
-                    </div>
-                    <button className="text-gray-400 hover:text-emerald-400 transition">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  {/* Teams */}
-                  <div className="grid grid-cols-2 gap-6 mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">{match.home[0]}</span>
-                      </div>
-                      <div>
-                        <p className="text-white font-bold">{match.home}</p>
-                        <p className="text-gray-500 text-xs">Domicile</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 justify-end">
-                      <div className="text-right">
-                        <p className="text-white font-bold">{match.away}</p>
-                        <p className="text-gray-500 text-xs">Extérieur</p>
-                      </div>
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">{match.away[0]}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Odds Buttons */}
-                  <div className="grid grid-cols-3 gap-3">
-                    <button className="group bg-gray-900/50 hover:bg-emerald-500/20 border border-gray-700 hover:border-emerald-500 rounded-lg py-4 transition-all">
-                      <div className="text-gray-400 group-hover:text-emerald-400 text-xs mb-1">1</div>
-                      <div className="text-white group-hover:text-emerald-400 font-bold text-lg">{match.odds.home}</div>
-                    </button>
-                    <button className="group bg-gray-900/50 hover:bg-emerald-500/20 border border-gray-700 hover:border-emerald-500 rounded-lg py-4 transition-all">
-                      <div className="text-gray-400 group-hover:text-emerald-400 text-xs mb-1">X</div>
-                      <div className="text-white group-hover:text-emerald-400 font-bold text-lg">{match.odds.draw}</div>
-                    </button>
-                    <button className="group bg-gray-900/50 hover:bg-emerald-500/20 border border-gray-700 hover:border-emerald-500 rounded-lg py-4 transition-all">
-                      <div className="text-gray-400 group-hover:text-emerald-400 text-xs mb-1">2</div>
-                      <div className="text-white group-hover:text-emerald-400 font-bold text-lg">{match.odds.away}</div>
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            )}
           </div>
 
           {/* Right Stats Panel */}

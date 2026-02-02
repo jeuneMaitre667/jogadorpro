@@ -94,9 +94,6 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="bg-gray-800 rounded-2xl p-8 border border-gray-700 hover:border-green-500 transition-all shadow-xl relative flex flex-col h-full"
             >
-              <div className="absolute -top-3 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                GRATUIT
-              </div>
               <div className="text-center mb-8">
                 <h3 className="text-xl font-bold text-white mb-3">Demo Challenge</h3>
                 <p className="text-4xl font-bold text-green-400 mb-2">€100</p>
