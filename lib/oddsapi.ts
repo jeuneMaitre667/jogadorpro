@@ -24,6 +24,23 @@ export interface OddsMatch {
   }>
 }
 
+export interface MatchOdds {
+  home: number | null
+  draw: number | null
+  away: number | null
+}
+
+export interface MarketOutcome {
+  name: string
+  price: number
+}
+
+export interface EventMarket {
+  key: string
+  title: string
+  outcomes: MarketOutcome[]
+}
+
 export interface Match {
   id: string
   sport: string
@@ -32,11 +49,8 @@ export interface Match {
   homeTeam: string
   awayTeam: string
   commenceTime: Date
-  odds: {
-    home: number | null
-    draw: number | null
-    away: number | null
-  }
+  odds: MatchOdds
+  markets?: EventMarket[]
 }
 
 /**
@@ -158,6 +172,84 @@ function transformMatch(oddsMatch: OddsMatch): Match | null {
     console.error(`[ERROR] Failed to transform match:`, error)
     return null
   }
+}
+
+/**
+ * Fetch all markets (odds types) for an event
+ * Markets: h2h (1X2), spreads (handicaps), totals (over/under)
+ */
+export async function fetchEventMarkets(
+  sport: string,
+  eventId: string
+): Promise<EventMarket[]> {
+  if (!ODDS_API_KEY) {
+    throw new Error('ODDS_API_KEY not configured')
+  }
+
+  // Fetch h2h, spreads, and totals
+  const markets = ['h2h', 'spreads', 'totals']
+  const marketsParam = markets.join(',')
+  
+  const url = `${BASE_URL}/sports/${sport}/events/${eventId}/odds/?apiKey=${ODDS_API_KEY}&regions=eu&markets=${marketsParam}&oddsFormat=decimal`
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`Odds API error: ${response.status} - ${errorText}`)
+    }
+
+    const data: OddsMatch = await response.json()
+    const bookmaker = data.bookmakers?.[0]
+    
+    if (!bookmaker || !bookmaker.markets) {
+      console.warn(`[WARN] No markets available for event ${eventId}`)
+      return []
+    }
+
+    // Transform bookmaker markets to our format
+    const transformedMarkets: EventMarket[] = bookmaker.markets.map(market => ({
+      key: market.key,
+      title: getMarketTitle(market.key),
+      outcomes: market.outcomes || []
+    }))
+
+    console.log(`[DEBUG] Fetched ${transformedMarkets.length} markets for event ${eventId}`)
+    return transformedMarkets
+  } catch (error) {
+    console.error(`[ERROR] Error fetching event markets:`, error)
+    return []
+  }
+}
+
+/**
+ * Get user-friendly market title
+ */
+function getMarketTitle(marketKey: string): string {
+  const titles: Record<string, string> = {
+    'h2h': 'Match Winner (1X2)',
+    'spreads': 'Asian Handicap',
+    'totals': 'Over/Under',
+  }
+  return titles[marketKey] || marketKey
+}
+
+/**
+ * Get user-friendly market key name
+ */
+export function getMarketKeyName(key: string): string {
+  const names: Record<string, string> = {
+    'h2h': '1X2',
+    'spreads': 'Handicap',
+    'totals': 'Over/Under',
+  }
+  return names[key] || key
 }
 
 /**

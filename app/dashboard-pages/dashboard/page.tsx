@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Home, TrendingUp, Trophy, Target, DollarSign, Settings, LogOut, Bell, RefreshCw } from 'lucide-react'
+import { Home, TrendingUp, Trophy, Target, DollarSign, Settings, LogOut, Bell, RefreshCw, FileText } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { supabase } from '@/lib/supabase'
 import { useMatches } from '@/hooks/useMatches'
 import { getSportName, getSportIcon, DEFAULT_DASHBOARD_SPORTS } from '@/lib/sportsConfig'
+import { Match } from '@/lib/oddsapi'
 
 interface Challenge {
   id: string
@@ -21,7 +22,6 @@ interface Challenge {
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null)
   const [challenges, setChallenges] = useState<Challenge[]>([])
-  const [selectedMatch, setSelectedMatch] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
@@ -99,7 +99,7 @@ export default function DashboardPage() {
 
   return (
     <div className="flex h-screen bg-gray-900 overflow-hidden">
-      {/* Compact Sidebar */}
+      {/* Compact Sidebar 80px */}
       <motion.aside
         initial={{ x: -20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
@@ -114,7 +114,9 @@ export default function DashboardPage() {
         <nav className="flex-1 flex flex-col gap-4">
           {[
             { icon: Home, label: 'Dashboard', active: true, action: null },
-            { icon: Trophy, label: 'Paris', active: false, action: null },
+            { icon: FileText, label: 'Paris', active: false, action: () => router.push('/dashboard-pages/my-bets') },
+            { icon: Trophy, label: 'Matchs', active: false, action: () => router.push('/dashboard-pages/matches'), showAsFootball: true },
+            { icon: Target, label: 'Challenge', active: false, action: () => router.push('/dashboard-pages/challenge-status'), color: 'text-pink-400' },
             { icon: TrendingUp, label: 'Stats', active: false, action: null },
             { icon: Bell, label: 'Notifications', active: false, action: null },
             { icon: Settings, label: 'Paramètres', active: false, action: () => router.push('/dashboard-pages/settings') },
@@ -126,10 +128,33 @@ export default function DashboardPage() {
               className={`w-12 h-12 rounded-xl flex items-center justify-center transition ${
                 item.active
                   ? 'bg-emerald-500/20 text-emerald-400'
+                  : item.label === 'Notifications'
+                  ? 'text-yellow-400 hover:bg-yellow-500/10'
+                  : item.label === 'Paris'
+                  ? 'text-white hover:bg-gray-800'
+                  : item.label === 'Challenge'
+                  ? 'text-pink-400 hover:bg-pink-500/10'
+                  : item.label === 'Paramètres'
+                  ? 'text-gray-500 hover:bg-gray-800'
+                  : item.label === 'Stats'
+                  ? 'text-green-400 hover:bg-green-500/10'
                   : 'text-gray-400 hover:bg-gray-800 hover:text-white'
               }`}
             >
-              <item.icon className="w-5 h-5" />
+              {item.showAsFootball ? (
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#fbbf24" stroke="#f59e0b" strokeWidth="0.8">
+                  <circle cx="12" cy="12" r="9.5" fill="#fbbf24" stroke="#d97706" strokeWidth="1" />
+                  {/* Pentagon doré foncé au centre */}
+                  <path d="M12 7 L14.5 9 L13.5 12 L10.5 12 L9.5 9 Z" fill="#d97706" />
+                  {/* Hexagones dorés foncés autour */}
+                  <path d="M14.5 9 L16 8 L17 10 L16 12 L14 11" fill="#d97706" />
+                  <path d="M9.5 9 L8 8 L7 10 L8 12 L10 11" fill="#d97706" />
+                  <path d="M13.5 12 L15 14 L12 15.5 L9 14 L10.5 12" fill="#d97706" />
+                  <path d="M12 7 L12 5 L14 6 L14.5 9" fill="#d97706" />
+                </svg>
+              ) : (
+                <item.icon className="w-5 h-5" />
+              )}
             </button>
           ))}
         </nav>
@@ -190,7 +215,7 @@ export default function DashboardPage() {
           {/* Matches Panel */}
           <div className="flex-1 overflow-y-auto p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-white">⚽ Matchs en Direct</h2>
+              <h2 className="text-xl font-bold text-white">⚽ Matchs en Vedette</h2>
               <Button
                 onClick={() => refetchMatches()}
                 disabled={matchesLoading}
@@ -228,12 +253,7 @@ export default function DashboardPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     whileHover={{ scale: 1.01 }}
-                    onClick={() => setSelectedMatch(match.id)}
-                    className={`bg-gray-800/50 border rounded-xl p-5 cursor-pointer transition ${
-                      selectedMatch === match.id
-                        ? 'border-emerald-500 shadow-lg shadow-emerald-500/20'
-                        : 'border-gray-700 hover:border-gray-600'
-                    }`}
+                    className="bg-gray-800/50 border border-gray-700 hover:border-emerald-500 rounded-xl p-5 cursor-pointer transition hover:shadow-lg hover:shadow-emerald-500/20"
                   >
                     {/* Match Header */}
                     <div className="flex items-center justify-between mb-4">
