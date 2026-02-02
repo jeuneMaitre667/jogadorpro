@@ -77,22 +77,57 @@ export default function CreateChallengePage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [userId, setUserId] = useState<string | null>(null)
+  const [hasDemoChallenge, setHasDemoChallenge] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const user = await authService.getUser()
-        if (!user) {
+        // Vérifier qu'on est côté client
+        if (typeof window === 'undefined') return
+
+        // 1) Tenter Supabase session
+        const supaUser = await authService.getUser()
+        if (supaUser?.id) {
+          setUserId(supaUser.id)
+          await checkDemoChallenge(supaUser.id)
+          return
+        }
+
+        // 2) Fallback localStorage
+        const userStr = localStorage.getItem('user')
+        if (!userStr) {
           router.push('/auth/login')
           return
         }
+
+        const user = JSON.parse(userStr)
         setUserId(user.id)
+        await checkDemoChallenge(user.id)
       } catch (err) {
         console.error('Auth check failed:', err)
         router.push('/auth/login')
       }
     }
+
+    const checkDemoChallenge = async (uid: string) => {
+      try {
+        const { supabase } = await import('@/lib/supabase')
+        const { data } = await supabase
+          .from('challenges')
+          .select('id')
+          .eq('user_id', uid)
+          .eq('tier', 'demo')
+          .limit(1)
+        
+        if (data && data.length > 0) {
+          setHasDemoChallenge(true)
+        }
+      } catch (err) {
+        console.error('Error checking demo challenge:', err)
+      }
+    }
+
     checkAuth()
   }, [router])
 
@@ -109,16 +144,41 @@ export default function CreateChallengePage() {
       return
     }
 
-    const priceId = PRICE_IDS[selectedTier]
-    if (!priceId) {
-      setError('Paiement indisponible pour ce plan (priceId manquant)')
-      return
-    }
-
     setLoading(true)
     setError(null)
 
     try {
+      // Pour le tier DEMO, créer directement sans Stripe
+      if (selectedTier === 'demo') {
+        const res = await fetch('/api/challenges', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId,
+            tier: 'demo',
+            initialBalance: 100
+          })
+        })
+
+        const data = await res.json()
+        if (data.error) {
+          const details = data.details ? ` (${data.details})` : ''
+          setError(`${data.error}${details}`)
+          return
+        }
+
+        // Challenge created successfully, redirect to matches/odds
+        router.push('/dashboard-pages/place-pick')
+        return
+      }
+
+      // Pour les autres tiers, utiliser Stripe
+      const priceId = PRICE_IDS[selectedTier]
+      if (!priceId) {
+        setError('Paiement indisponible pour ce plan (priceId manquant)')
+        return
+      }
+
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -134,8 +194,8 @@ export default function CreateChallengePage() {
       const details = data?.details ? ` (${data.details})` : ''
       setError(data?.error ? `${data.error}${details}` : 'Erreur lors du paiement')
     } catch (err) {
-      console.error('Error creating checkout:', err)
-      setError(err instanceof Error ? err.message : 'Erreur lors du paiement')
+      console.error('Error creating challenge:', err)
+      setError(err instanceof Error ? err.message : 'Erreur lors de la création')
     } finally {
       setLoading(false)
     }
@@ -451,10 +511,10 @@ export default function CreateChallengePage() {
         <div className="flex gap-4">
           <Button
             onClick={handleCheckout}
-            disabled={!selectedTier || loading}
+            disabled={!selectedTier || loading || (selectedTier === 'demo' && hasDemoChallenge)}
             className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-6 text-lg font-semibold"
           >
-            {loading ? 'Redirection...' : 'Acheter un Challenge'}
+            {loading ? 'Redirection...' : (selectedTier === 'demo' && hasDemoChallenge) ? 'Challenge démo déjà créé' : 'Acheter un Challenge'}
           </Button>
           <Button
             onClick={() => router.push('/dashboard')}

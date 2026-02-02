@@ -35,7 +35,7 @@ export const authService = {
   async signIn(
     email: string,
     password: string
-  ): Promise<{ error?: string; success: boolean }> {
+  ): Promise<{ error?: string; success: boolean; user?: User }> {
     try {
       const { error: loginError, data } = await supabase.auth.signInWithPassword({
         email,
@@ -65,6 +65,16 @@ export const authService = {
             },
           ])
         }
+
+        return {
+          success: true,
+          user: {
+            id: data.user.id,
+            email: data.user.email || '',
+            role: 'trader',
+            kyc_status: 'pending',
+          },
+        }
       }
 
       return { success: true }
@@ -80,7 +90,7 @@ export const authService = {
     email: string,
     password: string,
     fullName: string
-  ): Promise<{ error?: string; success: boolean }> {
+  ): Promise<{ error?: string; success: boolean; user?: User }> {
     try {
       const { data: authData, error: signupError } = await supabase.auth.signUp({
         email,
@@ -111,6 +121,16 @@ export const authService = {
         if (userError) {
           console.error('Error creating user profile:', userError.message)
           // Continuer quand même, l'utilisateur peut se connecter
+        }
+
+        return {
+          success: true,
+          user: {
+            id: authData.user.id,
+            email: authData.user.email || '',
+            role: 'trader',
+            kyc_status: 'pending',
+          },
         }
       }
 

@@ -1,0 +1,1481 @@
+﻿🚀 ROADMAP DÉVELOPPEMENT - JOGADORPRO
+📋 CONTEXTE & OBJECTIFS
+Projet : Plateforme de skill challenges pour paris sportifs (prop firm model)
+Marché : Brésil
+Lancement MVP :  Mai 2026
+Lancement Marketing : Mai,Juin 2026 (début Coupe du Monde)
+Temps disponible : 12 semaines (1 Fev - 1er Mai)
+Business Model :
+* Utilisateurs paient pour challenges (49€ ou 139€)
+* Passent 2 phases avec règles strictes (25% puis 30% profit)
+* S'ils réussissent → compte "funded" (80/20 split)
+* On paie leurs profits bi-mensuels via PIX
+* On se rémunère sur les échecs (95%+ des participants)
+________________
+
+
+🎯 STACK TECHNIQUE RECOMMANDÉ
+Frontend
+* Next.js 14+ (App Router)
+* React 18+
+* Tailwind CSS (styling)
+* TypeScript (fortement recommandé)
+Backend
+* Next.js API Routes (fullstack)
+* PostgreSQL (database - Supabase recommandé)
+* Prisma (ORM)
+* Redis (caching cotes)
+Paiements
+* Stripe (checkout + PIX support)
+* Mercado Pago (alternative PIX native Brésil)
+APIs Externes
+* The Odds API (cotes sportives) - odds-api.com
+* API-Football (résultats matchs + backup cotes) - rapidapi
+Hosting & Infrastructure
+* Vercel (frontend + API)
+* Supabase (PostgreSQL + Auth)
+* Upstash Redis (caching)
+Monitoring & Analytics
+* Sentry (error tracking)
+* Google Analytics 4
+* Vercel Analytics
+________________
+
+
+📅 TIMELINE - 14 SEMAINES
+├─ PHASE 1 : Foundation (S1-S2) - 2 semaines
+├─ PHASE 2 : Core Features (S3-S6) - 4 semaines  
+├─ PHASE 3 : UI + Payments (S7-S10) - 4 semaines
+├─ PHASE 4 : Polish + Launch (S11-S14) - 4 semaines
+└─ SOFT LAUNCH : 25 Avril / LAUNCH : 1er Mai
+
+
+________________
+
+
+🔴 PHASE 1 : FOUNDATION (Semaines 1-2)
+Sprint 1 : Setup Projet (Semaine 1)
+Environnement
+* [ ] Setup repo GitHub (monorepo)
+* [ ] Init Next.js 14 avec App Router
+* [ ] Config Tailwind CSS
+* [ ] Setup ESLint + Prettier
+* [ ] Config TypeScript (tsconfig strict)
+* [ ] Setup environnements (dev, staging, prod)
+Database & Auth
+* [ ] Setup Supabase project
+* [ ] Design schema complet (voir Section DATABASE)
+* [ ] Migrations initiales
+* [ ] Setup Prisma Client
+* [ ] Auth Supabase (email/password)
+* [ ] Middleware protection routes
+Infrastructure
+* [ ] Deploy Vercel (staging)
+* [ ] Setup Redis (Upstash)
+* [ ] Config variables d'environnement
+* [ ] Setup Sentry
+Livrables S1 :
+* ✅ Repo GitHub configuré
+* ✅ Next.js déployé sur Vercel
+* ✅ DB Supabase + Auth fonctionnel
+* ✅ Page Hello World accessible
+________________
+
+
+Sprint 2 : Auth Complete (Semaine 2)
+Pages Auth
+* [ ] /signup - Inscription (email, password, nom)
+* [ ] /login - Connexion
+* [ ] /forgot-password - Reset password
+* [ ] Email verification (lien Supabase)
+* [ ] /profile - Profil basique (edit nom, email)
+Sécurité
+* [ ] Rate limiting (5 tentatives login / 15min)
+* [ ] Password strength validator (min 8 chars)
+* [ ] Protection CSRF
+* [ ] Validation inputs (Zod)
+UX
+* [ ] Loading states
+* [ ] Error messages (PT-BR)
+* [ ] Success notifications (toast)
+* [ ] Redirect après login → /dashboard
+Livrables S2 :
+* ✅ User peut s'inscrire et se connecter
+* ✅ Email verification fonctionnel
+* ✅ Reset password OK
+* ✅ Session persistante
+________________
+
+
+🟡 PHASE 2 : CORE FEATURES (Semaines 3-6)
+Sprint 3-4 : Challenge System (Semaines 3-4)
+Modèle Challenge
+* [ ] Table user_challenges (voir schema)
+* [ ] 2 tiers : 1K (49€) et 5K (139€)
+* [ ] 2 phases : Phase 1 (objectif 25%) / Phase 2 (objectif 30%)
+* [ ] Timer 31 jours par phase
+* [ ] Status : active, passed, failed, funded
+Business Logic - Règles Challenge
+* [ ] Stake : 1% min, 5% max du balance
+* [ ] DD journalier : max 5% depuis balance début journée
+* [ ] DD total : max 10% depuis capital initial
+* [ ] Plafond gains journalier : 8% max
+* [ ] Picks minimum : 20 par phase
+* [ ] Jours actifs minimum : 15/31 jours (au moins 1 pick/jour)
+Calculs Automatiques
+* [ ] Balance tracking temps réel
+* [ ] Profit percentage calculation
+* [ ] DD calculation (journalier + total)
+* [ ] Compteur picks
+* [ ] Compteur jours actifs
+* [ ] Vérification rules à chaque pick
+Auto-Fail Triggers
+* [ ] DD journalier > 5% → fail immédiat
+* [ ] DD total > 10% → fail immédiat
+* [ ] Fin des 31 jours sans objectif atteint → fail
+* [ ] Violation stake (< 1% ou > 5%) → pick refusé
+Phase Completion
+* [ ] Vérif : profit >= 25% (phase 1) ou 30% (phase 2)
+* [ ] Vérif : picks >= 20
+* [ ] Vérif : jours actifs >= 15
+* [ ] Si OK → status = 'passed'
+* [ ] Si Phase 1 passed → créer Phase 2 automatiquement (délai 3j)
+* [ ] Si Phase 2 passed → créer funded account
+Challenge Démo Gratuit
+* [ ] Capital : 100€ fictif
+* [ ] Durée : 7 jours
+* [ ] Objectif : 10% profit
+* [ ] Picks min : 5
+* [ ] DD max : 15% (plus permissif)
+* [ ] Génération code promo automatique si succès (-30%)
+Livrables S3-4 :
+* ✅ User peut avoir un challenge actif
+* ✅ Balance se met à jour correctement
+* ✅ Règles sont enforced (pas de triche possible)
+* ✅ Auto-fail si violation
+* ✅ Phase 2 créée automatiquement après Phase 1
+________________
+
+
+Sprint 5-6 : Picks & Odds System (Semaines 5-6)
+Integration The Odds API
+* [ ] Setup compte + API key
+* [ ] Endpoint : fetch upcoming matches (prochaines 48h)
+* [ ] Sports supportés V1 : Football uniquement
+* [ ] Ligues prioritaires : Brasileirão, La Liga, Premier League, Champions League
+* [ ] Caching Redis (5 min TTL)
+* [ ] Rate limiting (max 500 requêtes/mois plan gratuit)
+Stratégie Caching
+* [ ] Pre-load matches populaires (job cron 2h AM)
+* [ ] Cache cotes : 5min si match > 6h, 2min si < 6h
+* [ ] Invalidation cache après kick-off
+API Fallback
+* [ ] API-Football comme backup si OddsAPI down
+* [ ] Adapter pattern pour normaliser les 2 APIs
+Picks - Placement
+* [ ] Page /dashboard/new-pick
+* [ ] Search matches (autocomplete)
+* [ ] Afficher cotes temps réel
+* [ ] Types paris V1 : 1X2 uniquement (Home/Draw/Away)
+* [ ] Input stake (1-5% validation)
+* [ ] Calcul profit potentiel en live
+* [ ] Confirmation recap avant submit
+Validations Backend
+* [ ] Match existe et pas commencé (kick-off > now)
+* [ ] Cote valide (check API, tolérance ±5%)
+* [ ] Stake entre 1-5% du balance actuel
+* [ ] Challenge status = 'active'
+* [ ] Gains journaliers < 8% (sinon refusé)
+* [ ] User pas déjà éliminé (DD max)
+Picks - Storage
+* [ ] Table picks (voir schema)
+* [ ] Champs : match_id, bet_type, selection, odds, stake, result
+* [ ] Horodatage declared_at (pour jours actifs)
+* [ ] Status : pending, won, lost, void
+Settlement Automatique
+* [ ] Job cron toutes les 15min
+* [ ] Fetch matches terminés (API-Football)
+* [ ] Pour chaque pick pending sur match terminé :
+   * Évaluer résultat (won/lost/void)
+   * Calculer profit/loss
+   * Update pick.result
+   * Update challenge balance
+   * Check rules (DD, objectif atteint, etc.)
+   * Send notification user
+Évaluation Résultats
+* [ ] 1X2 : comparaison score final simple
+* [ ] Gestion cas spéciaux :
+   * Match annulé → void (remboursé)
+   * VAR correction → re-settlement
+   * Prolongations : comptent dans le résultat
+Livrables S5-6 :
+* ✅ User peut voir matches disponibles
+* ✅ Placer un pick avec validation complète
+* ✅ Cotes en temps réel (cachées intelligemment)
+* ✅ Settlement automatique fonctionne
+* ✅ Balance se met à jour après chaque match
+* ✅ Notifications envoyées (won/lost)
+________________
+
+
+🟢 PHASE 3 : UI + PAYMENTS (Semaines 7-10)
+Sprint 7-8 : Pages Essentielles + Payments (Semaines 7-8)
+Landing Page /
+* [ ] Hero section (value prop claire)
+* [ ] Social proof (stats, témoignages simulés)
+* [ ] Comment ça marche (3 steps)
+* [ ] CTA "Começar Grátis" (challenge démo)
+* [ ] Pricing cards preview
+* [ ] FAQ section
+* [ ] Footer (legal, contact)
+Page Pricing /pricing
+* [ ] 3 cards : Demo (0€), 1K (49€), 5K (139€)
+* [ ] Badge "Mais Popular" sur 1K
+* [ ] Tableau comparaison détaillé
+* [ ] FAQ pricing
+* [ ] Support code promo (affichage + application)
+* [ ] Timer countdown si code promo actif (urgence)
+Dashboard /dashboard
+* [ ] Challenge status card (profit %, balance, DD)
+* [ ] Progress bar visuelle vers objectif
+* [ ] Stats grid (picks, jours actifs, jours restants)
+* [ ] Graph performance (Recharts - balance over time)
+* [ ] Liste picks récents (statut, profit/loss)
+* [ ] Alerts contextuelles (DD élevé, gains cap, etc.)
+* [ ] CTA "Novo Pick" toujours visible
+Modal Nouveau Pick
+* [ ] Step 1 : Search + select match
+* [ ] Step 2 : Choose bet type, selection, stake
+* [ ] Step 3 : Confirmation avec recap
+* [ ] Progress indicator (1/3, 2/3, 3/3)
+* [ ] Validation inline (stake %)
+* [ ] Profit potentiel calculé live
+Page Success /success
+* [ ] Confetti animation
+* [ ] Trophée + "PARABÉNS!"
+* [ ] Stats performance (profit, picks, durée)
+* [ ] Next steps clairs
+* [ ] Social sharing (WhatsApp, Twitter, Facebook)
+* [ ] Download certificat (PDF optionnel)
+Responsive Mobile
+* [ ] Toutes pages 100% mobile-friendly
+* [ ] Bottom navigation (Home, Picks, Stats, Profile)
+* [ ] Touch-optimized (boutons 44px min)
+* [ ] Swipe gestures (optionnel)
+Integration Stripe
+* [ ] Setup Stripe account (test + prod)
+* [ ] Checkout Session pour achats
+* [ ] Support PIX (via Stripe - currency BRL)
+* [ ] Support cartes internationales
+* [ ] Webhooks payment success
+* [ ] Activation challenge automatique après paiement
+* [ ] Email confirmation achat
+Flow Achat
+User clique "Comprar Challenge 1K"
+→ Redirect Stripe Checkout (PIX + Cards)
+→ User paie
+→ Webhook /api/webhooks/stripe
+→ Créer user_challenge (status: active)
+→ Email confirmation
+→ Redirect /dashboard
+
+
+Codes Promo
+* [ ] Table promo_codes
+* [ ] Génération automatique après demo success
+* [ ] Validation (expiration, usage unique, user_id)
+* [ ] Application discount au checkout
+* [ ] Tracking usage
+Livrables S7-8 :
+* ✅ Landing page complète et convertissante
+* ✅ Pricing page avec promo codes
+* ✅ Dashboard fonctionnel (desktop + mobile)
+* ✅ Modal pick avec 3 steps
+* ✅ Stripe checkout fonctionne (PIX + cards)
+* ✅ Challenge activé automatiquement après paiement
+________________
+
+
+Sprint 9-10 : Funded Accounts + Payouts (Semaines 9-10)
+Funded Account Creation
+* [ ] Table funded_accounts
+* [ ] Auto-création après Phase 2 passed
+* [ ] Account size = challenge tier (1K ou 5K)
+* [ ] Balance initial = balance fin Phase 2
+* [ ] Status : active, suspended, closed
+Funded Account Rules
+* [ ] Mêmes règles que challenge (DD, stakes, plafonds)
+* [ ] Pas de limite de temps
+* [ ] Tracking lifetime payouts
+* [ ] Limits : 1,500€/mois max payout, 10,000€ lifetime max
+Payout System
+* [ ] Page /dashboard/request-payout
+* [ ] Form : montant, PIX key
+* [ ] Validation :
+   * Bi-mensuel (14j depuis dernier payout)
+   * Montant <= balance disponible
+   * Montant <= limite mensuelle restante
+   * KYC verified (bloquant)
+* [ ] Création payout_request (status: pending)
+KYC Integration
+* [ ] Choice : Sumsub OU Onfido
+* [ ] Upload docs : ID (CNH/RG), proof address, selfie
+* [ ] Status : pending, verified, rejected
+* [ ] Bloquer payouts si non-verified
+* [ ] Email reminder si funded account créé sans KYC
+Admin Payout Review (à voir)
+* [ ] Dashboard admin /admin/payouts
+* [ ] Liste pending payouts
+* [ ] User details, amount, flags
+* [ ] Auto-approve si < 500€ et pas de flags
+* [ ] Manual review si >= 500€ ou flagged
+* [ ] Actions : approve, reject, request-more-docs
+Payout Execution
+* [ ] Via Stripe (si PIX supporté) OU Mercado Pago
+* [ ] Update payout status → processing → paid
+* [ ] Email confirmation
+* [ ] Update funded_account.lifetime_payouts
+Split 80/20
+* [ ] User reçoit 80% des profits
+* [ ] Plateforme garde 20%
+* [ ] Calcul automatique dans dashboard
+Livrables S9-10 :
+* ✅ Funded account créé automatiquement
+* ✅ User peut request payout
+* ✅ KYC intégré et fonctionnel
+* ✅ Admin peut reviewer et approuver
+* ✅ Payout exécuté via PIX
+* ✅ Email confirmations envoyées
+________________
+
+
+🔵 PHASE 4 : POLISH + LAUNCH (Semaines 11-14)
+Sprint 11 : Add-ons & Upsells (Semaine 11)
+Reset DD (24€)
+* [ ] Bouton dans dashboard quand DD > 7%
+* [ ] Checkout Stripe
+* [ ] Action : reset DD à 0%, balance reste inchangé
+* [ ] Limité à 1 par challenge
+* [ ] Email confirmation
+Extension +15 jours (19€)
+* [ ] Bouton quand J > 25 et objectif pas atteint
+* [ ] Checkout Stripe
+* [ ] Action : end_date += 15 jours
+* [ ] Limité à 1 par challenge
+Retry Discount (-20%)
+* [ ] Après échec, email automatique avec code RETRY20
+* [ ] Nouveau challenge à 39€ au lieu de 49€
+* [ ] Valide 7 jours
+Success Refund Upsell
+* [ ] Checkbox au checkout : "Garantia Reembolso (29€)"
+* [ ] Si user passe Phase 2 → bonus +49€ sur 1er payout
+* [ ] Champ success_refund_enabled dans user_challenges
+* [ ] Calcul payout ajusté si activé
+Insurance Package (29€)
+* [ ] Vendu au checkout ou après Phase 1
+* [ ] Tiers : Silver (1 reset auto), Gold (2 resets), Platinum (3 resets)
+* [ ] Auto-reset DD si dépassé
+* [ ] Compteur resets restants
+Tracking Add-ons
+* [ ] Table upsell_purchases
+* [ ] Analytics : taux conversion, revenus add-ons
+* [ ] Dashboard admin : top upsells
+Livrables S11 :
+* ✅ Reset DD fonctionne
+* ✅ Extension fonctionne
+* ✅ Retry discount automatique
+* ✅ Success Refund au checkout
+* ✅ Tracking complet add-ons
+________________
+
+
+Sprint 12 : Testing & Bug Fixes (Semaine 12)
+Tests End-to-End
+* [ ] Playwright setup
+* [ ] Test : inscription → login → achat → pick → settlement → payout
+* [ ] Test : échec challenge (DD dépassé)
+* [ ] Test : succès Phase 1 → Phase 2
+* [ ] Test : codes promo
+* [ ] Test : add-ons
+Load Testing
+* [ ] k6 setup
+* [ ] Simuler 100 users concurrents
+* [ ] Vérifier : response times < 500ms (p95)
+* [ ] Vérifier : error rate < 0.1%
+* [ ] Stress test settlement job
+Security Audit
+* [ ] SQL injection prevention (Prisma protège)
+* [ ] XSS prevention (React protège)
+* [ ] CSRF tokens
+* [ ] Rate limiting endpoints sensibles
+* [ ] Validation inputs partout
+Performance
+* [ ] Lighthouse score > 90
+* [ ] Core Web Vitals (LCP < 2.5s, FID < 100ms)
+* [ ] Image optimization (Next.js Image)
+* [ ] Code splitting
+* [ ] Bundle size < 200KB
+Bug Fixes
+* [ ] Fix tous bugs critiques trouvés
+* [ ] Fix bugs UI/UX
+* [ ] Mobile responsive issues
+Livrables S12 :
+* ✅ 0 bug critique
+* ✅ Tests E2E passent
+* ✅ Performance OK (Lighthouse > 90)
+* ✅ Security audit clean
+________________
+
+
+Sprint 13 : Content & Traduction (Semaine 13)
+Traduction PT-BR Complète
+* [ ] Toutes pages traduites
+* [ ] Emails en portugais
+* [ ] Error messages en portugais
+* [ ] Setup i18n (next-intl)
+* [ ] Fallback EN si besoin
+Content Pages
+* [ ] /about - À propos
+* [ ] /faq - Questions fréquentes (20+ questions)
+* [ ] /how-it-works - Guide complet
+* [ ] /blog - Setup (vide OK pour V1)
+* [ ] /contact - Formulaire contact
+Legal Pages (CRITIQUE)
+* [ ] /terms - Terms & Conditions (avocat)
+* [ ] /privacy - Privacy Policy (LGPD compliant)
+* [ ] /cookies - Cookie Policy
+* [ ] Banner cookies (consentement)
+* [ ] Disclaimers clairs :
+   * "Não é site de apostas"
+   * "Fundos são fictivos"
+   * "Você é responsável por declarar ganhos"
+SEO
+* [ ] Meta tags (title, description) toutes pages
+* [ ] Open Graph tags (social sharing)
+* [ ] Sitemap.xml
+* [ ] Robots.txt
+* [ ] Schema.org markup (Organization, FAQPage)
+Emails Templates
+* [ ] Welcome (após signup)
+* [ ] Challenge started
+* [ ] Pick won/lost
+* [ ] Phase passed
+* [ ] Challenge failed (avec retry discount)
+* [ ] Payout requested
+* [ ] Payout processed
+* [ ] Promo code generated
+Email Provider
+* [ ] Resend.com OU Brevo (ex-Sendinblue)
+* [ ] Setup domaine (SPF, DKIM)
+* [ ] Templates HTML responsive
+Livrables S13 :
+* ✅ Site 100% en portugais
+* ✅ Legal pages publiées
+* ✅ Emails automatiques fonctionnent
+* ✅ SEO basique OK
+________________
+
+
+Sprint 14 : Launch Prep (Semaine 14)
+Beta Testing (à voir)
+* [ ] Recruter 10-20 beta testers brésiliens
+* [ ] Challenges gratuits pour eux
+* [ ] Feedback form (Typeform)
+* [ ] Itérations rapides sur feedback
+Analytics Setup
+* [ ] Google Analytics 4
+* [ ] Events tracking :
+   * signup, login, challenge_purchase, pick_placed, phase_passed, payout_requested
+* [ ] Funnels : visiteur → signup → purchase
+* [ ] Goals : conversion rate, CAC, LTV
+Admin Dashboard
+* [ ] /admin (protected)
+* [ ] Stats globales :
+   * Users total, actifs
+   * CA jour/semaine/mois
+   * Challenges actifs
+   * Taux passage Phase 1/2
+   * Payouts pending
+* [ ] Users list (search, filter)
+* [ ] Challenges list
+* [ ] Payouts review
+* [ ] Fraud flags
+Monitoring
+* [ ] Sentry error tracking
+* [ ] Uptime monitoring (UptimeRobot)
+* [ ] Alerts Slack/Email si :
+   * Erreur rate > 1%
+   * Response time > 2s
+   * Downtime
+   * Payout queue > 20
+Documentation
+* [ ] README.md (setup instructions)
+* [ ] API documentation (si nécessaire)
+* [ ] Runbook (procédures urgences)
+* [ ] Backup & recovery plan
+Pre-Launch Checklist
+* [ ] Stripe mode PROD activé
+* [ ] DNS configuré (domaine)
+* [ ] SSL certificat OK
+* [ ] Email SPF/DKIM OK
+* [ ] Legal pages publiées
+* [ ] Privacy policy visible
+* [ ] Cookie banner actif
+* [ ] Analytics tracking
+* [ ] Error monitoring
+* [ ] Backups automatiques activés
+Soft Launch (25 Avril)
+* [ ] Lancement limité (100 premiers users)
+* [ ] Monitoring intensif 24/7
+* [ ] Support réactif (email)
+* [ ] Fix bugs en temps réel
+Launch Officiel (1er Mai)
+* [ ] Ouverture complète
+* [ ] Activation marketing
+* [ ] Monitoring 24/7 continue
+Livrables S14 :
+* ✅ Beta tests complétés
+* ✅ Admin dashboard fonctionnel
+* ✅ Monitoring + alertes actifs
+* ✅ Soft launch réussi (0 bug critique)
+* ✅ READY FOR LAUNCH 1er MAI 🚀
+________________
+
+
+🗄️ DATABASE SCHEMA COMPLET
+-- USERS
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  name VARCHAR(100),
+  country VARCHAR(2) DEFAULT 'BR',
+  kyc_verified BOOLEAN DEFAULT FALSE,
+  kyc_status VARCHAR(20), -- pending, verified, rejected
+  fraud_risk_score INTEGER DEFAULT 0,
+  flagged_for_review BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- USER CHALLENGES
+CREATE TABLE user_challenges (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  challenge_type VARCHAR(20) NOT NULL, -- 'demo_100', '1k', '5k'
+  phase INTEGER NOT NULL, -- 1 ou 2
+  status VARCHAR(20) DEFAULT 'active', -- active, passed, failed, funded
+  
+  -- Balance & Tracking
+  initial_balance DECIMAL(10,2) NOT NULL,
+  current_balance DECIMAL(10,2) NOT NULL,
+  max_balance_reached DECIMAL(10,2),
+  
+  -- Rules Tracking
+  picks_count INTEGER DEFAULT 0,
+  active_days_count INTEGER DEFAULT 0,
+  daily_dd_current DECIMAL(5,2) DEFAULT 0,
+  total_dd_current DECIMAL(5,2) DEFAULT 0,
+  
+  -- Dates
+  start_date TIMESTAMP NOT NULL,
+  end_date TIMESTAMP NOT NULL,
+  completed_at TIMESTAMP,
+  
+  -- Fail Reason
+  fail_reason VARCHAR(50), -- DD_DAILY_EXCEEDED, DD_TOTAL_EXCEEDED, TIME_EXPIRED, etc.
+  fail_dd_value DECIMAL(5,2),
+  
+  -- Add-ons
+  success_refund_enabled BOOLEAN DEFAULT FALSE,
+  insurance_level VARCHAR(20), -- null, silver, gold, platinum
+  insurance_resets_remaining INTEGER DEFAULT 0,
+  
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- PICKS
+CREATE TABLE picks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_challenge_id UUID REFERENCES user_challenges(id) ON DELETE CASCADE,
+  
+  -- Match Info
+  match_id VARCHAR(100) NOT NULL,
+  match_name VARCHAR(200) NOT NULL,
+  match_start_time TIMESTAMP NOT NULL,
+  sport VARCHAR(50) DEFAULT 'football',
+  league VARCHAR(100),
+  
+  -- Bet Info
+  bet_type VARCHAR(50) NOT NULL, -- 1X2, over_under, btts, asian_handicap, etc.
+  selection VARCHAR(100) NOT NULL, -- home, draw, away, over_2.5, etc.
+  odds DECIMAL(10,2) NOT NULL,
+  
+  -- Stake
+  stake_amount DECIMAL(10,2) NOT NULL,
+  stake_percentage DECIMAL(5,2) NOT NULL,
+  
+  -- Result
+  result VARCHAR(20) DEFAULT 'pending', -- pending, won, lost, void
+  profit_loss DECIMAL(10,2) DEFAULT 0,
+  profit_loss_raw DECIMAL(10,2), -- avant plafonnement gains
+  capped BOOLEAN DEFAULT FALSE,
+  capped_amount DECIMAL(10,2),
+  
+  -- Timestamps
+  declared_at TIMESTAMP DEFAULT NOW(),
+  settled_at TIMESTAMP,
+  
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- DAILY STATS (pour règles complexes)
+CREATE TABLE daily_stats (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_challenge_id UUID REFERENCES user_challenges(id) ON DELETE CASCADE,
+  date DATE NOT NULL,
+  
+  picks_count INTEGER DEFAULT 0,
+  daily_profit_loss DECIMAL(10,2) DEFAULT 0,
+  daily_gain_raw DECIMAL(10,2) DEFAULT 0,
+  daily_gain_capped DECIMAL(10,2) DEFAULT 0,
+  cap_applied BOOLEAN DEFAULT FALSE,
+  
+  balance_at_start DECIMAL(10,2),
+  balance_at_end DECIMAL(10,2),
+  
+  created_at TIMESTAMP DEFAULT NOW(),
+  
+  UNIQUE(user_challenge_id, date)
+);
+
+
+-- FUNDED ACCOUNTS
+CREATE TABLE funded_accounts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  source_challenge_id UUID REFERENCES user_challenges(id),
+  
+  account_size DECIMAL(10,2) NOT NULL, -- 1000 ou 5000
+  current_balance DECIMAL(10,2) NOT NULL,
+  status VARCHAR(20) DEFAULT 'active', -- active, suspended, closed
+  
+  lifetime_payouts DECIMAL(10,2) DEFAULT 0,
+  monthly_payout_limit DECIMAL(10,2) DEFAULT 1500,
+  lifetime_payout_limit DECIMAL(10,2) DEFAULT 10000,
+  
+  payout_count INTEGER DEFAULT 0,
+  last_payout_at TIMESTAMP,
+  
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- PAYOUTS
+CREATE TABLE payouts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  funded_account_id UUID REFERENCES funded_accounts(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES users(id),
+  
+  amount DECIMAL(10,2) NOT NULL,
+  status VARCHAR(20) DEFAULT 'pending', -- pending, pending_review, approved, processing, paid, rejected
+  
+  pix_key VARCHAR(255),
+  transaction_id VARCHAR(255),
+  
+  rejection_reason TEXT,
+  
+  requested_at TIMESTAMP DEFAULT NOW(),
+  reviewed_at TIMESTAMP,
+  paid_at TIMESTAMP,
+  
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- PROMO CODES
+CREATE TABLE promo_codes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id), -- null si code global
+  code VARCHAR(20) UNIQUE NOT NULL,
+  
+  discount_percent INTEGER NOT NULL, -- 15, 20, 30
+  challenge_tier VARCHAR(20), -- 'any', '1k', '5k'
+  
+  expires_at TIMESTAMP,
+  used_at TIMESTAMP,
+  
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- UPSELL PURCHASES
+CREATE TABLE upsell_purchases (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  user_challenge_id UUID REFERENCES user_challenges(id),
+  
+  upsell_type VARCHAR(50) NOT NULL, -- success_refund, reset_dd, extension, insurance, retry
+  price DECIMAL(10,2) NOT NULL,
+  
+  purchased_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- TRANSACTIONS
+CREATE TABLE transactions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  
+  type VARCHAR(50) NOT NULL, -- challenge_purchase, addon_purchase, payout
+  amount DECIMAL(10,2) NOT NULL,
+  currency VARCHAR(3) DEFAULT 'EUR',
+  
+  status VARCHAR(20) DEFAULT 'pending', -- pending, completed, failed, refunded
+  payment_method VARCHAR(50), -- pix, card, etc.
+  
+  stripe_payment_id VARCHAR(255),
+  stripe_session_id VARCHAR(255),
+  
+  metadata JSONB,
+  
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- NOTIFICATIONS
+CREATE TABLE notifications (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  
+  type VARCHAR(50) NOT NULL, -- pick_won, phase_passed, payout_processed, etc.
+  title VARCHAR(200) NOT NULL,
+  message TEXT NOT NULL,
+  
+  read BOOLEAN DEFAULT FALSE,
+  read_at TIMESTAMP,
+  
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- INDEXES
+CREATE INDEX idx_user_challenges_user_status ON user_challenges(user_id, status);
+CREATE INDEX idx_picks_challenge ON picks(user_challenge_id);
+CREATE INDEX idx_picks_match_result ON picks(match_id, result);
+CREATE INDEX idx_daily_stats_challenge_date ON daily_stats(user_challenge_id, date);
+CREATE INDEX idx_payouts_status ON payouts(status);
+CREATE INDEX idx_payouts_user ON payouts(user_id);
+
+
+________________
+
+
+🎨 DESIGN & BRANDING (à voir)
+Logo & Mascotte 
+Logo Minimaliste "Striker"
+* Trophée simplifié + ballon de foot
+* 3 versions : icon seul, logo+texte, monochrome
+* Formats : SVG, PNG (512x512, 1024x1024), favicon (32x32)
+Mascotte Interactive
+* 6 émotions : Happy, Motivated, Worried, Celebrating, Focused, Sad
+* Pop-ups contextuels aux moments clés :
+   * Bienvenue (début challenge)
+   * Bon progrès (15-20% profit)
+   * Alerte DD (> 7%)
+   * Proche objectif (23-24%)
+   * Limite gains journalier
+   * Succès/Échec
+Palette Couleurs
+Primary Green: #22C55E
+Green Dark: #16A34A
+Green Light: #4ADE80
+Gold Accent: #FFD700
+
+
+BG Dark: #111827
+BG Medium: #1F2937
+BG Light: #374151
+
+
+Text White: #FFFFFF
+Text Gray: #D1D5DB
+Text Muted: #9CA3AF
+
+
+________________
+
+
+📧 EMAILS AUTOMATIQUES
+Liste complète des emails :
+1. Welcome (après signup)
+2. Email Verification (Supabase auto)
+3. Challenge Purchased (confirmation achat)
+4. Challenge Started (J1 - conseils)
+5. Pick Won (notification victoire)
+6. Pick Lost (notification perte)
+7. DD Warning (DD > 7%)
+8. Phase 1 Passed (félicitations + next steps)
+9. Phase 2 Started (motivation)
+10. Phase 2 Passed (célébration + KYC reminder)
+11. Challenge Failed (encouragement + retry discount)
+12. Promo Code Generated (après demo success)
+13. Payout Requested (confirmation)
+14. Payout Approved (en traitement)
+15. Payout Processed (argent envoyé)
+16. Payout Rejected (raison + actions)
+17. KYC Reminder (si funded sans KYC)
+18. Inactive Reminder (pas de pick depuis 5j)
+________________
+
+
+🔐 SÉCURITÉ & COMPLIANCE
+Anti-Fraude
+Détection automatique :
+* [ ] Winrate > 80% sur 10+ picks → flag
+* [ ] Success rate challenges > 60% → flag
+* [ ] Multi-comptes (même IP, device fingerprint) → flag
+* [ ] Picks déclarés < 5min avant kick-off répétés → flag
+* [ ] Cotes suspectes (trop éloignées marché) → flag
+Actions :
+* [ ] Flag automatique dans admin
+* [ ] Review manuelle avant payout si flagged
+* [ ] Suspension compte si fraude confirmée
+LGPD & Privacy
+Obligations :
+* [ ] Cookie banner (consentement)
+* [ ] Privacy policy détaillée
+* [ ] Droit d'accès données (export JSON)
+* [ ] Droit à l'oubli (anonymisation)
+* [ ] Notification breach < 72h
+* [ ] DPO si > 10K users
+Rate Limiting
+/api/auth/login → 5 tentatives / 15min / IP
+/api/picks → 10 créations / heure / user
+/api/payouts/request → 1 / heure / user
+Global API → 100 req / 15min / IP
+
+
+________________
+
+
+📊 ANALYTICS & METRICS
+KPIs Produit
+* Inscriptions / jour
+* Taux conversion demo → paid
+* Taux passage Phase 1 (objectif : 3-5%)
+* Taux passage Phase 2 (objectif : 3-5% des Phase 1)
+* Taux conversion upsells
+* Churn rate
+KPIs Business
+* MRR (Monthly Recurring Revenue)
+* CAC (Customer Acquisition Cost)
+* LTV (Lifetime Value)
+* Ratio Payouts/Revenus
+* Marge brute
+KPIs Techniques
+* Uptime (objectif : 99.9%)
+* Response time p95 (objectif : < 500ms)
+* Error rate (objectif : < 0.1%)
+* Settlement accuracy (objectif : 100%)
+________________
+
+
+🚨 POINTS CRITIQUES À NE PAS OUBLIER
+Must-Have Absolus
+1. Taux de passage ≤ 5%
+
+   * Si > 5%, ajuster règles immédiatement
+   * Surveiller daily, pas monthly
+   2. Settlement doit être 100% fiable
+
+      * Test avec vrais matchs AVANT launch
+      * Avoir plan B si API down
+      3. Payouts ne peuvent PAS échouer
+
+         * Test PIX en staging
+         * Avoir process manuel backup
+         4. Legal pages AVANT launch
+
+            * Avocat brésilien DOIT valider
+            * Pas négociable
+            5. Mobile-first
+
+               * 80% trafic sera mobile
+               * Tester sur vrais devices
+               6. Monitoring 24/7
+
+                  * Alertes Slack configurées
+                  * Vous devez être notifié si down
+Nice-to-Have (Post-Launch)
+                  * Over/Under bets (autre que 1X2)
+                  * BTTS, Asian Handicap
+                  * Battle Mode
+                  * Leaderboards
+                  * Bot Tracker
+                  * Mobile app native
+________________
+
+
+🤝 SYSTÈME AFFILIÉS / INFLUENCEURS
+Sprint Post-Launch : Affiliate System (Semaine 15-16)
+Objectif : Transformer influenceurs en force de vente avec tracking automatique
+Database Schema Affiliés
+-- INFLUENCERS / AFFILIATES
+CREATE TABLE influencers (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  
+  -- Social
+  instagram_handle VARCHAR(100),
+  tiktok_handle VARCHAR(100),
+  youtube_handle VARCHAR(100),
+  followers_count INTEGER,
+  
+  -- Tracking
+  promo_code VARCHAR(20) UNIQUE NOT NULL, -- ex: JOAO10, MARIA15
+  
+  -- Rémunération
+  deal_type VARCHAR(20) NOT NULL, -- flat_fee, performance, hybrid
+  flat_fee DECIMAL(10,2) DEFAULT 0,
+  commission_percent DECIMAL(5,2) DEFAULT 0, -- 10%, 20%, etc.
+  commission_type VARCHAR(20), -- per_sale, lifetime
+  
+  -- Stats
+  total_sales INTEGER DEFAULT 0,
+  total_revenue DECIMAL(10,2) DEFAULT 0,
+  total_commission DECIMAL(10,2) DEFAULT 0,
+  commission_paid DECIMAL(10,2) DEFAULT 0,
+  commission_pending DECIMAL(10,2) DEFAULT 0,
+  
+  -- Status
+  status VARCHAR(20) DEFAULT 'active', -- active, paused, ended
+  
+  -- Paiement
+  pix_key VARCHAR(255),
+  last_payout_at TIMESTAMP,
+  
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- INFLUENCER SALES (Attribution)
+CREATE TABLE influencer_sales (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  influencer_id UUID REFERENCES influencers(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  transaction_id UUID REFERENCES transactions(id),
+  
+  promo_code VARCHAR(20) NOT NULL,
+  sale_amount DECIMAL(10,2) NOT NULL,
+  commission_amount DECIMAL(10,2) NOT NULL,
+  commission_paid BOOLEAN DEFAULT FALSE,
+  
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- INFLUENCER PAYOUTS
+CREATE TABLE influencer_payouts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  influencer_id UUID REFERENCES influencers(id) ON DELETE CASCADE,
+  
+  amount DECIMAL(10,2) NOT NULL,
+  period_start DATE NOT NULL,
+  period_end DATE NOT NULL,
+  
+  status VARCHAR(20) DEFAULT 'pending', -- pending, processing, paid
+  pix_key VARCHAR(255),
+  transaction_id VARCHAR(255),
+  
+  requested_at TIMESTAMP DEFAULT NOW(),
+  paid_at TIMESTAMP,
+  
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- INDEXES
+CREATE INDEX idx_influencers_code ON influencers(promo_code);
+CREATE INDEX idx_influencer_sales_influencer ON influencer_sales(influencer_id);
+CREATE INDEX idx_influencer_sales_user ON influencer_sales(user_id);
+
+
+Features Système Affiliés
+1. Génération Codes Promo Uniques
+function generateInfluencerCode(influencerName) {
+  // Ex: "João Silva" → "JOAO10"
+  const clean = influencerName
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // enlève accents
+    .toUpperCase()
+    .replace(/[^A-Z]/g, '');
+  const short = clean.substring(0, 6);
+  const discount = 10; // ou 15, 20 selon deal
+  return `${short}${discount}`;
+}
+
+
+2. Page Signup Influenceur /influencer/signup
+                  * [ ] Form : nom, email, Instagram/TikTok handle
+                  * [ ] Followers count
+                  * [ ] Génération code promo automatique
+                  * [ ] Preview du code
+                  * [ ] T&C influenceurs (séparés)
+                  * [ ] Email confirmation avec lien dashboard
+3. Dashboard Influenceur /influencer/dashboard
+Vue principale :
+🎯 TON DASHBOARD - Code: JOAO10
+
+
+📊 Ce mois (Janvier 2026)
+├─ Ventes : 47
+├─ CA généré : €2,350
+└─ Ta commission : €470 (20%)
+
+
+💰 Lifetime Stats
+├─ Total ventes : 156
+├─ Total CA : €7,800
+├─ Total commission : €1,560
+└─ Déjà payé : €890
+
+
+📈 Performance
+├─ Taux conversion : 12% (47/392 clics)
+├─ Panier moyen : €50
+└─ Top produit : Challenge 1K (80%)
+
+
+💳 Prochain paiement : 15 Février
+Montant : €470 (via PIX)
+
+
+[DEMANDER PAIEMENT] [VOIR DÉTAILS] [MES LIENS]
+
+
+Sections dashboard :
+                  * [ ] Stats temps réel (ventes, CA, commission)
+                  * [ ] Graph performance (30 derniers jours)
+                  * [ ] Top produits vendus
+                  * [ ] Liste ventes récentes (user anonymisé)
+                  * [ ] Liens trackés (copier/partager)
+                  * [ ] Request payout
+                  * [ ] Historique payouts
+4. Tracking Attribution
+Flow complet :
+1. User clique lien influenceur
+   → https://jogadorpro.com?ref=JOAO10
+   
+2. Cookie/localStorage sauvegarde ref code (30 jours)
+   
+3. User s'inscrit (même jours ou dans 30j)
+   
+4. User achète challenge
+   
+5. Webhook Stripe → attribution automatique
+   
+6. Création influencer_sale
+   
+7. Update stats influenceur
+   
+8. Commission calculée et ajoutée au pending
+
+
+Code tracking :
+// Middleware Next.js
+export function middleware(request) {
+  const refCode = request.nextUrl.searchParams.get('ref');
+  
+  if (refCode) {
+    const response = NextResponse.next();
+    // Cookie 30 jours
+    response.cookies.set('ref_code', refCode, { 
+      maxAge: 30 * 24 * 60 * 60,
+      httpOnly: false // accessible JS pour tracking
+    });
+    return response;
+  }
+  
+  return NextResponse.next();
+}
+
+
+// Au checkout
+async function handlePurchase(userId, amount, challengeType) {
+  const refCode = cookies.get('ref_code');
+  
+  if (refCode) {
+    const influencer = await db.influencers.findByCode(refCode);
+    
+    if (influencer) {
+      const commission = calculateCommission(
+        amount, 
+        influencer.commission_percent,
+        influencer.commission_type
+      );
+      
+      await db.influencer_sales.create({
+        influencer_id: influencer.id,
+        user_id: userId,
+        promo_code: refCode,
+        sale_amount: amount,
+        commission_amount: commission
+      });
+      
+      await db.influencers.update(influencer.id, {
+        total_sales: influencer.total_sales + 1,
+        total_revenue: influencer.total_revenue + amount,
+        total_commission: influencer.total_commission + commission,
+        commission_pending: influencer.commission_pending + commission
+      });
+    }
+  }
+}
+
+
+5. Modèles de Rémunération
+A. Flat Fee (One-shot)
+Influenceur reçoit : €500 fixe
+Pour : 1 post Instagram + 3 stories
+Livrables : screenshots proof posted
+Paiement : 50% avant, 50% après delivery
+
+
+B. Performance (Commission pure)
+Base : €0
+Commission : 20% par vente générée
+Paiement : mensuel (si > €50 accumulé)
+
+
+Exemple :
+- 30 ventes × €49 = €1,470 CA
+- Commission : €1,470 × 20% = €294
+
+
+C. Hybrid (Recommandé)
+Base : €200 garanti
+Commission : 10% lifetime sur toutes ventes
+
+
+Exemple :
+- Base : €200
+- 25 ventes × €60 moyen × 10% = €150
+- Total : €350
+
+
+Avantage : sécurité influenceur + upside performance
+
+
+D. Tiered (Gamification)
+Niveau 1 (0-10 ventes) : 10% commission
+Niveau 2 (11-50 ventes) : 15% commission
+Niveau 3 (51-100 ventes) : 20% commission
+Niveau 4 (100+ ventes) : 25% commission + bonus
+
+
+Motivates long-term partnership
+
+
+6. Liens Trackés Automatiques
+Page /influencer/dashboard/links
+Générer automatiquement :
+🔗 Tes Liens Personnalisés
+
+
+Landing Page :
+https://jogadorpro.com?ref=JOAO10
+[COPIER] [WHATSAPP] [INSTAGRAM BIO]
+
+
+Pricing :
+https://jogadorpro.com/pricing?ref=JOAO10
+[COPIER]
+
+
+Challenge Demo :
+https://jogadorpro.com/demo?ref=JOAO10
+[COPIER]
+
+
+Challenge 1K Direct :
+https://jogadorpro.com/checkout/1k?ref=JOAO10
+[COPIER]
+
+
+🎨 Stories/Posts Assets
+[TÉLÉCHARGER PACK] (images, vidéos pré-faites)
+
+
+7. Admin Influencer Management
+Page /admin/influencers
+                  * [ ] Liste tous influenceurs
+                  * [ ] Stats par influenceur (sales, CA, commission)
+                  * [ ] Top performers
+                  * [ ] Add new influencer (manual)
+                  * [ ] Edit deals (commission %, flat fee)
+                  * [ ] Pause/Resume influencer
+                  * [ ] Approve payouts
+8. Payout Influenceurs
+Auto ou Manuel :
+Auto (si deal type = performance) :
+- Chaque 1er du mois
+- Si commission_pending >= €50
+- Création influencer_payout automatique
+- Email notification
+- Paiement PIX automatique (ou manuel approval)
+
+
+Manuel (si deal type = flat_fee) :
+- Influenceur upload proof of posting
+- Admin review et approve
+- Paiement déclenché
+
+
+Code payout auto :
+// Cron job : 1er de chaque mois à 9h
+async function processInfluencerPayouts() {
+  const influencers = await db.influencers.find({
+    status: 'active',
+    commission_pending: { $gte: 50 }
+  });
+  
+  for (const influencer of influencers) {
+    const periodStart = startOfLastMonth();
+    const periodEnd = endOfLastMonth();
+    
+    await db.influencer_payouts.create({
+      influencer_id: influencer.id,
+      amount: influencer.commission_pending,
+      period_start: periodStart,
+      period_end: periodEnd,
+      status: 'pending',
+      pix_key: influencer.pix_key
+    });
+    
+    await db.influencers.update(influencer.id, {
+      commission_pending: 0
+    });
+    
+    await sendEmail(influencer.email, 'payout_ready', {
+      amount: influencer.commission_pending,
+      period: `${formatDate(periodStart)} - ${formatDate(periodEnd)}`
+    });
+  }
+}
+
+
+9. Emails Influenceurs
+Nouveaux emails à ajouter :
+                  * [ ] Welcome Influencer (après signup)
+                  * [ ] First Sale Congrats (motivation)
+                  * [ ] Monthly Report (stats du mois)
+                  * [ ] Payout Ready (notification)
+                  * [ ] Payout Processed (confirmation)
+                  * [ ] New Tier Unlocked (gamification)
+10. Analytics Influenceurs
+Métriques à tracker :
+                  * Clics par lien (UTM tracking)
+                  * Taux conversion ref → signup
+                  * Taux conversion signup → purchase
+                  * Panier moyen par influenceur
+                  * Retention users (viennent d'un influenceur)
+                  * LTV users par source influenceur
+Dashboard admin :
+📊 PERFORMANCE INFLUENCEURS
+
+
+Top Performers (ce mois) :
+1. João (@joaosilva) - 47 ventes - €2,350 CA
+2. Maria (@mariatips) - 31 ventes - €1,860 CA
+3. Pedro (@pedropro) - 28 ventes - €1,540 CA
+
+
+ROI Influenceurs :
+├─ Total payé influenceurs : €2,450
+├─ CA généré : €12,300
+└─ ROI : 5.02x 🔥
+
+
+Meilleur taux conversion :
+1. Ana (@anatips) - 18% (56/311 clics)
+2. Carlos (@carlospro) - 15% (42/280 clics)
+
+
+Insights :
+⚠️ 3 influenceurs inactifs (0 ventes en 30j)
+✅ 8 nouveaux influenceurs ce mois
+💡 Micro-influenceurs (< 50K) = meilleur ROI
+
+
+________________
+
+
+🎯 PROGRAMME PARRAINAGE UTILISATEURS
+Bonus : Parrainage entre users (viral growth)
+Database Schema Parrainage
+-- REFERRALS
+CREATE TABLE referrals (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  referrer_user_id UUID REFERENCES users(id), -- qui invite
+  referred_user_id UUID REFERENCES users(id), -- qui est invité
+  
+  referral_code VARCHAR(20) NOT NULL,
+  
+  status VARCHAR(20) DEFAULT 'pending', -- pending, completed, rewarded
+  
+  -- Rewards
+  referrer_reward_type VARCHAR(50), -- discount, cash, free_challenge
+  referrer_reward_value DECIMAL(10,2),
+  referrer_rewarded BOOLEAN DEFAULT FALSE,
+  
+  referred_reward_type VARCHAR(50),
+  referred_reward_value DECIMAL(10,2),
+  
+  completed_at TIMESTAMP, -- quand referred achète
+  rewarded_at TIMESTAMP,
+  
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+
+CREATE INDEX idx_referrals_referrer ON referrals(referrer_user_id);
+CREATE INDEX idx_referrals_code ON referrals(referral_code);
+
+
+Features Parrainage
+1. Code Parrainage Personnel
+Chaque user a son code :
+User João (id: abc123) → Code: JOAO_REF_X8D2
+
+
+2. Mécanique Simple
+🤝 PARRAINAGE
+
+
+Invite tes amis, gagne des récompenses !
+
+
+Ton code : JOAO_REF_X8D2
+[COPIER] [PARTAGER]
+
+
+Comment ça marche :
+1. Ton ami utilise ton code à l'inscription
+2. Il reçoit -15% sur son premier challenge
+3. Quand il achète, tu reçois €10 de crédit
+
+
+Stats :
+├─ Amis invités : 5
+├─ Amis acheteurs : 2
+└─ Crédits gagnés : €20
+
+
+[INVITER PAR WHATSAPP]
+[INVITER PAR EMAIL]
+
+
+3. Récompenses Paliers
+Niveau 1 : 1-3 amis acheteurs
+└─ €10 par ami
+
+
+Niveau 2 : 4-9 amis acheteurs  
+└─ €15 par ami
+└─ Badge "Recruteur"
+
+
+Niveau 3 : 10+ amis acheteurs
+└─ €20 par ami
+└─ 1 Challenge gratuit
+└─ Badge "Ambassadeur"
+
+
+________________
+
+
+✅ CHECKLIST SYSTÈME AFFILIÉS
+Must-Have (Post-Launch) :
+                  * [ ] Database schema influencers
+                  * [ ] Tracking ref codes (cookies)
+                  * [ ] Attribution automatique ventes
+                  * [ ] Dashboard influenceur
+                  * [ ] Calcul commissions
+                  * [ ] Payout influenceurs (manuel OK)
+                  * [ ] Admin management
+Should-Have :
+                  * [ ] Liens trackés automatiques
+                  * [ ] Analytics détaillées
+                  * [ ] Payout automatique
+                  * [ ] Tiered commissions
+                  * [ ] Parrainage users
+Nice-to-Have :
+                  * [ ] Affiliate onboarding flow
+                  * [ ] Assets pack (images, vidéos)
+                  * [ ] Leaderboard influenceurs
+                  * [ ] Gamification (badges, challenges)
+________________
+
+
+________________
+
+
+✅ DEFINITION OF DONE - MVP
+Le MVP est prêt quand :
+User Journey Complet
+                  * [ ] User peut s'inscrire sans aide
+                  * [ ] Acheter challenge 1K fonctionne (PIX)
+                  * [ ] Placer 20 picks sur vrais matches
+                  * [ ] Voir profit calculé correctement
+                  * [ ] Passer Phase 1 si objectif atteint
+                  * [ ] Recevoir email félicitations
+                  * [ ] Commencer Phase 2 automatiquement
+                  * [ ] Passer Phase 2
+                  * [ ] Avoir funded account créé
+                  * [ ] Demander payout
+                  * [ ] Recevoir payout via PIX
+Qualité
+                  * [ ] Zero bug critique
+                  * [ ] Mobile 100% responsive
+                  * [ ] Performance Lighthouse > 90
+                  * [ ] Uptime 99%+ pendant beta
+                  * [ ] 10 beta testers ont validé le flow
+Legal & Compliance
+                  * [ ] T&C publiés et validés avocat
+                  * [ ] Privacy policy LGPD compliant
+                  * [ ] Cookie banner actif
+                  * [ ] KYC fonctionnel
+Ready for Scale
+                  * [ ] Monitoring + alertes actifs
+                  * [ ] Analytics tracking OK
+                  * [ ] Admin dashboard opérationnel
+                  * [ ] Documentation complète
+________________
+________________
+
+
+🎯 NEXT STEPS IMMÉDIATS
+Cette semaine (S1) :
+                  1. Setup repo GitHub
+                  2. Init Next.js + Tailwind
+                  3. Deploy Vercel staging
+                  4. Setup Supabase
+                  5. Première page Hello World live
+Semaine prochaine (S2) : 6. Auth complète (signup, login, reset) 7. Database migrations 8. Tests auth flow
+Goal Fin Février (S6) :
+                  * Challenge system complet
+                  * Picks + Settlement fonctionnel
+                  * Premier flow end-to-end testé
+________________
+
+
+Questions ? Clarifications ? Commençons ! 🚀

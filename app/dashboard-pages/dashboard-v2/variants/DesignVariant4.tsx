@@ -1,89 +1,27 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Home, TrendingUp, Trophy, Target, DollarSign, Settings, LogOut, Bell } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { createClient } from '@/lib/supabase'
+import { useState } from 'react'
 
-interface Challenge {
-  id: string
-  tier: string
-  current_balance: number
-  target_profit: number
-  status: string
-  created_at: string
+interface DesignVariant4Props {
+  user: any
+  challenge: any
 }
 
-export default function DashboardPage() {
-  const [user, setUser] = useState<any>(null)
-  const [challenges, setChallenges] = useState<Challenge[]>([])
+export function DesignVariant4({ user, challenge }: DesignVariant4Props) {
   const [selectedMatch, setSelectedMatch] = useState<number | null>(null)
-  const [loading, setLoading] = useState(true)
-  const router = useRouter()
 
-  // Mock matches data
   const mockMatches = [
     { id: 1, league: 'Ligue 1', home: 'PSG', away: 'Marseille', time: '20:45', live: true, odds: { home: 1.95, draw: 3.40, away: 3.80 } },
     { id: 2, league: 'La Liga', home: 'Barcelona', away: 'Real Madrid', time: '21:00', live: true, odds: { home: 2.10, draw: 3.20, away: 3.50 } },
     { id: 3, league: 'Premier League', home: 'Liverpool', away: 'Man City', time: '21:00', live: false, odds: { home: 2.20, draw: 3.60, away: 2.62 } },
   ]
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const supabase = createClient()
-      const { data: { user: authUser } } = await supabase.auth.getUser()
-      
-      if (!authUser) {
-        const storedUser = localStorage.getItem('user')
-        if (storedUser) {
-          setUser(JSON.parse(storedUser))
-        } else {
-          router.push('/login')
-          return
-        }
-      } else {
-        setUser(authUser)
-      }
-
-      const userId = authUser?.id || JSON.parse(localStorage.getItem('user') || '{}').id
-      if (userId) {
-        const { data: challengesData, error } = await supabase
-          .from('challenges')
-          .select('*')
-          .eq('user_id', userId)
-          .order('created_at', { ascending: false })
-
-        if (!error && challengesData) {
-          setChallenges(challengesData)
-        }
-      }
-
-      setLoading(false)
-    }
-
-    checkAuth()
-  }, [router])
-
-  const handleLogout = async () => {
-    localStorage.removeItem('user')
-    router.push('/login')
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
-      </div>
-    )
-  }
-
-  const activeChallenge = challenges.find(c => c.status === 'active')
-
   const stats = [
-    { icon: DollarSign, label: 'Balance', value: `€${activeChallenge?.current_balance || 0}`, color: 'emerald', change: '+0%' },
-    { icon: Target, label: 'Objectif', value: `€${activeChallenge?.target_profit || 0}`, color: 'blue', change: '+10%' },
+    { icon: DollarSign, label: 'Balance', value: `€${challenge?.current_balance || 100}`, color: 'emerald', change: '+0%' },
+    { icon: Target, label: 'Objectif', value: `€${challenge?.target_profit || 110}`, color: 'blue', change: '+10%' },
     { icon: Trophy, label: 'Win Rate', value: '0%', color: 'purple', change: '0/0' },
     { icon: TrendingUp, label: 'ROI', value: '+0%', color: 'cyan', change: 'Avg' },
   ]
@@ -124,10 +62,7 @@ export default function DashboardPage() {
           ))}
         </nav>
 
-        <button 
-          onClick={handleLogout}
-          className="w-12 h-12 rounded-xl flex items-center justify-center text-red-400 hover:bg-red-500/10 transition"
-        >
+        <button className="w-12 h-12 rounded-xl flex items-center justify-center text-red-400 hover:bg-red-500/10 transition">
           <LogOut className="w-5 h-5" />
         </button>
       </motion.aside>
@@ -143,15 +78,10 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-2xl font-bold text-white">Bienvenue, {user?.email?.split('@')[0]}</h1>
-              <p className="text-gray-400 text-sm">
-                {activeChallenge ? `Ton challenge ${activeChallenge.tier} est actif • Phase 1` : 'Aucun challenge actif'}
-              </p>
+              <p className="text-gray-400 text-sm">Ton challenge démo est actif • Phase 1</p>
             </div>
-            <Button 
-              onClick={() => router.push('/dashboard-pages/create-challenge')}
-              className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600"
-            >
-              + Nouveau Challenge
+            <Button className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600">
+              + Nouveau Pick
             </Button>
           </div>
 
