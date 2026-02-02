@@ -8,8 +8,6 @@ import Link from 'next/link'
 import { authService } from '@/lib/auth'
 import { supabase } from '@/lib/supabase'
 import { DesignVariant1 } from './variants/DesignVariant1'
-import { DesignVariant2 } from './variants/DesignVariant2'
-import { DesignVariant3 } from './variants/DesignVariant3'
 import { DesignVariant4 } from './variants/DesignVariant4'
 
 type DesignType = 'variant1' | 'variant2' | 'variant3' | 'variant4'
@@ -41,16 +39,18 @@ export default function DashboardV2Page() {
         setUser(resolvedUser)
 
         // Get active challenge
-        const { data: challenges } = await supabase
-          .from('challenges')
-          .select('*')
-          .eq('user_id', resolvedUser.id)
-          .eq('status', 'active')
-          .order('created_at', { ascending: false })
-          .limit(1)
+        if (resolvedUser?.id) {
+          const { data: challenges } = await supabase
+            .from('challenges')
+            .select('*')
+            .eq('user_id', resolvedUser.id)
+            .eq('status', 'active')
+            .order('created_at', { ascending: false })
+            .limit(1)
 
-        if (challenges && challenges.length > 0) {
-          setActiveChallenge(challenges[0])
+          if (challenges && challenges.length > 0) {
+            setActiveChallenge(challenges[0])
+          }
         }
       } catch (err) {
         console.error('Error:', err)
@@ -151,8 +151,6 @@ export default function DashboardV2Page() {
       {/* Design Preview */}
       <div className="p-6">
         {selectedDesign === 'variant1' && <DesignVariant1 user={user} challenge={activeChallenge} />}
-        {selectedDesign === 'variant2' && <DesignVariant2 user={user} challenge={activeChallenge} />}
-        {selectedDesign === 'variant3' && <DesignVariant3 user={user} challenge={activeChallenge} />}
         {selectedDesign === 'variant4' && <DesignVariant4 user={user} challenge={activeChallenge} />}
       </div>
     </div>
