@@ -8,18 +8,16 @@ import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import type { User } from '@supabase/supabase-js'
 
-interface Pick {
+interface Bet {
   id: string
-  home_team: string
-  away_team: string
-  selection: string
+  event_description: string
+  bet_type: string
   stake: number
   odds: number
   potential_win: number
-  status: 'pending' | 'won' | 'lost' | 'cancelled'
-  created_at: string
-  league: string
-  match_commence_time?: string
+  result: 'pending' | 'won' | 'lost' | 'void'
+  placed_at: string
+  sport: string
 }
 
 interface Challenge {
@@ -43,10 +41,10 @@ const getStoredUser = (): StoredUser | null => {
 
 export default function MyBetsPage() {
   const [user, setUser] = useState<User | StoredUser | null>(null)
-  const [picks, setPicks] = useState<Pick[]>([])
+  const [bets, setBets] = useState<Bet[]>([])
   const [challenge, setChallenge] = useState<Challenge | null>(null)
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState<'all' | 'pending' | 'won' | 'lost' | 'cancelled'>('all')
+  const [filter, setFilter] = useState<'all' | 'pending' | 'won' | 'lost' | 'void'>('all')
   const router = useRouter()
 
   useEffect(() => {
@@ -67,17 +65,17 @@ export default function MyBetsPage() {
 
       const userId = authUser?.id || storedUser?.id
       if (userId) {
-        // Fetch picks
-        const { data: picksData, error: picksError } = await supabase
-          .from('picks')
+        // Fetch bets
+        const { data: betsData, error: betsError } = await supabase
+          .from('bets')
           .select('*')
           .eq('user_id', userId)
-          .order('created_at', { ascending: false })
+          .order('placed_at', { ascending: false })
 
-        if (picksError) {
-          console.error('Error fetching picks:', picksError)
-        } else if (picksData) {
-          setPicks(picksData)
+        if (betsError) {
+          console.error('Error fetching bets:', betsError)
+        } else if (betsData) {
+          setBets(betsData)
         }
 
         // Fetch challenge
@@ -108,41 +106,28 @@ export default function MyBetsPage() {
     navigator.clipboard.writeText(text)
   }
 
-  const handleCancelPick = async (pickId: string, matchCommenceTime?: string) => {
-    // Vérifier que le match n'a pas commencé
-    if (matchCommenceTime) {
-      const matchStart = new Date(matchCommenceTime).getTime()
-      const now = Date.now()
-      if (now >= matchStart) {
-        alert('❌ Impossible d\'annuler: Le match a déjà commencé')
-        return
-      }
-    }
-
+  const handleCancelBet = async (betId: string) => {
+    // Les bets dans la vraie BD contiennent placed_at, pas match_commence_time
+    // Donc on va simplement essayer de les annuler (future: ajouter la vérification de temps match)
     if (confirm('⚠️ Êtes-vous sûr de vouloir annuler ce pari ?')) {
       try {
         const { error } = await supabase
-          .from('picks')
-          .update({ status: 'cancelled' })
-          .eq('id', pickId)
+          .from('bets')
+          .update({ result: 'void' })
+          .eq('id', betId)
 
         if (error) {
           console.error('Erreur lors de l\'annulation:', error)
           alert('Erreur lors de l\'annulation du pari')
         } else {
           // Mettre à jour l'état local
-          setPicks(picks.map(p => p.id === pickId ? { ...p, status: 'cancelled' } : p))
+          setBets(bets.map(b => b.id === betId ? { ...b, result: 'void' } : b))
         }
       } catch (error) {
         console.error('Erreur:', error)
         alert('Erreur lors de l\'annulation du pari')
       }
     }
-  }
-
-  const isMatchStarted = (matchCommenceTime?: string) => {
-    if (!matchCommenceTime) return false
-    return new Date(matchCommenceTime).getTime() <= Date.now()
   }
 
   const getStatusIcon = (status: string) => {
@@ -172,14 +157,14 @@ export default function MyBetsPage() {
   }
 
   const stats = {
-    all: picks.length,
-    pending: picks.filter(p => p.status === 'pending').length,
-    won: picks.filter(p => p.status === 'won').length,
-    lost: picks.filter(p => p.status === 'lost').length,
-    cancelled: picks.filter(p => p.status === 'cancelled').length,
+    all: bets.length,
+    pending: bets.filter(b => b.result === 'pending').length,
+    won: bets.filter(b => b.result === 'won').length,
+    lost: bets.filter(b => b.result === 'lost').length,
+    void: bets.filter(b => b.result === 'void').length,
   }
 
-  const filteredPicks = filter === 'all' ? picks : picks.filter(p => p.status === filter)
+  const filteredBets = filter === 'all' ? bets : bets.filter(b => b.result === filter)
 
   if (loading) {
     return (
@@ -312,7 +297,7 @@ export default function MyBetsPage() {
                   { key: 'pending', label: 'En Attente', count: stats.pending, color: 'bg-yellow-500/20 text-yellow-400' },
                   { key: 'won', label: 'Gagnés', count: stats.won, color: 'bg-emerald-500/20 text-emerald-400' },
                   { key: 'lost', label: 'Perdus', count: stats.lost, color: 'bg-red-500/20 text-red-400' },
-                  { key: 'cancelled', label: 'Annulés', count: stats.cancelled, color: 'bg-gray-500/20 text-gray-400' },
+                  { key: 'void', label: 'Annulés', count: stats.void, color: 'bg-gray-500/20 text-gray-400' },
                 ].map((tab) => (
                   <button
                     key={tab.key}
@@ -328,22 +313,22 @@ export default function MyBetsPage() {
               </div>
             </motion.div>
 
-            {/* Picks List */}
+            {/* Bets List */}
             <div className="space-y-4">
-              {filteredPicks.length > 0 ? (
-                filteredPicks.map((pick, index) => (
+              {filteredBets.length > 0 ? (
+                filteredBets.map((bet, index) => (
                   <motion.div
-                    key={pick.id}
+                    key={bet.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className={`border rounded-xl overflow-hidden ${getStatusColor(pick.status)}`}
+                    className={`border rounded-xl overflow-hidden ${getStatusColor(bet.result)}`}
                   >
                     {/* Status Bar */}
                     <div className={`h-1 ${
-                      pick.status === 'won' ? 'bg-emerald-500'
-                      : pick.status === 'lost' ? 'bg-red-500'
-                      : pick.status === 'cancelled' ? 'bg-gray-500'
+                      bet.result === 'won' ? 'bg-emerald-500'
+                      : bet.result === 'lost' ? 'bg-red-500'
+                      : bet.result === 'void' ? 'bg-gray-500'
                       : 'bg-yellow-500'
                     }`} />
 
@@ -351,28 +336,28 @@ export default function MyBetsPage() {
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3 flex-1">
                           <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                            pick.status === 'won' ? 'bg-emerald-500/20'
-                            : pick.status === 'lost' ? 'bg-red-500/20'
-                            : pick.status === 'cancelled' ? 'bg-gray-500/20'
+                            bet.result === 'won' ? 'bg-emerald-500/20'
+                            : bet.result === 'lost' ? 'bg-red-500/20'
+                            : bet.result === 'void' ? 'bg-gray-500/20'
                             : 'bg-yellow-500/20'
                           }`}>
-                            {getStatusIcon(pick.status)}
+                            {getStatusIcon(bet.result)}
                           </div>
                           <div>
                             <p className="text-gray-400 text-sm">
-                              {new Date(pick.created_at).toLocaleDateString('fr-FR', { 
+                              {new Date(bet.placed_at).toLocaleDateString('fr-FR', { 
                                 day: 'numeric', 
                                 month: 'long', 
                                 year: 'numeric' 
-                              })} {new Date(pick.created_at).toLocaleTimeString('fr-FR', { 
+                              })} {new Date(bet.placed_at).toLocaleTimeString('fr-FR', { 
                                 hour: '2-digit', 
                                 minute: '2-digit' 
                               })}
                             </p>
                             <div className="flex items-center gap-2 mt-1">
-                              <p className="text-xs text-gray-500 font-mono">{pick.id.slice(0, 13)}</p>
+                              <p className="text-xs text-gray-500 font-mono">{bet.id.slice(0, 13)}</p>
                               <button
-                                onClick={() => copyToClipboard(pick.id)}
+                                onClick={() => copyToClipboard(bet.id)}
                                 className="text-gray-500 hover:text-emerald-400 transition"
                               >
                                 <Copy className="w-3 h-3" />
@@ -380,10 +365,10 @@ export default function MyBetsPage() {
                             </div>
                           </div>
                         </div>
-                        {/* Cancel Button - Only for pending picks and before match starts */}
-                        {pick.status === 'pending' && !isMatchStarted(pick.match_commence_time) && (
+                        {/* Cancel Button - Only for pending bets */}
+                        {bet.result === 'pending' && (
                           <button
-                            onClick={() => handleCancelPick(pick.id, pick.match_commence_time)}
+                            onClick={() => handleCancelBet(bet.id)}
                             className="px-3 py-1 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 text-xs font-semibold hover:bg-red-500/30 transition"
                           >
                             Annuler
@@ -391,36 +376,30 @@ export default function MyBetsPage() {
                         )}
                       </div>
 
-                      {/* Pick Details */}
+                      {/* Bet Details */}
                       <div className="bg-gray-900/50 rounded-lg p-4 mb-4">
-                        <div className="flex items-center justify-center mb-2">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
-                            <span className="text-white font-bold text-xs">JP</span>
-                          </div>
-                        </div>
-                        <p className="text-white font-medium text-center mb-1">{pick.selection}</p>
-                        <p className="text-gray-400 text-sm text-center">{pick.home_team} vs {pick.away_team}</p>
-                        <p className="text-gray-500 text-xs text-center mt-1">{pick.league}</p>
+                        <p className="text-white font-medium text-center mb-1">{bet.event_description}</p>
+                        <p className="text-gray-500 text-xs text-center mt-1">{bet.bet_type} • {bet.sport}</p>
                       </div>
 
                       {/* Stats Grid */}
                       <div className="grid grid-cols-3 gap-4">
                         <div className="text-center">
                           <p className="text-gray-400 text-xs mb-1">Montant du pari</p>
-                          <p className="text-white font-bold text-lg">${pick.stake.toFixed(2)}</p>
+                          <p className="text-white font-bold text-lg">€{bet.stake.toFixed(2)}</p>
                         </div>
                         <div className="text-center">
-                          <p className="text-gray-400 text-xs mb-1">Cotes Totales</p>
-                          <p className="text-orange-400 font-bold text-lg">{pick.odds.toFixed(2)}</p>
+                          <p className="text-gray-400 text-xs mb-1">Cotes</p>
+                          <p className="text-orange-400 font-bold text-lg">{bet.odds.toFixed(2)}</p>
                         </div>
                         <div className="text-center">
-                          <p className="text-gray-400 text-xs mb-1">Gains</p>
+                          <p className="text-gray-400 text-xs mb-1">Gains Potentiels</p>
                           <p className={`font-bold text-lg ${
-                            pick.status === 'won' ? 'text-emerald-400'
-                            : pick.status === 'lost' ? 'text-red-400'
+                            bet.result === 'won' ? 'text-emerald-400'
+                            : bet.result === 'lost' ? 'text-red-400'
                             : 'text-gray-400'
                           }`}>
-                            ${pick.status === 'won' ? pick.potential_win.toFixed(2) : '0.00'}
+                            €{bet.result === 'won' ? bet.potential_win.toFixed(2) : '0.00'}
                           </p>
                         </div>
                       </div>

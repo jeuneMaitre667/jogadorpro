@@ -132,28 +132,29 @@ function PickConfirmationContent() {
         throw new Error('Le match a déjà commencé')
       }
 
-      // Insert pick
+      // Insert bet using the bets table
       const insertData = {
         user_id: userId,
         challenge_id: challenge.id,
-        match_id: pickData.matchId,
-        home_team: pickData.homeTeam,
-        away_team: pickData.awayTeam,
-        selection: pickData.selection,
+        bet_type: 'match_winner',
+        sport: 'soccer',
+        event_description: `${pickData.homeTeam} vs ${pickData.awayTeam}`,
         odds: parseFloat(pickData.odds.toString()),
         stake: parseFloat(pickData.stake.toString()),
         potential_win: pickData.stake * pickData.odds,
-        status: 'pending',
-        league: pickData.league,
-        match_commence_time: pickData.matchTime,
+        result: 'pending',
+        placed_at: new Date().toISOString(),
       }
 
       const { data, error: insertError } = await supabase
-        .from('picks')
+        .from('bets')
         .insert([insertData])
         .select()
 
-      if (insertError) throw insertError
+      if (insertError) {
+        console.error('Supabase insert error:', insertError)
+        throw new Error(`Erreur lors du placement du pari: ${insertError.message}`)
+      }
 
       // Success - redirect to my bets
       router.push('/dashboard/my-bets')
@@ -319,7 +320,6 @@ function PickConfirmationContent() {
                 <ul className="text-xs space-y-1">
                   <li>• Mise entre 1% et 5% du solde</li>
                   <li>• Maximum 5 paris actifs simultanément</li>
-                  <li>• Annulation possible dans les 2 minutes après placement</li>
                   <li>• Drawdown max 10% d'une journée à l'autre</li>
                 </ul>
               </div>
