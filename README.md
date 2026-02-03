@@ -18,6 +18,7 @@
 - 📊 **Performance Tracking** - Stats KPIs et graphiques temps réel
 - 🌍 **Multi-sports** - Football, Tennis, Basketball + 25 ligues
 - 🧪 **Tested** - E2E tests avec Playwright
+- 🤖 **"Fin de Session"** - Automatisation Copilot pour optimiser et sauvegarder le code
 
 ## 🚀 Quick Start
 
@@ -156,6 +157,8 @@ npx playwright test --ui
 - **[ODDS_API_GUIDE.md](./ODDS_API_GUIDE.md)** - Guide intégration The Odds API
 - **[OPTIMIZATIONS.md](./OPTIMIZATIONS.md)** - Métriques & recommandations
 - **[PROJECT_STATUS.md](./PROJECT_STATUS.md)** - État projet & roadmap
+- **[FIN_DE_SESSION_GUIDE.md](./FIN_DE_SESSION_GUIDE.md)** - 🤖 Guide automatisation "fin de session"
+- **[QUICK_REFERENCE_FIN_DE_SESSION.md](./QUICK_REFERENCE_FIN_DE_SESSION.md)** - 📝 Référence rapide
 
 ## 🗺️ Roadmap
 
