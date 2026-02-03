@@ -22,24 +22,27 @@ CREATE TABLE public.challenges (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Bets Table
-CREATE TABLE public.bets (
+-- ============================================
+-- PICKS TABLE (User betting selections)
+-- ============================================
+
+CREATE TABLE public.picks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  challenge_id UUID NOT NULL REFERENCES public.challenges(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
-  bet_type TEXT NOT NULL,
-  sport TEXT NOT NULL,
-  event_description TEXT NOT NULL,
+  challenge_id UUID NOT NULL REFERENCES public.challenges(id) ON DELETE CASCADE,
+  home_team TEXT NOT NULL,
+  away_team TEXT NOT NULL,
+  selection TEXT NOT NULL,
+  league TEXT NOT NULL,
   odds DECIMAL(10, 2) NOT NULL,
   stake DECIMAL(10, 2) NOT NULL,
   potential_win DECIMAL(10, 2) NOT NULL,
-  result TEXT DEFAULT 'pending' CHECK (result IN ('pending', 'won', 'lost', 'void')),
-  profit_loss DECIMAL(10, 2),
-  placed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  settled_at TIMESTAMP WITH TIME ZONE,
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'won', 'lost', 'void', 'cancelled')),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- ============================================
 
 -- Funded Accounts Table
 CREATE TABLE public.funded_accounts (
@@ -94,7 +97,8 @@ CREATE TABLE public.transactions (
 CREATE INDEX idx_challenges_user_id ON public.challenges(user_id);
 CREATE INDEX idx_challenges_status ON public.challenges(status);
 CREATE INDEX idx_bets_challenge_id ON public.bets(challenge_id);
-CREATE INDEX idx_bets_user_id ON public.bets(user_id);
+CREATE INDEX idx_picks_user_id ON public.picks(user_id);
+CREATE INDEX idx_picks_challenge_id ON public.picks(challenge_id);
 CREATE INDEX idx_funded_accounts_user_id ON public.funded_accounts(user_id);
 CREATE INDEX idx_payouts_funded_account_id ON public.payouts(funded_account_id);
 CREATE INDEX idx_payouts_user_id ON public.payouts(user_id);
@@ -107,7 +111,7 @@ CREATE INDEX idx_transactions_user_id ON public.transactions(user_id);
 -- Enable RLS on all tables
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.challenges ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.bets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.picks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.funded_accounts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.payouts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.transactions ENABLE ROW LEVEL SECURITY;
@@ -129,14 +133,14 @@ CREATE POLICY "Users can create own challenges" ON public.challenges
 CREATE POLICY "Users can update own challenges" ON public.challenges
   FOR UPDATE USING (auth.uid() = user_id);
 
--- Users can view and create own bets
-CREATE POLICY "Users can view own bets" ON public.bets
+-- Users can view and create own picks
+CREATE POLICY "Users can view own picks" ON public.picks
   FOR SELECT USING (auth.uid() = user_id);
 
-CREATE POLICY "Users can create own bets" ON public.bets
+CREATE POLICY "Users can create own picks" ON public.picks
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
-CREATE POLICY "Users can update own bets" ON public.bets
+CREATE POLICY "Users can update own picks" ON public.picks
   FOR UPDATE USING (auth.uid() = user_id);
 
 -- Users can view own funded account

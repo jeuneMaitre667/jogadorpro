@@ -5,11 +5,8 @@ import { supabase } from '@/lib/supabase'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { challengeId, matchId, homeTeam, awayTeam, betType, selection, odds, stake } = body
+    const { userId, challengeId, homeTeam, awayTeam, selection, league, odds, stake, potentialWin } = body
 
-    // Get user from request headers or body (passed from client)
-    // For now, we'll trust the client since we verify challenge ownership
-    
     // Verify challenge exists and is active
     const { data: challenge, error: challengeError } = await supabase
       .from('challenges')
@@ -34,44 +31,27 @@ export async function POST(request: Request) {
       )
     }
 
-    // Calculate potential profit
-    const potentialProfit = stake * (odds - 1)
-
-    // Insert pick
+    // Insert pick with correct column names
     const { data: pick, error: pickError } = await supabase
       .from('picks')
       .insert({
+        user_id: userId,
         challenge_id: challengeId,
-        match_id: matchId,
         home_team: homeTeam,
         away_team: awayTeam,
-        bet_type: betType,
         selection: selection,
+        league: league,
         odds: odds,
         stake: stake,
-        potential_profit: potentialProfit,
-        status: 'pending',
-        placed_at: new Date().toISOString()
+        potential_win: potentialWin,
+        status: 'pending'
       })
       .select()
       .single()
 
     if (pickError) {
       console.error('Error inserting pick:', pickError)
-      return NextResponse.json({ error: 'Failed to place pick' }, { status: 500 })
-    }
-
-    // Update challenge stats
-    const { error: updateError } = await supabase
-      .from('challenges')
-      .update({
-        total_picks: (challenge.total_picks || 0) + 1,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', challengeId)
-
-    if (updateError) {
-      console.error('Error updating challenge:', updateError)
+      return NextResponse.json({ error: 'Failed to place pick', details: pickError }, { status: 500 })
     }
 
     return NextResponse.json({
@@ -86,3 +66,4 @@ export async function POST(request: Request) {
     )
   }
 }
+

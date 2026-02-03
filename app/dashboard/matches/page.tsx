@@ -267,50 +267,79 @@ export default function MatchesPage() {
     const potentialWin = stake * selectedPick.odds
 
     try {
-      const userId = user?.id || JSON.parse(localStorage.getItem('user') || '{}').id
-
-      if (!userId) {
-        alert('Utilisateur non connecté')
+      // Get authenticated user from Supabase auth session
+      const { data: { user: authUser }, error: authError } = await supabase.auth.getUser()
+      
+      if (authError || !authUser) {
+        console.error('❌ Auth error:', authError)
+        alert('Session expirée. Veuillez vous reconnecter.')
+        router.push('/auth/login')
         return
       }
 
-      console.log('User ID:', userId)
+      const userId = authUser.id
+      console.log('✅ User authenticated:', userId)
+
+      // Verify session is active
+      const { data: { session } } = await supabase.auth.getSession()
+      console.log('📝 Session status:', session ? 'Active' : 'No session')
+      
+      if (!session) {
+        alert('Session expirée. Veuillez vous reconnecter.')
+        router.push('/auth/login')
+        return
+      }
 
       // Get active challenge
       const { data: challengeData, error: challengeError } = await supabase
         .from('challenges')
-        .select('id')
+        .select('id, current_balance')
         .eq('user_id', userId)
         .eq('status', 'active')
         .single()
 
-      if (challengeError || !challengeData) {
-        console.error('Challenge error:', challengeError)
+      if (challengeError) {
+        console.error('❌ Challenge error:', challengeError)
+        alert('Erreur lors de la récupération du challenge')
+        return
+      }
+
+      if (!challengeData) {
         alert('Pas de challenge actif trouvé')
         return
       }
 
+      console.log('✅ Challenge found:', challengeData)
+
       const insertData = {
         user_id: userId,
         challenge_id: challengeData.id,
-        home_team: selectedPick.homeTeam,
-        away_team: selectedPick.awayTeam,
-        selection: selectedPick.selection,
+        bet_type: 'match_winner',
+        sport: 'soccer',
+        event_description: `${selectedPick.homeTeam} vs ${selectedPick.awayTeam}`,
         odds: parseFloat(selectedPick.odds.toString()),
         stake: parseFloat(stake.toString()),
         potential_win: parseFloat(potentialWin.toString()),
-        status: 'pending',
-        league: selectedPick.league,
-        match_commence_time: selectedPick.matchTime,
+        result: 'pending',
+        placed_at: new Date().toISOString(),
       }
 
-      console.log('Inserting pick with data:', insertData)
+      console.log('📤 Attempting insert with data:', insertData)
 
-      const { data, error } = await supabase.from('picks').insert([insertData]).select()
+      const { data, error } = await supabase.from('bets').insert([insertData]).select()
+      
+      console.log('📥 Insert response:', { data, error })
 
       if (error) {
-        console.error('Supabase insert error full:', error)
-        alert(`Erreur Supabase: ${error.message}`)
+        console.error('❌ Supabase insert error:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code,
+          full: error
+        })
+        const errorMsg = error.message || error.hint || JSON.stringify(error)
+        alert(`Erreur lors du placement du pari:\n${errorMsg}\n\nVérifiez la console pour plus de détails.`)
         return
       }
 
@@ -693,12 +722,6 @@ export default function MatchesPage() {
                       Min: €{(challenge.current_balance * 0.01).toFixed(2)} - Max: €{(challenge.current_balance * 0.05).toFixed(2)}
                     </p>
                   )}
-                </div>
-
-                {/* Cancellation Rule */}
-                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
-                  <p className="text-xs text-red-400 font-semibold mb-1">⚠️ Règle d'annulation</p>
-                  <p className="text-xs text-red-300">Les paris peuvent être annulés uniquement dans les 2 minutes suivant leur placement</p>
                 </div>
 
                 {/* Potential Win */}

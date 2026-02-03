@@ -253,28 +253,49 @@ export default function MatchesPage() {
     const potentialWin = stake * selectedPick.odds
 
     try {
-      const userId = user?.id || JSON.parse(localStorage.getItem('user') || '{}').id
-
-      if (!userId) {
-        alert('Utilisateur non connecté')
+      // Get authenticated user from Supabase auth session
+      const { data: { user: authUser }, error: authError } = await supabase.auth.getUser()
+      
+      if (authError || !authUser) {
+        console.error('❌ Auth error:', authError)
+        alert('Session expirée. Veuillez vous reconnecter.')
+        router.push('/auth/login')
         return
       }
 
-      console.log('User ID:', userId)
+      const userId = authUser.id
+      console.log('✅ User authenticated:', userId)
+
+      // Verify session is active
+      const { data: { session } } = await supabase.auth.getSession()
+      console.log('📝 Session status:', session ? 'Active' : 'No session')
+      
+      if (!session) {
+        alert('Session expirée. Veuillez vous reconnecter.')
+        router.push('/auth/login')
+        return
+      }
 
       // Get active challenge
       const { data: challengeData, error: challengeError } = await supabase
         .from('challenges')
-        .select('id')
+        .select('id, current_balance')
         .eq('user_id', userId)
         .eq('status', 'active')
         .single()
 
-      if (challengeError || !challengeData) {
-        console.error('Challenge error:', challengeError)
+      if (challengeError) {
+        console.error('❌ Challenge error:', challengeError)
+        alert('Erreur lors de la récupération du challenge')
+        return
+      }
+
+      if (!challengeData) {
         alert('Pas de challenge actif trouvé')
         return
       }
+
+      console.log('✅ Challenge found:', challengeData)
 
       const insertData = {
         user_id: userId,
@@ -282,21 +303,71 @@ export default function MatchesPage() {
         home_team: selectedPick.homeTeam,
         away_team: selectedPick.awayTeam,
         selection: selectedPick.selection,
+        league: selectedPick.league,
         odds: parseFloat(selectedPick.odds.toString()),
         stake: parseFloat(stake.toString()),
         potential_win: parseFloat(potentialWin.toString()),
         status: 'pending',
-        league: selectedPick.league,
-        match_commence_time: selectedPick.matchTime,
       }
 
-      console.log('Inserting pick with data:', insertData)
+      console.log('📤 Attempting insert with data:', insertData)
+      console.log('� Data types:', {
+        user_id: typeof insertData.user_id,
+        challenge_id: typeof insertData.challenge_id,
+        odds: typeof insertData.odds,
+        stake: typeof insertData.stake,
+        potential_win: typeof insertData.potential_win
+      })
+      console.log('🔐 Auth UID:', session.user.id)
+      console.log('👤 User ID in data:', insertData.user_id)
+      console.log('⚖️ IDs match:', session.user.id === insertData.user_id)
 
-      const { data, error } = await supabase.from('picks').insert([insertData]).select()
+      let data, error
+      try {
+        console.log('🎯 Calling supabase.from("picks").insert()...')
+        const result = await supabase.from('picks').insert([insertData]).select()
+        data = result.data
+        error = result.error
+        
+        console.log('📥 Raw result:', result)
+        console.log('📥 Insert response:', { 
+          success: !error,
+          data, 
+          error,
+          errorType: error?.constructor?.name,
+          errorKeys: error ? Object.keys(error) : [],
+          errorString: error ? JSON.stringify(error, null, 2) : null,
+          errorMessage: error?.message || 'N/A',
+          errorCode: error?.code || 'N/A',
+          errorDetails: error?.details || 'N/A'
+        })
+      } catch (err) {
+        console.error('💥 Insert exception:', err)
+        const errorMessage = err instanceof Error ? err.message : String(err)
+        alert(`Exception: ${errorMessage}`)
+        return
+      }
 
       if (error) {
-        console.error('Supabase insert error full:', error)
-        alert(`Erreur Supabase: ${error.message}`)
+        console.error('❌ Supabase insert error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code,
+          errorKeys: Object.keys(error),
+          errorType: typeof error,
+          full: error
+        })
+        
+        // Enhanced error message
+        let errorMsg = 'Erreur inconnue'
+        if (error.message) errorMsg = error.message
+        else if (error.hint) errorMsg = error.hint
+        else if (error.details) errorMsg = error.details
+        else if (typeof error === 'string') errorMsg = error
+        else errorMsg = JSON.stringify(error, null, 2)
+        
+        alert(`Erreur lors du placement du pari:\n${errorMsg}\n\nVérifiez la console pour plus de détails.`)
         return
       }
 
@@ -679,12 +750,6 @@ export default function MatchesPage() {
                       Min: €{(challenge.current_balance * 0.01).toFixed(2)} - Max: €{(challenge.current_balance * 0.05).toFixed(2)}
                     </p>
                   )}
-                </div>
-
-                {/* Cancellation Rule */}
-                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
-                  <p className="text-xs text-red-400 font-semibold mb-1">⚠️ Règle d'annulation</p>
-                  <p className="text-xs text-red-300">Les paris peuvent être annulés uniquement dans les 2 minutes suivant leur placement</p>
                 </div>
 
                 {/* Potential Win */}

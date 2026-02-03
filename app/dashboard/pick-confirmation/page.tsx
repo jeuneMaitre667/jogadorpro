@@ -108,21 +108,25 @@ function PickConfirmationContent() {
 
     try {
       const userId = user?.id || getStoredUser()?.id
+      
+      if (!userId) {
+        throw new Error('Utilisateur non connecté')
+      }
 
       // Validate balance
       if (pickData.stake > challenge.current_balance * 0.05) {
         throw new Error('Mise supérieure à 5% du solde')
       }
 
-      // Check for duplicate picks on same match
-      const { data: existingPicks } = await supabase
-        .from('picks')
+      // Check for duplicate bets on same event
+      const { data: existingBets } = await supabase
+        .from('bets')
         .select('id')
         .eq('user_id', userId)
-        .eq('match_id', pickData.matchId)
-        .eq('status', 'pending')
+        .eq('event_description', `${pickData.homeTeam} vs ${pickData.awayTeam}`)
+        .eq('result', 'pending')
 
-      if (existingPicks && existingPicks.length > 0) {
+      if (existingBets && existingBets.length > 0) {
         throw new Error('Vous avez déjà un pari en attente sur ce match')
       }
 
@@ -152,8 +156,9 @@ function PickConfirmationContent() {
         .select()
 
       if (insertError) {
-        console.error('Supabase insert error:', insertError)
-        throw new Error(`Erreur lors du placement du pari: ${insertError.message}`)
+        console.error('Supabase insert error full:', insertError)
+        const errorMsg = insertError.message || JSON.stringify(insertError)
+        throw new Error(`Erreur lors du placement du pari: ${errorMsg}`)
       }
 
       // Success - redirect to my bets
