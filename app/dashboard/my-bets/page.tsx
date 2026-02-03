@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { Home, FileText, Trophy, Target, TrendingUp, Bell, Settings, LogOut, ArrowLeft, Check, X, Clock, Copy } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
+import type { User } from '@supabase/supabase-js'
 
 interface Pick {
   id: string
@@ -27,8 +28,21 @@ interface Challenge {
   current_balance: number
 }
 
+type StoredUser = { id: string }
+
+const getStoredUser = (): StoredUser | null => {
+  try {
+    const stored = localStorage.getItem('user')
+    if (!stored) return null
+    const parsed = JSON.parse(stored) as StoredUser
+    return parsed?.id ? parsed : null
+  } catch {
+    return null
+  }
+}
+
 export default function MyBetsPage() {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | StoredUser | null>(null)
   const [picks, setPicks] = useState<Pick[]>([])
   const [challenge, setChallenge] = useState<Challenge | null>(null)
   const [loading, setLoading] = useState(true)
@@ -39,10 +53,10 @@ export default function MyBetsPage() {
     const checkAuth = async () => {
       const { data: { user: authUser } } = await supabase.auth.getUser()
       
+      const storedUser = getStoredUser()
       if (!authUser) {
-        const storedUser = localStorage.getItem('user')
         if (storedUser) {
-          setUser(JSON.parse(storedUser))
+          setUser(storedUser)
         } else {
           router.push('/auth/login')
           return
@@ -51,7 +65,7 @@ export default function MyBetsPage() {
         setUser(authUser)
       }
 
-      const userId = authUser?.id || JSON.parse(localStorage.getItem('user') || '{}').id
+      const userId = authUser?.id || storedUser?.id
       if (userId) {
         // Fetch picks
         const { data: picksData, error: picksError } = await supabase

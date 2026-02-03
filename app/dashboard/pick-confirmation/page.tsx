@@ -1,11 +1,12 @@
 'use client'
 
-import { Suspense } from 'react'
-import { useRouter } from 'next/navigation'
+import { Suspense, useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { ArrowLeft, AlertCircle, CheckCircle2, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { supabase } from '@/lib/supabase'
+import type { User } from '@supabase/supabase-js'
 
 interface PickData {
   matchId: string
@@ -18,13 +19,33 @@ interface PickData {
   stake: number
 }
 
+interface Challenge {
+  id: string
+  current_balance: number
+  tier: string
+  phase: number
+}
+
+type StoredUser = { id: string }
+
+const getStoredUser = (): StoredUser | null => {
+  try {
+    const stored = localStorage.getItem('user')
+    if (!stored) return null
+    const parsed = JSON.parse(stored) as StoredUser
+    return parsed?.id ? parsed : null
+  } catch {
+    return null
+  }
+}
+
 function PickConfirmationContent() {
   const router = useRouter()
   const [pickData, setPickData] = useState<PickData | null>(null)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
-  const [user, setUser] = useState<any>(null)
-  const [challenge, setChallenge] = useState<any>(null)
+  const [user, setUser] = useState<User | StoredUser | null>(null)
+  const [challenge, setChallenge] = useState<Challenge | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const searchParams = useSearchParams()
@@ -46,10 +67,10 @@ function PickConfirmationContent() {
     const checkAuth = async () => {
       const { data: { user: authUser } } = await supabase.auth.getUser()
       
+      const storedUser = getStoredUser()
       if (!authUser) {
-        const storedUser = localStorage.getItem('user')
         if (storedUser) {
-          setUser(JSON.parse(storedUser))
+          setUser(storedUser)
         } else {
           router.push('/auth/login')
           return
@@ -59,7 +80,7 @@ function PickConfirmationContent() {
       }
 
       // Fetch challenge
-      const userId = authUser?.id || JSON.parse(localStorage.getItem('user') || '{}').id
+      const userId = authUser?.id || storedUser?.id
       if (userId) {
         const { data: challengeData } = await supabase
           .from('challenges')
@@ -86,7 +107,7 @@ function PickConfirmationContent() {
     setError(null)
 
     try {
-      const userId = user?.id || JSON.parse(localStorage.getItem('user') || '{}').id
+      const userId = user?.id || getStoredUser()?.id
 
       // Validate balance
       if (pickData.stake > challenge.current_balance * 0.05) {
@@ -170,6 +191,7 @@ function PickConfirmationContent() {
     )
   }
 
+  const challengeBalance = challenge?.current_balance ?? 0
   const potentialWin = pickData.stake * pickData.odds
 
   return (
@@ -262,7 +284,9 @@ function PickConfirmationContent() {
               <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4">
                 <p className="text-white font-bold text-2xl">€{pickData.stake.toFixed(2)}</p>
                 <p className="text-xs text-gray-500 mt-1">
-                  {((pickData.stake / challenge.current_balance) * 100).toFixed(2)}% de votre solde
+                  {challengeBalance > 0
+                    ? ((pickData.stake / challengeBalance) * 100).toFixed(2)
+                    : '0.00'}% de votre solde
                 </p>
               </div>
             </div>
@@ -276,7 +300,7 @@ function PickConfirmationContent() {
             {/* Balance */}
             <div className="bg-gray-900/50 rounded-lg p-4">
               <p className="text-gray-400 text-xs mb-2">SOLDE ACTUEL</p>
-              <p className="text-white font-bold text-lg">€{challenge.current_balance.toFixed(2)}</p>
+              <p className="text-white font-bold text-lg">€{challengeBalance.toFixed(2)}</p>
             </div>
 
             {/* Potential Win */}
@@ -334,9 +358,6 @@ function PickConfirmationContent() {
     </div>
   )
 }
-
-import { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
 
 export default function PickConfirmationPage() {
   return (

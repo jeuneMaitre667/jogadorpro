@@ -1,16 +1,16 @@
 // Simple in-memory cache with TTL support
-interface CacheEntry {
-  value: any
+interface CacheEntry<T = unknown> {
+  value: T
   timestamp: number
   ttl: number
 }
 
-const cache = new Map<string, CacheEntry>()
+const cache = new Map<string, CacheEntry<unknown>>()
 
 /**
  * Get value from cache if not expired
  */
-export function getCached(key: string): any | null {
+export function getCached<T = unknown>(key: string): T | null {
   const entry = cache.get(key)
   if (!entry) return null
   
@@ -20,7 +20,7 @@ export function getCached(key: string): any | null {
     return null
   }
   
-  return entry.value
+  return entry.value as T
 }
 
 /**
@@ -29,7 +29,7 @@ export function getCached(key: string): any | null {
  * @param value - Value to cache
  * @param ttl - Time to live in milliseconds
  */
-export function setCache(key: string, value: any, ttl: number): void {
+export function setCache<T = unknown>(key: string, value: T, ttl: number): void {
   cache.set(key, {
     value,
     timestamp: Date.now(),

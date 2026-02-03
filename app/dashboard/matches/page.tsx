@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabase'
 import { useMatches } from '@/hooks/useMatches'
 import { getSportName, getSportIcon, DEFAULT_DASHBOARD_SPORTS } from '@/lib/sportsConfig'
 import { Match } from '@/lib/oddsapi'
+import type { User } from '@supabase/supabase-js'
 
 interface League {
   name: string
@@ -27,6 +28,19 @@ interface SelectedPick {
 
 interface Challenge {
   current_balance: number
+}
+
+type StoredUser = { id: string }
+
+const getStoredUser = (): StoredUser | null => {
+  try {
+    const stored = localStorage.getItem('user')
+    if (!stored) return null
+    const parsed = JSON.parse(stored) as StoredUser
+    return parsed?.id ? parsed : null
+  } catch {
+    return null
+  }
 }
 
 // League flags mapping
@@ -76,7 +90,7 @@ const getLeagueFlag = (leagueName: string): string => {
 }
 
 export default function MatchesPage() {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | StoredUser | null>(null)
   const [challenge, setChallenge] = useState<Challenge | null>(null)
   const [loading, setLoading] = useState(true)
   const [expandedLeagues, setExpandedLeagues] = useState<string[]>([])
@@ -165,10 +179,10 @@ export default function MatchesPage() {
     const checkAuth = async () => {
       const { data: { user: authUser } } = await supabase.auth.getUser()
       
+      const storedUser = getStoredUser()
       if (!authUser) {
-        const storedUser = localStorage.getItem('user')
         if (storedUser) {
-          setUser(JSON.parse(storedUser))
+          setUser(storedUser)
         } else {
           router.push('/auth/login')
           return
@@ -178,7 +192,7 @@ export default function MatchesPage() {
       }
 
       // Fetch challenge balance
-      const userId = authUser?.id || JSON.parse(localStorage.getItem('user') || '{}').id
+      const userId = authUser?.id || storedUser?.id
       if (userId) {
         const { data: challengeData } = await supabase
           .from('challenges')

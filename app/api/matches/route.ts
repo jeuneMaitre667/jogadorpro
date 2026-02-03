@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { fetchMatchesMultipleSports } from '@/lib/oddsapi'
+import { fetchMatchesMultipleSports, Match } from '@/lib/oddsapi'
 
 export const runtime = 'nodejs'
 
 // Cache matches for 5 minutes
-let cachedMatches: any[] = []
+let cachedMatches: Match[] = []
 let lastFetch: number = 0
 let lastErrorTime: number = 0
 let lastError: string | null = null

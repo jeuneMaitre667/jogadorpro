@@ -144,7 +144,7 @@ export async function fetchUpcomingMatches(
 
   // Check cache first (cache for 5 minutes)
   const cacheKey = `matches_${sport}_${regions}_${markets}`
-  const cached = getCached(cacheKey)
+  const cached = getCached<Match[]>(cacheKey)
   if (cached) {
     console.log(`[CACHE] Using cached matches for ${sport}`)
     return cached
