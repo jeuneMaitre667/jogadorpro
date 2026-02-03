@@ -1,8 +1,81 @@
 // The Odds API Service
 // Docs: https://the-odds-api.com/liveapi/guides/v4/
 
+import { getCached, setCache } from './cache'
+
 const ODDS_API_KEY = process.env.ODDS_API_KEY
 const BASE_URL = 'https://api.the-odds-api.com/v4'
+
+// Rate limit tracking
+let rateLimitRemaining = 500
+let rateLimitReset = 0
+const RATE_LIMIT_CHECK_INTERVAL = 60000 // Check every minute
+
+// Exponential backoff for retries
+interface RetryConfig {
+  maxRetries: number
+  initialDelayMs: number
+  maxDelayMs: number
+  backoffMultiplier: number
+}
+
+const DEFAULT_RETRY_CONFIG: RetryConfig = {
+  maxRetries: 3,
+  initialDelayMs: 1000,
+  maxDelayMs: 30000,
+  backoffMultiplier: 2
+}
+
+/**
+ * Sleep for a given duration
+ */
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+/**
+ * Wait with exponential backoff
+ */
+async function exponentialBackoff(attempt: number, config: RetryConfig): Promise<void> {
+  const delayMs = Math.min(
+    config.initialDelayMs * Math.pow(config.backoffMultiplier, attempt),
+    config.maxDelayMs
+  )
+  console.log(`[RETRY] Waiting ${delayMs}ms before retry attempt ${attempt + 1}`)
+  await sleep(delayMs)
+}
+
+/**
+ * Check if we should wait before making API call
+ */
+async function checkRateLimit(): Promise<void> {
+  const now = Date.now()
+  
+  // If reset time is in future, wait
+  if (rateLimitReset > now && rateLimitRemaining <= 10) {
+    const waitTime = rateLimitReset - now
+    console.log(`[RATE LIMIT] Waiting ${waitTime}ms until reset at ${new Date(rateLimitReset).toISOString()}`)
+    await sleep(waitTime + 1000) // Add 1s buffer
+  }
+}
+
+/**
+ * Update rate limit info from response headers
+ */
+function updateRateLimitInfo(response: Response): void {
+  const remaining = response.headers.get('x-requests-remaining')
+  const reset = response.headers.get('x-requests-reset')
+  
+  if (remaining) {
+    rateLimitRemaining = parseInt(remaining, 10)
+    console.log(`[RATE LIMIT] Remaining requests: ${rateLimitRemaining}`)
+  }
+  
+  if (reset) {
+    rateLimitReset = parseInt(reset, 10) * 1000 // Convert to ms
+    console.log(`[RATE LIMIT] Reset at: ${new Date(rateLimitReset).toISOString()}`)
+  }
+}
 
 export interface OddsMatch {
   id: string
@@ -62,35 +135,89 @@ export interface Match {
 export async function fetchUpcomingMatches(
   sport: string = 'soccer_brazil_campeonato',
   regions: string = 'eu',
-  markets: string = 'h2h'
+  markets: string = 'h2h',
+  retryConfig: RetryConfig = DEFAULT_RETRY_CONFIG
 ): Promise<Match[]> {
   if (!ODDS_API_KEY) {
     throw new Error('ODDS_API_KEY not configured')
   }
 
-  const url = `${BASE_URL}/sports/${sport}/odds/?apiKey=${ODDS_API_KEY}&regions=${regions}&markets=${markets}&oddsFormat=decimal`
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    })
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      throw new Error(`Odds API error: ${response.status} - ${errorText}`)
-    }
-
-    const data: OddsMatch[] = await response.json()
-
-    // Transform API response to our Match format
-    return data.map(match => transformMatch(match)).filter(Boolean) as Match[]
-  } catch (error) {
-    console.error('Error fetching matches from Odds API:', error)
-    throw error
+  // Check cache first (cache for 5 minutes)
+  const cacheKey = `matches_${sport}_${regions}_${markets}`
+  const cached = getCached(cacheKey)
+  if (cached) {
+    console.log(`[CACHE] Using cached matches for ${sport}`)
+    return cached
   }
+
+  let lastError: Error | null = null
+  
+  for (let attempt = 0; attempt <= retryConfig.maxRetries; attempt++) {
+    try {
+      // Check rate limit before making request
+      await checkRateLimit()
+
+      const url = `${BASE_URL}/sports/${sport}/odds/?apiKey=${ODDS_API_KEY}&regions=${regions}&markets=${markets}&oddsFormat=decimal`
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      })
+
+      // Update rate limit info from headers
+      updateRateLimitInfo(response)
+
+      // Handle 429 (Too Many Requests) with retry
+      if (response.status === 429) {
+        const retryAfter = response.headers.get('retry-after')
+        const waitTime = retryAfter ? parseInt(retryAfter, 10) * 1000 : 60000
+        
+        console.warn(`[RATE LIMIT] 429 Too Many Requests - Retry-After: ${waitTime}ms`)
+        
+        if (attempt < retryConfig.maxRetries) {
+          await sleep(waitTime)
+          continue
+        } else {
+          throw new Error(`Rate limited after ${retryConfig.maxRetries} retries`)
+        }
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        lastError = new Error(`Odds API error: ${response.status} - ${errorText}`)
+        
+        // Retry on server errors (5xx)
+        if (response.status >= 500 && attempt < retryConfig.maxRetries) {
+          console.warn(`[RETRY] Server error (${response.status}), retrying...`)
+          await exponentialBackoff(attempt, retryConfig)
+          continue
+        }
+        
+        throw lastError
+      }
+
+      const data: OddsMatch[] = await response.json()
+      const matches = data.map(match => transformMatch(match)).filter(Boolean) as Match[]
+      
+      // Cache successful response
+      setCache(cacheKey, matches, 5 * 60 * 1000) // 5 minute cache
+      
+      return matches
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error))
+      
+      if (attempt < retryConfig.maxRetries) {
+        console.warn(`[RETRY] Attempt ${attempt + 1} failed: ${lastError.message}, retrying...`)
+        await exponentialBackoff(attempt, retryConfig)
+      } else {
+        console.error(`[ERROR] All ${retryConfig.maxRetries + 1} attempts failed for ${sport}:`, lastError.message)
+      }
+    }
+  }
+  
+  throw lastError || new Error(`Failed to fetch matches for ${sport}`)
 }
 
 /**
@@ -106,15 +233,25 @@ export async function fetchMatchesMultipleSports(
 ): Promise<Match[]> {
   try {
     console.log('[DEBUG] Fetching matches for sports:', sports)
-    const promises = sports.map(sport => 
-      fetchUpcomingMatches(sport).catch(err => {
-        console.error(`[ERROR] Error fetching ${sport}:`, err.message)
-        return []
-      })
-    )
-
-    const results = await Promise.all(promises)
-    const allMatches = results.flat()
+    
+    // Fetch sequentially to avoid rate limiting
+    const allMatches: Match[] = []
+    
+    for (const sport of sports) {
+      try {
+        const matches = await fetchUpcomingMatches(sport)
+        allMatches.push(...matches)
+        
+        // Add small delay between requests to avoid rate limit
+        if (sport !== sports[sports.length - 1]) {
+          await sleep(500)
+        }
+      } catch (err) {
+        console.error(`[ERROR] Error fetching ${sport}:`, err instanceof Error ? err.message : String(err))
+        // Continue with next sport even if one fails
+      }
+    }
+    
     console.log('[DEBUG] Total matches fetched:', allMatches.length)
     return allMatches
   } catch (error) {

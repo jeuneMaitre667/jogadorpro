@@ -124,7 +124,7 @@ export default function DashboardPage() {
             <button
               key={item.label}
               title={item.label}
-              onClick={item.action}
+              onClick={item.action || undefined}
               className={`w-12 h-12 rounded-xl flex items-center justify-center transition ${
                 item.active
                   ? 'bg-emerald-500/20 text-emerald-400'
@@ -395,3 +395,4 @@ export default function DashboardPage() {
     </div>
   )
 }
+
